@@ -3,7 +3,6 @@
 <head>
 	<meta charset="UTF-8"> 
 	<title>Graph Editor</title>
-	<script src="graph.js"></script>
 	<script src="jquery-3.3.1.js"></script>
 	<script src="grapheditor.js"></script>
 	<script src="grapheditorelements.js"></script>
@@ -12,8 +11,7 @@
 	
 	<script>
 	$(document).ready(function(){
-		graph = new Graph.Graph("graph");
-		grapheditor = new GraphEditor(graph, 
+		grapheditor = new GraphEditor(
 			$("#graph-container"), $("#tools-container"));
 		grapheditor.addTool(new GraphEditorNewNodeTool());
 		grapheditor.addTool(new GraphEditorNewEdgeTool());

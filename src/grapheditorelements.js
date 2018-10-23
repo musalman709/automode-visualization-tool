@@ -1,9 +1,9 @@
 
 function GraphEditorNode(id, pos) {
 	GraphEditorElement.call(this);
-	this.node = new Graph.Node(id);
+	this.id = id;
 	
-	this.g = createSVGElement("g", {id:this.node.id});
+	this.g = createSVGElement("g", {id:this.id});
 	this.rect = createSVGElement("rect", 
 		{class:"nodeFrame", x:pos.x-25, y:pos.y-25, width:50, height:50, 
 		rx:10, ry:10});
@@ -16,12 +16,6 @@ GraphEditorNode.prototype = Object.create(GraphEditorElement.prototype);
 
 GraphEditorNode.prototype.getSVGElement = function() {
 	return this.g;
-}
-GraphEditorNode.prototype.addToGraph = function(graph) {
-	graph.addNode(this.node);
-}
-GraphEditorNode.prototype.removeFromGraph = function(graph) {
-	graph.removeNode(this.node);
 }
 GraphEditorNode.prototype.move = function(newPos) {
 	this.rect.attr("x", newPos.x-25);
@@ -44,10 +38,9 @@ function GraphEditorEdge(id, srcElement, destElement) {
 	GraphEditorElement.call(this);
 	this.srcElement = srcElement;
 	this.destElement = destElement;
-	this.edge = new Graph.Edge(id, srcElement.node.nodeId,
-		destElement.node.nodeId);
+	this.id = id;
 	
-	this.g = createSVGElement("g", {id:this.edge.id});
+	this.g = createSVGElement("g", {id:this.id});
 	this.line = createSVGElement("line", {class:"arrow", stroke:"black",
 		"marker-end":"url(#arrowhead)"});
 	this.g.append(this.line);
@@ -61,12 +54,6 @@ GraphEditorEdge.prototype = Object.create(GraphEditorElement.prototype);
 
 GraphEditorEdge.prototype.getSVGElement = function() {
 	return this.g;
-}
-GraphEditorEdge.prototype.addToGraph = function(graph) {
-	graph.addEdge(this.edge);
-}
-GraphEditorEdge.prototype.removeFromGraph = function(graph) {
-	graph.removeEdge(this.edge);
 }
 GraphEditorEdge.prototype.move = function(newPos) {
 	this.update();

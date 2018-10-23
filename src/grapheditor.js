@@ -15,8 +15,6 @@ function GraphEditorElement() {
 	this.dependentElements = [];
 }
 GraphEditorElement.prototype.getSVGElement = function() {}
-GraphEditorElement.prototype.addToGraph = function(graph) {}
-GraphEditorElement.prototype.removeFromGraph = function(graph) {}
 GraphEditorElement.prototype.move = function(newPos) {}
 GraphEditorElement.prototype.update = function() {}
 GraphEditorElement.prototype.getIncomingPoint = function() {
@@ -56,8 +54,7 @@ GraphEditorTool.prototype.onMouseMove = function(pos) {}
 
 
 
-function GraphEditor(graph, graphcontainer, toolscontainer) {
-	this.graph = undefined;
+function GraphEditor(graphcontainer, toolscontainer) {
 	this.graphcontainer = graphcontainer;
 	this.toolscontainer = toolscontainer;
 	this.svg = undefined;
@@ -65,7 +62,7 @@ function GraphEditor(graph, graphcontainer, toolscontainer) {
 	this.tools = [];
 	this.currentTool = undefined;
 	
-	this.setGraph(graph);
+	this.createGraph();
 	
 	var that = this;
 	
@@ -76,13 +73,11 @@ function GraphEditor(graph, graphcontainer, toolscontainer) {
 }
 
 
-GraphEditor.prototype.setGraph = function(graph) {
+GraphEditor.prototype.createGraph = function() {
 	this.graphcontainer.empty();
 	this.toolscontainer.empty();
 	
-	this.graph = graph;
-	
-	this.svg = createSVGElement("svg", {id:this.graph.id});
+	this.svg = createSVGElement("svg", {id:"graph"});
 	this.svg.on("selectstart", function(e) { e.preventDefault(); });
 	this.graphcontainer.append(this.svg);
 	
@@ -101,8 +96,6 @@ GraphEditor.prototype.addElement = function(element) {
 	this.elements.push(element);
 	element.graphEditor = this;
 	
-	element.addToGraph(this.graph);
-	
 	var that = this;
 	element.getSVGElement().on("mousedown", function(e) {
 		that.onMouseDown(e, element);
@@ -115,7 +108,6 @@ GraphEditor.prototype.removeElement = function(element) {
 	for(var i = 0; i < this.elements.length; ++i) {
 		if(this.elements[i] === element) {
 			element.getSVGElement().remove();
-			element.removeFromGraph(this.graph);
 			this.elements.splice(i, 1);
 		}
 	}

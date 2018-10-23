@@ -43,9 +43,7 @@ GraphEditorNewEdgeTool.prototype.onToolDeselect = function() {
 GraphEditorNewEdgeTool.prototype.onMouseDown = function(pos, element) {
 	if(element !== undefined) {
 		if(this.lastNodeClicked !== undefined
-		&& this.lastNodeClicked !== element
-		&& this.graphEditor.graph.getEdgeBetween(this.lastNodeClicked.node.id,
-		element.node.id) === undefined) {
+		&& this.lastNodeClicked !== element) {
 			this.edgeCounter += 1;
 			this.graphEditor.addElement(
 				new GraphEditorEdge("edge_"+this.edgeCounter,
