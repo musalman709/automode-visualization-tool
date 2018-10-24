@@ -2,6 +2,8 @@
 function GraphEditorNode(id, pos) {
 	GraphEditorElement.call(this);
 	this.id = id;
+	this.incomingEdges = [];
+	this.outgoingEdges = [];
 	
 	this.g = createSVGElement("g", {id:this.id});
 	this.rect = createSVGElement("rect", 
@@ -23,13 +25,46 @@ GraphEditorNode.prototype.move = function(newPos) {
 	this.incomingPos = {x:newPos.x, y:newPos.y-25};
 	this.outgoingPos = {x:newPos.x, y:newPos.y+25};
 	
-	this.updateDependents();
+	this.updateEdges();
+}
+GraphEditorNode.prototype.onRemoval = function() {
+	while(this.incomingEdges.length > 0) {
+		this.incomingEdges[0].onRemoval();
+	}
+	while(this.outgoingEdges.length > 0) {
+		this.outgoingEdges[0].onRemoval();
+	}
+	this.getSVGElement().remove();
 }
 GraphEditorNode.prototype.getIncomingPoint = function() {
 	return this.incomingPos;
 }
 GraphEditorNode.prototype.getOutgoingPoint = function() {
 	return this.outgoingPos;
+}
+GraphEditorNode.prototype.addIncomingEdge = function(edge) {
+	if(edge instanceof GraphEditorEdge) {
+		this.incomingEdges.add(edge);
+	}
+}
+GraphEditorNode.prototype.removeIncomingEdge = function(edge) {
+	this.incomingEdges.remove(edge);
+}
+GraphEditorNode.prototype.addOutgoingEdge = function(edge) {
+	if(edge instanceof GraphEditorEdge) {
+		this.outgoingEdges.add(edge);
+	}
+}
+GraphEditorNode.prototype.removeOutgoingEdge = function(edge) {
+	this.outgoingEdges.remove(edge);
+}
+GraphEditorNode.prototype.updateEdges = function() {
+	for(var i = 0; i < this.incomingEdges.length; ++i) {
+		this.incomingEdges[i].update();
+	}
+	for(var i = 0; i < this.outgoingEdges.length; ++i) {
+		this.outgoingEdges[i].update();
+	}
 }
 
 
@@ -45,8 +80,8 @@ function GraphEditorEdge(id, srcElement, destElement) {
 		"marker-end":"url(#arrowhead)"});
 	this.g.append(this.line);
 	
-	this.srcElement.addDependent(this);
-	this.destElement.addDependent(this);
+	this.srcElement.addOutgoingEdge(this);
+	this.destElement.addIncomingEdge(this);
 	this.update();
 }
 
@@ -63,5 +98,10 @@ GraphEditorEdge.prototype.update = function() {
 	this.line.attr("y1", this.srcElement.outgoingPos.y);
 	this.line.attr("x2", this.destElement.incomingPos.x);
 	this.line.attr("y2", this.destElement.incomingPos.y);
+}
+GraphEditorEdge.prototype.onRemoval = function() {
+	this.srcElement.removeOutgoingEdge(this);
+	this.destElement.removeIncomingEdge(this);
+	this.getSVGElement().remove();
 }
 

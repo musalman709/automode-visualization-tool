@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Create a new SVG element (in JQuery object)
+ */
 function createSVGElement(tagname, attrObject) {
 	var svgElem = document.createElementNS("http://www.w3.org/2000/svg", 
 		tagname);
@@ -12,33 +15,12 @@ function createSVGElement(tagname, attrObject) {
 
 
 function GraphEditorElement() {
-	this.dependentElements = [];
+	this.grapheditor = undefined;
 }
 GraphEditorElement.prototype.getSVGElement = function() {}
 GraphEditorElement.prototype.move = function(newPos) {}
 GraphEditorElement.prototype.update = function() {}
-GraphEditorElement.prototype.getIncomingPoint = function() {
-	return {x:0, y:0};
-};
-GraphEditorElement.prototype.getOutgoingPoint = function() {
-	return {x:0, y:0};
-}
-GraphEditorElement.prototype.addDependent = function(element) {
-	this.dependentElements.push(element);
-}
-GraphEditorElement.prototype.removeDependent = function(element) {
-	for(var i = 0; i < this.dependentElements.length; ++i) {
-		if(this.dependentElements[i] === element) {
-			this.dependentElements.splice(i, 1);
-			return;
-		}
-	}
-}
-GraphEditorElement.prototype.updateDependents = function() {
-	this.dependentElements.forEach(function(elem) {
-		elem.update();
-	});
-}
+GraphEditorElement.prototype.onRemoval = function() {}
 
 
 
@@ -54,6 +36,10 @@ GraphEditorTool.prototype.onMouseMove = function(pos) {}
 
 
 
+/**
+ * Create a GraphEditor, an object that manages tools and graph elements,
+ * create the svg area and receive input from the user 
+ */
 function GraphEditor(graphcontainer, toolscontainer) {
 	this.graphcontainer = graphcontainer;
 	this.toolscontainer = toolscontainer;
@@ -93,37 +79,39 @@ GraphEditor.prototype.createGraph = function() {
 }
 
 GraphEditor.prototype.addElement = function(element) {
-	this.elements.push(element);
-	element.graphEditor = this;
-	
-	var that = this;
-	element.getSVGElement().on("mousedown", function(e) {
-		that.onMouseDown(e, element);
-		e.stopPropagation();
-	});
-	this.svg.append(element.getSVGElement());
+	if(element instanceof GraphEditorElement) {
+		this.elements.push(element);
+		element.graphEditor = this;
+		
+		var that = this;
+		element.getSVGElement().on("mousedown", function(e) {
+			that.onMouseDown(e, element);
+			e.stopPropagation();
+		});
+		this.svg.append(element.getSVGElement());	
+	}
 }
 
 GraphEditor.prototype.removeElement = function(element) {
-	for(var i = 0; i < this.elements.length; ++i) {
-		if(this.elements[i] === element) {
-			element.getSVGElement().remove();
-			this.elements.splice(i, 1);
-		}
+	if(this.elements.remove(element)) {
+		element.onRemoval();
+		element.getSVGElement().remove();
 	}
 }
 
 GraphEditor.prototype.addTool = function(tool) {
-	this.tools.push(tool);
-	tool.graphEditor = this;
-	
-	var graphEditor = this;
-	var element = jQuery("<p/>", {class:"tool", 
-	id:"tool_" + tool.getToolId(), text:tool.getName()});
-	element.on("click", function(e) {
-		graphEditor.setCurrentTool(tool);
-	});
-	this.toolscontainer.append(element);
+	if(tool instanceof GraphEditorTool) {
+		this.tools.push(tool);
+		tool.graphEditor = this;
+		
+		var graphEditor = this;
+		var element = jQuery("<p/>", {class:"tool", 
+		id:"tool_" + tool.getToolId(), text:tool.getName()});
+		element.on("click", function(e) {
+			graphEditor.setCurrentTool(tool);
+		});
+		this.toolscontainer.append(element);
+	}
 }
 
 GraphEditor.prototype.setCurrentTool = function(tool) {

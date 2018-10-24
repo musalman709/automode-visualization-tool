@@ -42,7 +42,8 @@ GraphEditorNewEdgeTool.prototype.onToolDeselect = function() {
 }
 GraphEditorNewEdgeTool.prototype.onMouseDown = function(pos, element) {
 	if(element !== undefined) {
-		if(this.lastNodeClicked !== undefined
+		if(element instanceof GraphEditorNode
+		&& this.lastNodeClicked !== undefined
 		&& this.lastNodeClicked !== element) {
 			this.edgeCounter += 1;
 			this.graphEditor.addElement(
@@ -102,9 +103,7 @@ GraphEditorDeleteTool.prototype.getName = function() {
 GraphEditorDeleteTool.prototype.onMouseDown = function(pos, element) { 
 	if(element !== undefined) {
 		var that = this;
-		element.dependentElements.forEach(function(elem) {
-			that.graphEditor.removeElement(elem);
-		});
+		element.onRemoval();
 		this.graphEditor.removeElement(element);
 	}
 }
