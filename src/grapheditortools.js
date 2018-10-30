@@ -1,4 +1,25 @@
 
+function GraphEditorSelectTool() {
+	GraphEditorTool.call(this);
+	this.graphEditor = undefined;
+}
+GraphEditorSelectTool.prototype = Object.create(GraphEditorTool.prototype)
+
+GraphEditorSelectTool.prototype.getToolId = function() {
+	return "select";
+}
+GraphEditorSelectTool.prototype.getName = function() {
+	return "Select";
+}
+GraphEditorSelectTool.prototype.onMouseDown = function(pos, element) {
+	if(element !== undefined) {
+		this.graphEditor.setSelectedElement(element);
+	} else {
+		this.graphEditor.setSelectedElement(undefined);
+	}
+}
+
+
 function GraphEditorNewNodeTool() {
 	GraphEditorTool.call(this);
 	this.graphEditor = undefined;
@@ -51,6 +72,7 @@ GraphEditorNewEdgeTool.prototype.onMouseDown = function(pos, element) {
 				this.lastNodeClicked, element)
 				);
 			this.lastNodeClicked = undefined;
+			this.graphEditor.setSelectedElement(undefined);
 		} else {
 			this.lastNodeClicked = element;
 		}
@@ -66,6 +88,9 @@ function GraphEditorDraggingTool() {
 }
 GraphEditorDraggingTool.prototype = Object.create(GraphEditorTool.prototype)
 	
+GraphEditorDraggingTool.prototype.setDragged = function(element) {
+	this.dragged = element;
+}
 GraphEditorDraggingTool.prototype.getToolId = function() {
 	return "dragging";
 }
@@ -73,13 +98,13 @@ GraphEditorDraggingTool.prototype.getName = function() {
 	return "Drag";
 }
 GraphEditorDraggingTool.prototype.onMouseDown = function(pos, element) { 
-	this.dragged = element;
+	this.setDragged(element);
 }
 GraphEditorDraggingTool.prototype.onMouseUp = function(pos) {
-	this.dragged = undefined;
+	this.setDragged(undefined);
 }
 GraphEditorDraggingTool.prototype.onMouseLeave = function() {
-	this.dragged = undefined;
+	this.setDragged(undefined);
 }
 GraphEditorDraggingTool.prototype.onMouseMove = function(pos) {
 	if(this.dragged !== undefined) {

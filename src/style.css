@@ -70,8 +70,8 @@ article {
 
 #graph {
 	display: block;
-	width: 680px;
-	height: 480px;
+	width: 1200px;
+	height: 675px;
 	margin: 16px;
 	background-color: #FFFFFF;
 }
@@ -80,5 +80,19 @@ rect.nodeFrame {
 	fill: white;
 	stroke-width: 1px;
 	stroke: black;
+}
+rect.selected {
+	fill: white;
+	stroke-width: 2px;
+	stroke: blue;
+}
+
+line.arrow {
+	stroke-width: 1px;
+	stroke: black;
+}
+line.selected {
+	stroke-width: 1px;
+	stroke: blue;
 }
 

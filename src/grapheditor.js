@@ -20,6 +20,8 @@ function GraphEditorElement() {
 GraphEditorElement.prototype.getSVGElement = function() {}
 GraphEditorElement.prototype.move = function(newPos) {}
 GraphEditorElement.prototype.update = function() {}
+GraphEditorElement.prototype.onSelect = function() {}
+GraphEditorElement.prototype.onDeselect = function() {}
 GraphEditorElement.prototype.onRemoval = function() {}
 
 
@@ -47,6 +49,7 @@ function GraphEditor(graphcontainer, toolscontainer) {
 	this.elements = [];
 	this.tools = [];
 	this.currentTool = undefined;
+	this.selectedElement = undefined;
 	
 	this.createGraph();
 	
@@ -96,6 +99,21 @@ GraphEditor.prototype.removeElement = function(element) {
 	if(this.elements.remove(element)) {
 		element.onRemoval();
 		element.getSVGElement().remove();
+		if(this.selectedElement === element) {
+			this.selectedElement = undefined;
+		}
+	}
+}
+
+GraphEditor.prototype.setSelectedElement = function(element) {
+	if(this.selectedElement !== undefined) {
+		this.selectedElement.onDeselect();
+	}
+	
+	this.selectedElement = element;
+	
+	if(this.selectedElement !== undefined) {
+		this.selectedElement.onSelect();
 	}
 }
 
@@ -139,6 +157,7 @@ GraphEditor.prototype.SVGCoordFromHTML = function(x, y) {
 }
 
 GraphEditor.prototype.onMouseDown = function(e, element) {
+	this.setSelectedElement(element);
 	if(this.currentTool !== undefined) {
 		var pos = this.SVGCoordFromHTML(e.pageX, e.pageY);
 		this.currentTool.onMouseDown(pos, element);

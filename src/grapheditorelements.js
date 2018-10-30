@@ -27,6 +27,12 @@ GraphEditorNode.prototype.move = function(newPos) {
 	
 	this.updateEdges();
 }
+GraphEditorNode.prototype.onSelect = function() {
+	this.rect.attr("class", "nodeFrame selected");
+}
+GraphEditorNode.prototype.onDeselect = function() {
+	this.rect.attr("class", "nodeFrame");
+}
 GraphEditorNode.prototype.onRemoval = function() {
 	while(this.incomingEdges.length > 0) {
 		this.incomingEdges[0].onRemoval();
@@ -98,6 +104,12 @@ GraphEditorEdge.prototype.update = function() {
 	this.line.attr("y1", this.srcElement.outgoingPos.y);
 	this.line.attr("x2", this.destElement.incomingPos.x);
 	this.line.attr("y2", this.destElement.incomingPos.y);
+}
+GraphEditorEdge.prototype.onSelect = function() {
+	this.line.attr("class", "arrow selected");
+}
+GraphEditorEdge.prototype.onDeselect = function() {
+	this.line.attr("class", "arrow");
 }
 GraphEditorEdge.prototype.onRemoval = function() {
 	this.srcElement.removeOutgoingEdge(this);
