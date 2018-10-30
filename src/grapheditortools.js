@@ -76,6 +76,8 @@ GraphEditorNewEdgeTool.prototype.onMouseDown = function(pos, element) {
 		} else {
 			this.lastNodeClicked = element;
 		}
+	} else { // element undefined
+		this.lastNodeClicked = undefined;
 	}
 }
 
