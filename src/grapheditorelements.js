@@ -16,6 +16,9 @@ function GraphEditorNode(id, pos) {
 
 GraphEditorNode.prototype = Object.create(GraphEditorElement.prototype);
 
+GraphEditorNode.prototype.getName = function() {
+  return this.id;
+}
 GraphEditorNode.prototype.getSVGElement = function() {
 	return this.g;
 }
@@ -93,6 +96,9 @@ function GraphEditorEdge(id, srcElement, destElement) {
 
 GraphEditorEdge.prototype = Object.create(GraphEditorElement.prototype);
 
+GraphEditorEdge.prototype.getName = function() {
+  return this.id;
+}
 GraphEditorEdge.prototype.getSVGElement = function() {
 	return this.g;
 }

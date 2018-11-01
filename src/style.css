@@ -26,20 +26,24 @@ header {
 section {
 	padding: 0px;
 	margin: 0px;
-	display: flex;
-	flex-direction: row;
+	display: block;
 	overflow: hidden;
 	position: absolute;
 	top: 51px; left: 0px; right: 0px; bottom:0px;
 }
 
 aside {
-	flex-grow: 1;
+	display: block;
+	position: absolute;
+}
+
+#toolbar {
+	width: 200px;
+	top: 0px; left: 0px; bottom: 0px;
 }
 
 #toolbar-container {
-	min-width: 180px;
-	padding: 8px;
+  padding: 8px;
 }
 
 .tool {
@@ -54,25 +58,37 @@ aside {
 	border-color: blue;
 }
 
+#parambar {
+	width: 200px;
+	top: 0px; right: 0px; bottom: 0px;
+}
+
+#parambar-container {
+  padding: 8px;
+}
+
 article {
-	flex-grow: 5;
 	overflow: auto;
-	min-width: 480px;
+	position: absolute;
+	top: 0px; left: 200px; right: 200px; bottom: 0px;
+	min-width: 200px;
+	min-height: 200px;
 }
 
 #graph-container {
-	display: flex;
+  display: flex;
 	background-color: #E8E8E8;
-	justify-content: center;
-	align-items: center;
+	padding: 16px;
+	min-width: 100%;
 	min-height: 100%;
-}	
+	align-items: center;
+  justify-content: center;
+}
 
 #graph {
 	display: block;
 	width: 1200px;
 	height: 675px;
-	margin: 16px;
 	background-color: #FFFFFF;
 }
 

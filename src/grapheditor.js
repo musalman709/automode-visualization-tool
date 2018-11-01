@@ -17,6 +17,9 @@ function createSVGElement(tagname, attrObject) {
 function GraphEditorElement() {
 	this.grapheditor = undefined;
 }
+GraphEditorElement.prototype.getName = function() {
+  return "<unknown element>";
+}
 GraphEditorElement.prototype.getSVGElement = function() {}
 GraphEditorElement.prototype.move = function(newPos) {}
 GraphEditorElement.prototype.update = function() {}
@@ -42,9 +45,10 @@ GraphEditorTool.prototype.onMouseMove = function(pos) {}
  * Create a GraphEditor, an object that manages tools and graph elements,
  * create the svg area and receive input from the user 
  */
-function GraphEditor(graphcontainer, toolscontainer) {
+function GraphEditor(graphcontainer, toolscontainer, paramcontainer) {
 	this.graphcontainer = graphcontainer;
 	this.toolscontainer = toolscontainer;
+	this.paramcontainer = paramcontainer;
 	this.svg = undefined;
 	this.elements = [];
 	this.tools = [];
@@ -65,6 +69,7 @@ function GraphEditor(graphcontainer, toolscontainer) {
 GraphEditor.prototype.createGraph = function() {
 	this.graphcontainer.empty();
 	this.toolscontainer.empty();
+	this.paramcontainer.empty();
 	
 	this.svg = createSVGElement("svg", {id:"graph"});
 	this.svg.on("selectstart", function(e) { e.preventDefault(); });
@@ -114,6 +119,10 @@ GraphEditor.prototype.setSelectedElement = function(element) {
 	
 	if(this.selectedElement !== undefined) {
 		this.selectedElement.onSelect();
+		this.paramcontainer.html("<p>Selected element :<br/>" + element.getName() + "</p>");
+	}
+	else {
+	  this.paramcontainer.empty();
 	}
 }
 
