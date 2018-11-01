@@ -105,7 +105,7 @@ GraphEditor.prototype.removeElement = function(element) {
 		element.onRemoval();
 		element.getSVGElement().remove();
 		if(this.selectedElement === element) {
-			this.selectedElement = undefined;
+			this.setSelectedElement(undefined);
 		}
 	}
 }
