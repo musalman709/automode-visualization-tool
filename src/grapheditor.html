@@ -8,6 +8,7 @@
 	<script src="grapheditor.js"></script>
 	<script src="grapheditorelements.js"></script>
 	<script src="grapheditortools.js"></script>
+  <script src="cmdlinestring.js"></script>
 	<link rel="stylesheet" type="text/css" href="style.css"></link>
 	
 	<script>
@@ -48,8 +49,11 @@
 	</aside>
 	</section>
 	<header>
-		<div id="div-container">
+		<div id="title-container">
 			<p>Graph Editor</p>
+	  </div>
+	  <div id="cmdline-container">
+		  <input id="cmdline" type="text" placeholder="Command line string"></input><button onclick="copytoclipboard();">Copy</button><button onclick="exporttofile();">Export</button>
 		</div>
 	</header>
 </body>

@@ -18,9 +18,34 @@ header {
 	top: 0px; left: 0px; right: 0px; height: 51px;
 }
 
-#header-container {
-	margin: 4px;
-	padding: 0px;
+#title-container {
+  height: 51px;
+  margin-left: 8px;
+	float: left;
+}
+
+#cmdline-container {
+  position: absolute;
+  width: 70%;
+  display: flex;
+  top: 50%;
+  right: 0%;
+  transform: translate(0%, -50%);
+  margin-right: 8px;
+  float: right;
+}
+
+input {
+  border: 1px solid black;
+  padding: 5px;
+  min-width: 480px;
+  flex-grow: 5;
+}
+
+button {
+  margin: 0px;
+  padding: 4px;
+  border: 1px solid black;
 }
 
 section {
