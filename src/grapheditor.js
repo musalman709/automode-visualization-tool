@@ -20,6 +20,7 @@ function GraphEditorElement() {
 GraphEditorElement.prototype.getName = function() {
   return "<unknown element>";
 }
+GraphEditorElement.prototype.isNode = function() {}
 GraphEditorElement.prototype.getSVGElement = function() {}
 GraphEditorElement.prototype.move = function(newPos) {}
 GraphEditorElement.prototype.update = function() {}
