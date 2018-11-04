@@ -76,13 +76,10 @@ article {
 }
 
 #graph-container {
-  display: flex;
+  display: inline-block;
 	background-color: #E8E8E8;
-	padding: 16px;
 	min-width: 100%;
 	min-height: 100%;
-	align-items: center;
-  justify-content: center;
 }
 
 #graph {
@@ -90,6 +87,7 @@ article {
 	width: 1200px;
 	height: 675px;
 	background-color: #FFFFFF;
+	margin: 16px;
 }
 
 rect.nodeFrame {
