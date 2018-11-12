@@ -6,9 +6,23 @@ function GraphEditorNode(id, pos) {
 	this.outgoingEdges = [];
 	
 	this.g = createSVGElement("g", {id:this.id});
-	this.rect = createSVGElement("rect", 
+
+	/*modify here for the json queries*/
+	/*this.rect = createSVGElement("rect", 
 		{class:"nodeFrame", x:pos.x-25, y:pos.y-25, width:50, height:50, 
-		rx:10, ry:10});
+		rx:10, ry:10});*/
+		$.ajax({
+			type: "GET",
+			url:"./graphelementsdata.json",
+			data:"format=json&jsoncallback=?/",
+			dataType:"json",
+			sucess:function(feed){
+					this.rect = createSVGElement(feed.node[0].shapename,{class:feed.node[0].class, x:pos.x+feed.node[0].x_offset,
+						y:pos.y+feed.node[0].y_offset, width:feed.node[0].width, height:feed.node[0].height, rx:feed.node[0].rx, 
+						ry:feed.node[0].ry});
+				}
+			});
+
 	this.g.append(this.rect);	
 	
 	this.move(pos);
@@ -82,6 +96,9 @@ function GraphEditorEdge(id, srcElement, destElement) {
 	this.id = id;
 	
 	this.g = createSVGElement("g", {id:this.id});
+
+	/*modify here for the json queries*/
+
 	this.line = createSVGElement("line", {class:"arrow", stroke:"black",
 		"marker-end":"url(#arrowhead)"});
 	this.g.append(this.line);
