@@ -8,21 +8,10 @@
 	<script src="grapheditor.js"></script>
 	<script src="grapheditorelements.js"></script>
 	<script src="grapheditortools.js"></script>
+  <script src="init.js"></script>
   <script src="cmdlinestring.js"></script>
+  <script src="btree/exporter.js"></script>
 	<link rel="stylesheet" type="text/css" href="style.css"></link>
-	
-	<script>
-	$(document).ready(function(){
-		grapheditor = new GraphEditor(
-			$("#graph-container"), $("#tools-container"),
-			$("#param-container"));
-		grapheditor.addTool(new GraphEditorSelectTool());
-		grapheditor.addTool(new GraphEditorNewNodeTool());
-		grapheditor.addTool(new GraphEditorNewEdgeTool());
-		grapheditor.addTool(new GraphEditorDraggingTool());
-		grapheditor.addTool(new GraphEditorDeleteTool());
-	});
-	</script>
 </head>
 <body>
 	<section>
@@ -50,10 +39,11 @@
 	</section>
 	<header>
 		<div id="title-container">
-			<p>Graph Editor</p>
+			<p id="title">Graph Editor</p>
+		  <a id="switchlink" href="#">switch</a>
 	  </div>
 	  <div id="cmdline-container">
-		  <input id="cmdline" type="text" placeholder="Command line string"></input><button onclick="copytoclipboard();">Copy</button><button onclick="exporttofile();">Export</button>
+		  <input id="cmdline" type="text" placeholder="Command line string"></input><button onclick="copytoclipboard();">Copy</button><button onclick="exporttofile();">Download</button>
 		</div>
 	</header>
 </body>

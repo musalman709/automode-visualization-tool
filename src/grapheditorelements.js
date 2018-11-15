@@ -62,6 +62,9 @@ GraphEditorNode.prototype.addIncomingEdge = function(edge) {
 GraphEditorNode.prototype.removeIncomingEdge = function(edge) {
 	this.incomingEdges.remove(edge);
 }
+GraphEditorNode.prototype.getIncomingEdges = function() {
+  return this.incomingEdges;
+}
 GraphEditorNode.prototype.addOutgoingEdge = function(edge) {
 	if(edge instanceof GraphEditorEdge) {
 		this.outgoingEdges.add(edge);
@@ -69,6 +72,9 @@ GraphEditorNode.prototype.addOutgoingEdge = function(edge) {
 }
 GraphEditorNode.prototype.removeOutgoingEdge = function(edge) {
 	this.outgoingEdges.remove(edge);
+}
+GraphEditorNode.prototype.getOutgoingEdges = function() {
+  return this.outgoingEdges;
 }
 GraphEditorNode.prototype.updateEdges = function() {
 	for(var i = 0; i < this.incomingEdges.length; ++i) {
@@ -103,7 +109,7 @@ GraphEditorEdge.prototype.getName = function() {
   return this.id;
 }
 GraphEditorEdge.prototype.isNode = function() {
-  return false
+  return false;
 }
 GraphEditorEdge.prototype.getSVGElement = function() {
 	return this.g;
