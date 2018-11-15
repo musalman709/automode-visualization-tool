@@ -33,6 +33,9 @@ GraphEditorNode.prototype.move = function(newPos) {
 	
 	this.updateEdges();
 }
+GraphEditorNode.prototype.getPosition = function() {
+  return {x:this.rect.attr("x"), y:this.rect.attr("y")};
+}
 GraphEditorNode.prototype.onSelect = function() {
 	this.rect.attr("class", "nodeFrame selected");
 }
@@ -116,6 +119,9 @@ GraphEditorEdge.prototype.getSVGElement = function() {
 }
 GraphEditorEdge.prototype.move = function(newPos) {
 	this.update();
+}
+GraphEditorEdge.prototype.getPosition = function() {
+  return {x:this.line.attr("x1"), y:this.line.attr("y1")};
 }
 GraphEditorEdge.prototype.update = function() {
 	this.line.attr("x1", this.srcElement.outgoingPos.x);

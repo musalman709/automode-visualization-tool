@@ -113,6 +113,7 @@ GraphEditorDraggingTool.prototype.onMouseLeave = function() {
 GraphEditorDraggingTool.prototype.onMouseMove = function(pos) {
 	if(this.dragged !== undefined) {
 		this.dragged.move(pos);
+		this.graphEditor.callExporter();
 	}
 }
 

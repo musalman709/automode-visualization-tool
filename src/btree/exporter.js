@@ -71,6 +71,16 @@ BTreeExporter.prototype.expNodeContent = function(node, nodeID) {
   var childrenNumber = edges.length;
   var str = "--nchild" + nodeID + " " + childrenNumber + " ";
 
+  // sort child by x position
+  edges.sort(function(e1, e2) {
+    return e1.getDestNode().getPosition().x > e2.getDestNode().getPosition().x;
+  });
+
+  // fix nodeID if root
+  if(nodeID == "root")
+    nodeID = "";
+
+  // print childs
   for(var i = 0; i < childrenNumber; ++i) {
     str += this.expNode(edges[i].getDestNode(), nodeID + i);
   }

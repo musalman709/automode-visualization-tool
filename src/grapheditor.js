@@ -23,6 +23,7 @@ GraphEditorElement.prototype.getName = function() {
 GraphEditorElement.prototype.isNode = function() {}
 GraphEditorElement.prototype.getSVGElement = function() {}
 GraphEditorElement.prototype.move = function(newPos) {}
+GraphEditorElement.prototype.getPosition = function() {}
 GraphEditorElement.prototype.update = function() {}
 GraphEditorElement.prototype.onSelect = function() {}
 GraphEditorElement.prototype.onDeselect = function() {}
