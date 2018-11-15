@@ -1,14 +1,14 @@
 
-function BtreeExporter(outputHTML) {
+function BTreeExporter(outputHTML) {
   this.outputHTML = outputHTML;
   this.outputHTML.text("");
 }
 
-BtreeExporter.prototype.setText = function(text) {
+BTreeExporter.prototype.setText = function(text) {
   this.outputHTML.attr("value", text);
 }
 
-BtreeExporter.prototype.export = function(graphEditor) {
+BTreeExporter.prototype.export = function(graphEditor) {
 
   var elements = graphEditor.getElements();
   var root = undefined;
@@ -41,6 +41,40 @@ BtreeExporter.prototype.export = function(graphEditor) {
   }
 
   // build tree
-  this.setText("Root is " + root.getName());
+  this.setText(this.expRootNode(root));
+}
+
+BTreeExporter.prototype.expRootNode = function(rootNode) {
+
+  var str = "--bt-config ";
+
+  // add root type
+  str += "--nroot <type> ";
+
+  str += this.expNodeContent(rootNode, "root");
+
+  return str;
+}
+
+BTreeExporter.prototype.expNode = function(node, nodeID) {
+
+  var str = "-n" + nodeID + " <type> ";
+
+  str += this.expNodeContent(node, nodeID);
+
+  return str;
+}
+
+BTreeExporter.prototype.expNodeContent = function(node, nodeID) {
+
+  var edges = node.getOutgoingEdges();
+  var childrenNumber = edges.length;
+  var str = "--nchild" + nodeID + " " + childrenNumber + " ";
+
+  for(var i = 0; i < childrenNumber; ++i) {
+    str += this.expNode(edges[i].getDestNode(), nodeID + i);
+  }
+
+  return str;
 }
 

@@ -7,7 +7,7 @@ function switchToBTree(graphEditor) {
 
   graphEditor.clearElements();
 
-  var exporter = new BtreeExporter($("#cmdline"));
+  var exporter = new BTreeExporter($("#cmdline"));
   graphEditor.setExporter(exporter);
 
   $("#switchlink").click(function() {

@@ -134,4 +134,10 @@ GraphEditorEdge.prototype.onRemoval = function() {
 	this.destElement.removeIncomingEdge(this);
 	this.getSVGElement().remove();
 }
+GraphEditorEdge.prototype.getSrcNode = function() {
+	return this.srcElement;
+}
+GraphEditorEdge.prototype.getDestNode = function() {
+	return this.destElement;
+}
 
