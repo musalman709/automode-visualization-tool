@@ -1,15 +1,38 @@
 "use strict";
 
 /**
- * Create a new SVG element (in JQuery object)
+ * Create a select list for nodes/edges models
  */
-function createSVGElement(tagname, attrObject) {
-	var svgElem = document.createElementNS("http://www.w3.org/2000/svg", 
-		tagname);
-	Object.keys(attrObject).forEach(function(key) {
-		svgElem.setAttribute(key, attrObject[key]);
-	});
-	return $(svgElem);
+function createModelsSelectMenu(modelsObject, element) {
+
+  var modelsArray = undefined;
+
+  if(element.isNode()) {
+    modelsArray = modelsObject.nodes;
+  } else {
+    modelsArray = modelsObject.edges;
+  }
+
+  var select_tag = $('<select></select>');
+  select_tag.addClass("paramselect");
+
+  modelsArray.forEach(function(model) {
+    var opt_tag = $('<option></option>');
+
+    opt_tag.val(model.id);
+    opt_tag.html(model.name);
+    opt_tag.click(function(obj) {
+      element.setModel(model);
+    });
+
+    if(model === element.getModel()) {
+      opt_tag.attr("selected", "selected");
+    }
+
+    select_tag.append(opt_tag);
+  });
+
+  return select_tag;
 }
 
 
@@ -22,6 +45,9 @@ GraphEditorElement.prototype.getName = function() {
 }
 GraphEditorElement.prototype.isNode = function() {}
 GraphEditorElement.prototype.getSVGElement = function() {}
+GraphEditorElement.prototype.setModel = function(model) {}
+GraphEditorElement.prototype.getModel = function() {}
+GraphEditorElement.prototype.buildParamPane = function() {}
 GraphEditorElement.prototype.move = function(newPos) {}
 GraphEditorElement.prototype.getPosition = function() {}
 GraphEditorElement.prototype.update = function() {}
@@ -53,6 +79,7 @@ function GraphEditor(graphcontainer, toolscontainer, paramcontainer) {
 	this.paramcontainer = paramcontainer;
 	this.exporter = undefined;
 	this.svg = undefined;
+	this.elementmodels = undefined;
 	this.elements = [];
 	this.tools = [];
 	this.currentTool = undefined;
@@ -87,6 +114,28 @@ GraphEditor.prototype.createGraph = function() {
 	arrowMarker.append(arrowMarkerShape);
 	this.defs.append(arrowMarker);
 	this.svg.append(this.defs);
+}
+
+GraphEditor.prototype.setElementModels = function(data) {
+  this.elementmodels = data;
+}
+
+GraphEditor.prototype.getElementModels = function() {
+  return this.elementmodels;
+}
+
+GraphEditor.prototype.getNodeModels = function() {
+  if(this.elementmodels === undefined)
+    return undefined;
+
+  return this.elementmodels.nodes;
+}
+
+GraphEditor.prototype.getEdgeModels = function() {
+  if(this.elementmodels === undefined)
+    return undefined;
+
+  return this.elementmodels.edges;
 }
 
 GraphEditor.prototype.addElement = function(element) {
@@ -134,12 +183,14 @@ GraphEditor.prototype.setSelectedElement = function(element) {
 	
 	this.selectedElement = element;
 	
+	this.paramcontainer.empty();
+
 	if(this.selectedElement !== undefined) {
 		this.selectedElement.onSelect();
-		this.paramcontainer.html("<p>Selected element :<br/>" + element.getName() + "</p>");
-	}
-	else {
-	  this.paramcontainer.empty();
+
+		if(this.elementmodels !== undefined){
+		  this.paramcontainer.append(createModelsSelectMenu(this.elementmodels, element));
+		}
 	}
 }
 

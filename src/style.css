@@ -82,7 +82,7 @@ aside {
 }
 
 #toolbar {
-	width: 200px;
+	width: 240px;
 	top: 0px; left: 0px; bottom: 0px;
 }
 
@@ -103,7 +103,7 @@ aside {
 }
 
 #parambar {
-	width: 200px;
+	width: 240px;
 	top: 0px; right: 0px; bottom: 0px;
 }
 
@@ -111,10 +111,16 @@ aside {
   padding: 8px;
 }
 
+.paramselect {
+  border: 1px solid black;
+  padding: 5px;
+  width: 100%;
+}
+
 article {
 	overflow: auto;
 	position: absolute;
-	top: 0px; left: 200px; right: 200px; bottom: 0px;
+	top: 0px; left: 240px; right: 240px; bottom: 0px;
 	min-width: 200px;
 	min-height: 200px;
 }
@@ -135,15 +141,19 @@ article {
 	margin: 16px;
 }
 
-rect.nodeFrame {
+.nodeFrame {
 	fill: white;
 	stroke-width: 1px;
 	stroke: black;
 }
-rect.selected {
+.selected {
 	fill: white;
 	stroke-width: 2px;
 	stroke: blue;
+}
+
+text {
+  font: 12px sans-serif;
 }
 
 line.arrow {

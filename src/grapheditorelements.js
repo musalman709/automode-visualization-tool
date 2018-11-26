@@ -4,31 +4,27 @@ function GraphEditorNode(id, pos) {
 	this.id = id;
 	this.incomingEdges = [];
 	this.outgoingEdges = [];
+	this.model = defaultNodeModel();
 	
+	this.pos = {x:0, y:0};
 	this.g = createSVGElement("g", {id:this.id});
 
-	/*modify here for the json queries*/
-	/*this.rect = createSVGElement("rect", 
-		{class:"nodeFrame", x:pos.x-25, y:pos.y-25, width:50, height:50, 
-		rx:10, ry:10});*/
-		$.ajax({
-			type: "GET",
-			url:"./graphelementsdata.json",
-			data:"format=json&jsoncallback=?/",
-			dataType:"json",
-			sucess:function(feed){
-					this.rect = createSVGElement(feed.node[0].shapename,{class:feed.node[0].class, x:pos.x+feed.node[0].x_offset,
-						y:pos.y+feed.node[0].y_offset, width:feed.node[0].width, height:feed.node[0].height, rx:feed.node[0].rx, 
-						ry:feed.node[0].ry});
-				}
-			});
-
-	this.g.append(this.rect);	
-	
+	this.buildSVGElements();
 	this.move(pos);
 }
 
 GraphEditorNode.prototype = Object.create(GraphEditorElement.prototype);
+
+GraphEditorNode.prototype.buildSVGElements = function()
+{
+  this.frame = createSVGElement(this.model.display_tag, this.model.display_opts);
+
+  this.text = createSVGElement("text", this.model.display_text_opts);
+  this.text.html(this.model.display_text);
+
+  this.g.append(this.frame);
+  this.g.append(this.text);
+}
 
 GraphEditorNode.prototype.getName = function() {
   return this.id;
@@ -39,22 +35,53 @@ GraphEditorNode.prototype.isNode = function() {
 GraphEditorNode.prototype.getSVGElement = function() {
 	return this.g;
 }
+GraphEditorNode.prototype.setModel = function(model) {
+  var pos = this.getPosition();
+
+  this.model = model;
+
+  this.frame.remove();
+  this.text.remove();
+  this.buildSVGElements();
+  this.frame.addClass("selected");
+
+  this.move(pos);
+}
+GraphEditorNode.prototype.getModel = function() {
+  return this.model;
+}
+GraphEditorNode.prototype.buildParamPane = function() {
+  var container = $('<div></div>');
+  container.append('<p>Parameters [TODO]</p>');
+  return container;
+}
 GraphEditorNode.prototype.move = function(newPos) {
-	this.rect.attr("x", newPos.x-25);
-	this.rect.attr("y", newPos.y-25);
-	this.incomingPos = {x:newPos.x, y:newPos.y-25};
-	this.outgoingPos = {x:newPos.x, y:newPos.y+25};
+  /*
+  var frame_pos = points_sum(newPos, this.model.pos_offset);
+  var text_pos = newPos;//points_sum(frame_pos, this.model.text_pos_offset);
+  x_name = this.model.pos_attr.x;
+  y_name = this.model.pos_attr.y;
+
+	this.frame.attr(x_name, frame_pos.x);
+	this.frame.attr(y_name, frame_pos.y);
+	this.text.attr("x", text_pos.x);
+	this.text.attr("y", text_pos.y);
+	*/
+	this.pos = newPos;
+	this.g.attr("transform", "translate(" + newPos.x.toString() + "," + newPos.y.toString() + ")");
+	this.incomingPos = points_sum(this.model.incoming_point, newPos);
+	this.outgoingPos = points_sum(this.model.outgoing_point, newPos);
 	
 	this.updateEdges();
 }
 GraphEditorNode.prototype.getPosition = function() {
-  return {x:this.rect.attr("x"), y:this.rect.attr("y")};
+  return this.pos;
 }
 GraphEditorNode.prototype.onSelect = function() {
-	this.rect.attr("class", "nodeFrame selected");
+	this.frame.attr("class", "nodeFrame selected");
 }
 GraphEditorNode.prototype.onDeselect = function() {
-	this.rect.attr("class", "nodeFrame");
+	this.frame.attr("class", "nodeFrame");
 }
 GraphEditorNode.prototype.onRemoval = function() {
 	while(this.incomingEdges.length > 0) {
@@ -110,6 +137,8 @@ function GraphEditorEdge(id, srcElement, destElement) {
 	this.destElement = destElement;
 	this.id = id;
 	
+	this.model = undefined;
+
 	this.g = createSVGElement("g", {id:this.id});
 
 	/*modify here for the json queries*/
@@ -133,6 +162,17 @@ GraphEditorEdge.prototype.isNode = function() {
 }
 GraphEditorEdge.prototype.getSVGElement = function() {
 	return this.g;
+}
+GraphEditorEdge.prototype.setModel = function(model) {
+  this.model = model;
+}
+GraphEditorEdge.prototype.getModel = function() {
+  return this.model;
+}
+GraphEditorEdge.prototype.buildParamPane = function() {
+  var container = $('<div></div>');
+  container.append('<p>Parameters [TODO]</p>');
+  return container;
 }
 GraphEditorEdge.prototype.move = function(newPos) {
 	this.update();
