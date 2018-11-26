@@ -56,17 +56,6 @@ GraphEditorNode.prototype.buildParamPane = function() {
   return container;
 }
 GraphEditorNode.prototype.move = function(newPos) {
-  /*
-  var frame_pos = points_sum(newPos, this.model.pos_offset);
-  var text_pos = newPos;//points_sum(frame_pos, this.model.text_pos_offset);
-  x_name = this.model.pos_attr.x;
-  y_name = this.model.pos_attr.y;
-
-	this.frame.attr(x_name, frame_pos.x);
-	this.frame.attr(y_name, frame_pos.y);
-	this.text.attr("x", text_pos.x);
-	this.text.attr("y", text_pos.y);
-	*/
 	this.pos = newPos;
 	this.g.attr("transform", "translate(" + newPos.x.toString() + "," + newPos.y.toString() + ")");
 	this.incomingPos = points_sum(this.model.incoming_point, newPos);

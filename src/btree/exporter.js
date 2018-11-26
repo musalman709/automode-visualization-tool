@@ -9,39 +9,43 @@ BTreeExporter.prototype.setText = function(text) {
 }
 
 BTreeExporter.prototype.export = function(graphEditor) {
+  try {
+    var elements = graphEditor.getElements();
+    var root = undefined;
 
-  var elements = graphEditor.getElements();
-  var root = undefined;
-
-  // If elements empty, set empty string
-  if(elements.length === 0) {
-    this.setText("");
-    return;
-  }
-
-  // Try to find root node
-  for(var i = 0; i < elements.length; ++i) {
-    var current = elements[i];
-
-    // root candidate
-    if(current.isNode() && current.getIncomingEdges().length === 0) {
-      // two or more roots, error
-      if(root !== undefined) {
-        this.setText("Invalid configuration : multiple root nodes detected");
-        return;
-      }
-      // else
-      root = current;
+    // If elements empty, set empty string
+    if(elements.length === 0) {
+      this.setText("");
+      return;
     }
-  }
-  // if no root found
-  if(root === undefined) {
-    this.setText("Invalid configuration : no root node found");
-    return;
-  }
 
-  // build tree
-  this.setText(this.expRootNode(root));
+    // Try to find root node
+    for(var i = 0; i < elements.length; ++i) {
+      var current = elements[i];
+
+      // root candidate
+      if(current.isNode() && current.getIncomingEdges().length === 0) {
+        // two or more roots, error
+        if(root !== undefined) {
+          throw "Invalid configuration : multiple root nodes detected";
+          return;
+        }
+        // else
+        root = current;
+      }
+    }
+    // if no root found
+    if(root === undefined) {
+      throw "Invalid configuration : no root node found";
+      return;
+    }
+
+    // build tree
+    this.setText(this.expRootNode(root));
+
+  } catch(err) {
+    this.setText(err);
+  }
 }
 
 BTreeExporter.prototype.expRootNode = function(rootNode) {
@@ -49,7 +53,10 @@ BTreeExporter.prototype.expRootNode = function(rootNode) {
   var str = "--bt-config ";
 
   // add root type
-  str += "--nroot <type> ";
+  var type = rootNode.getModel().id;
+  if(type < 0) throw "Invalid configuration : root node type is not selected";
+
+  str += "--nroot " + type + " ";
 
   str += this.expNodeContent(rootNode, "root");
 
@@ -58,7 +65,10 @@ BTreeExporter.prototype.expRootNode = function(rootNode) {
 
 BTreeExporter.prototype.expNode = function(node, nodeID) {
 
-  var str = "-n" + nodeID + " <type> ";
+  var type = node.getModel().id;
+  if(type < 0) throw "Invalid configuration : nodes types are not selected";
+
+  var str = "-n" + nodeID + " " + type + " ";
 
   str += this.expNodeContent(node, nodeID);
 
@@ -66,6 +76,15 @@ BTreeExporter.prototype.expNode = function(node, nodeID) {
 }
 
 BTreeExporter.prototype.expNodeContent = function(node, nodeID) {
+
+  if(node.getOutgoingEdges().length > 0) {
+    return this.expNodeChildren(node, nodeID);
+  } else {
+    return this.expNodeParams(node, nodeID);
+  }
+}
+
+BTreeExporter.prototype.expNodeChildren = function(node, nodeID) {
 
   var edges = node.getOutgoingEdges();
   var childrenNumber = edges.length;
@@ -86,5 +105,10 @@ BTreeExporter.prototype.expNodeContent = function(node, nodeID) {
   }
 
   return str;
+}
+
+BTreeExporter.prototype.expNodeParams = function(node, nodeID) {
+
+  return "";
 }
 

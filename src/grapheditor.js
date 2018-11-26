@@ -3,14 +3,14 @@
 /**
  * Create a select list for nodes/edges models
  */
-function createModelsSelectMenu(modelsObject, element) {
+function createModelsSelectMenu(graphEditor, element) {
 
   var modelsArray = undefined;
 
   if(element.isNode()) {
-    modelsArray = modelsObject.nodes;
+    modelsArray = graphEditor.getNodeModels();
   } else {
-    modelsArray = modelsObject.edges;
+    modelsArray = graphEditor.getEdgeModels();
   }
 
   var select_tag = $('<select></select>');
@@ -23,6 +23,7 @@ function createModelsSelectMenu(modelsObject, element) {
     opt_tag.html(model.name);
     opt_tag.click(function(obj) {
       element.setModel(model);
+      graphEditor.callExporter();
     });
 
     if(model === element.getModel()) {
@@ -189,7 +190,7 @@ GraphEditor.prototype.setSelectedElement = function(element) {
 		this.selectedElement.onSelect();
 
 		if(this.elementmodels !== undefined){
-		  this.paramcontainer.append(createModelsSelectMenu(this.elementmodels, element));
+		  this.paramcontainer.append(createModelsSelectMenu(this, element));
 		}
 	}
 }
