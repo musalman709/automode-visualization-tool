@@ -15,31 +15,79 @@ header {
 	margin: 0px;
 	box-shadow: 0 2px 5px grey;
 	position: absolute;
-	top: 0px; left: 0px; right: 0px; height: 51px;
+	top: 0px; left: 0px; right: 0px; height: 61px;
 }
 
-#header-container {
-	margin: 4px;
-	padding: 0px;
+#title-container {
+  height: 51px;
+  margin-left: 8px;
+	float: left;
+}
+
+#title {
+  margin: 0px;
+  margin-top: 8px;
+  margin-bottom : 8px;
+  padding: 0px;
+  font-size: 19px;
+}
+
+#switchlink {
+  margin: 0px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  text-decoration: inherit;
+  color: black;
+}
+
+#cmdline-container {
+  position: absolute;
+  width: 70%;
+  display: flex;
+  top: 50%;
+  right: 0%;
+  transform: translate(0%, -50%);
+  margin-right: 8px;
+  float: right;
+}
+
+#cmdline-container input {
+  border: 1px solid black;
+  padding: 5px;
+  min-width: 480px;
+  flex-grow: 5;
+}
+
+#cmdline-container button {
+  margin: 0px;
+  padding: 4px;
+  border: 1px solid black;
+  border-left: 0px;
 }
 
 section {
 	padding: 0px;
 	margin: 0px;
-	display: flex;
-	flex-direction: row;
+	display: block;
 	overflow: hidden;
 	position: absolute;
-	top: 51px; left: 0px; right: 0px; bottom:0px;
+	top: 61px; left: 0px; right: 0px; bottom:0px;
 }
 
 aside {
-	flex-grow: 1;
+	display: block;
+	position: absolute;
+	box-shadow: 0 2px 5px grey;
+}
+
+#toolbar {
+	width: 200px;
+	top: 0px; left: 0px; bottom: 0px;
 }
 
 #toolbar-container {
-	min-width: 180px;
-	padding: 8px;
+  padding: 8px;
 }
 
 .tool {
@@ -54,26 +102,37 @@ aside {
 	border-color: blue;
 }
 
+#parambar {
+	width: 200px;
+	top: 0px; right: 0px; bottom: 0px;
+}
+
+#parambar-container {
+  padding: 8px;
+}
+
 article {
-	flex-grow: 5;
 	overflow: auto;
-	min-width: 480px;
+	position: absolute;
+	top: 0px; left: 200px; right: 200px; bottom: 0px;
+	min-width: 200px;
+	min-height: 200px;
 }
 
 #graph-container {
-	display: flex;
+  display: inline-block;
 	background-color: #E8E8E8;
-	justify-content: center;
-	align-items: center;
+	min-width: 100%;
 	min-height: 100%;
-}	
+	text-align: center;
+}
 
 #graph {
-	display: block;
+	display: inline-block;
 	width: 1200px;
 	height: 675px;
-	margin: 16px;
 	background-color: #FFFFFF;
+	margin: 16px;
 }
 
 rect.nodeFrame {

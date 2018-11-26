@@ -1,46 +1,49 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta charset="UTF-8"> 
+	<meta charset="UTF-8"></meta>
 	<title>Graph Editor</title>
 	<script src="jquery-3.3.1.js"></script>
 	<script src="array_utils.js"></script>
 	<script src="grapheditor.js"></script>
 	<script src="grapheditorelements.js"></script>
 	<script src="grapheditortools.js"></script>
-	<link rel="stylesheet" type="text/css" href="style.css">
-	
-	<script>
-	$(document).ready(function(){
-		grapheditor = new GraphEditor(
-			$("#graph-container"), $("#tools-container"));
-		grapheditor.addTool(new GraphEditorSelectTool());
-		grapheditor.addTool(new GraphEditorNewNodeTool());
-		grapheditor.addTool(new GraphEditorNewEdgeTool());
-		grapheditor.addTool(new GraphEditorDraggingTool());
-		grapheditor.addTool(new GraphEditorDeleteTool());
-	});
-	</script>
+  <script src="init.js"></script>
+  <script src="cmdlinestring.js"></script>
+  <script src="btree/exporter.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css"></link>
 </head>
 <body>
 	<section>
-	<aside>
-		<div id="toolbar-container">
-			<p>Toolbar</p>
-			<div id="tools-container">
-				<p>Tools</p>
-			</div>
-		</div>
-	</aside>
 	<article>
-		<div id="graph-container">
-			<p>Bugged.</p>
-		</div>
+	  <div id="graph-container">
+		  <p>Bugged.</p>
+	  </div>
 	</article>
+	<aside id="toolbar">
+	  <div id="toolbar-container">
+		  <p>Toolbar</p>
+		  <div id="tools-container">
+			  <p>Bugged.</p>
+		  </div>
+	  </div>
+	</aside>
+	<aside id="parambar">
+	  <div id="parambar-container">
+		  <p>Parameters</p>
+	    <div id="param-container">
+        <p>Bugged.</p>
+	    </div>
+	  </div>
+	</aside>
 	</section>
 	<header>
-		<div id="div-container">
-			<p>Graph Editor</p>
+		<div id="title-container">
+			<p id="title">Graph Editor</p>
+		  <a id="switchlink" href="#">switch</a>
+	  </div>
+	  <div id="cmdline-container">
+		  <input id="cmdline" type="text" placeholder="Command line string"></input><button onclick="copytoclipboard();">Copy</button><button onclick="exporttofile();">Download</button>
 		</div>
 	</header>
 </body>

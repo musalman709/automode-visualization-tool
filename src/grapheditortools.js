@@ -62,9 +62,9 @@ GraphEditorNewEdgeTool.prototype.onToolDeselect = function() {
 	this.lastNodeClicked = undefined;
 }
 GraphEditorNewEdgeTool.prototype.onMouseDown = function(pos, element) {
-	if(element !== undefined) {
-		if(element instanceof GraphEditorNode
-		&& this.lastNodeClicked !== undefined
+	if(element !== undefined && element.isNode()) {
+	  // already first element clicked
+		if(this.lastNodeClicked !== undefined
 		&& this.lastNodeClicked !== element) {
 			this.edgeCounter += 1;
 			this.graphEditor.addElement(
@@ -73,11 +73,13 @@ GraphEditorNewEdgeTool.prototype.onMouseDown = function(pos, element) {
 				);
 			this.lastNodeClicked = undefined;
 			this.graphEditor.setSelectedElement(undefined);
+		// no previous element
 		} else {
 			this.lastNodeClicked = element;
 		}
-	} else { // element undefined
+	} else { // element undefined or not a node
 		this.lastNodeClicked = undefined;
+		this.graphEditor.setSelectedElement(undefined);
 	}
 }
 
@@ -111,6 +113,7 @@ GraphEditorDraggingTool.prototype.onMouseLeave = function() {
 GraphEditorDraggingTool.prototype.onMouseMove = function(pos) {
 	if(this.dragged !== undefined) {
 		this.dragged.move(pos);
+		this.graphEditor.callExporter();
 	}
 }
 

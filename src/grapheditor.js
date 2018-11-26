@@ -17,8 +17,13 @@ function createSVGElement(tagname, attrObject) {
 function GraphEditorElement() {
 	this.grapheditor = undefined;
 }
+GraphEditorElement.prototype.getName = function() {
+  return "<unknown element>";
+}
+GraphEditorElement.prototype.isNode = function() {}
 GraphEditorElement.prototype.getSVGElement = function() {}
 GraphEditorElement.prototype.move = function(newPos) {}
+GraphEditorElement.prototype.getPosition = function() {}
 GraphEditorElement.prototype.update = function() {}
 GraphEditorElement.prototype.onSelect = function() {}
 GraphEditorElement.prototype.onDeselect = function() {}
@@ -42,9 +47,11 @@ GraphEditorTool.prototype.onMouseMove = function(pos) {}
  * Create a GraphEditor, an object that manages tools and graph elements,
  * create the svg area and receive input from the user 
  */
-function GraphEditor(graphcontainer, toolscontainer) {
+function GraphEditor(graphcontainer, toolscontainer, paramcontainer) {
 	this.graphcontainer = graphcontainer;
 	this.toolscontainer = toolscontainer;
+	this.paramcontainer = paramcontainer;
+	this.exporter = undefined;
 	this.svg = undefined;
 	this.elements = [];
 	this.tools = [];
@@ -65,6 +72,7 @@ function GraphEditor(graphcontainer, toolscontainer) {
 GraphEditor.prototype.createGraph = function() {
 	this.graphcontainer.empty();
 	this.toolscontainer.empty();
+	this.paramcontainer.empty();
 	
 	this.svg = createSVGElement("svg", {id:"graph"});
 	this.svg.on("selectstart", function(e) { e.preventDefault(); });
@@ -92,6 +100,7 @@ GraphEditor.prototype.addElement = function(element) {
 			e.stopPropagation();
 		});
 		this.svg.append(element.getSVGElement());	
+		this.callExporter();
 	}
 }
 
@@ -100,9 +109,22 @@ GraphEditor.prototype.removeElement = function(element) {
 		element.onRemoval();
 		element.getSVGElement().remove();
 		if(this.selectedElement === element) {
-			this.selectedElement = undefined;
+			this.setSelectedElement(undefined);
 		}
+		this.callExporter();
 	}
+}
+
+GraphEditor.prototype.getElements = function() {
+  return this.elements;
+}
+
+GraphEditor.prototype.clearElements = function() {
+  // Not the more efficient but we are sur that all elements
+  // are deleted properly
+  while(this.elements.length > 0) {
+    this.removeElement(this.elements[this.elements.length-1]);
+  }
 }
 
 GraphEditor.prototype.setSelectedElement = function(element) {
@@ -114,6 +136,10 @@ GraphEditor.prototype.setSelectedElement = function(element) {
 	
 	if(this.selectedElement !== undefined) {
 		this.selectedElement.onSelect();
+		this.paramcontainer.html("<p>Selected element :<br/>" + element.getName() + "</p>");
+	}
+	else {
+	  this.paramcontainer.empty();
 	}
 }
 
@@ -183,5 +209,13 @@ GraphEditor.prototype.onMouseMove = function(e) {
 
 GraphEditor.prototype.addSVGElement = function(element) {
 	this.svg.append(element);
+}
+
+GraphEditor.prototype.setExporter = function(exporter) {
+  this.exporter = exporter;
+}
+
+GraphEditor.prototype.callExporter = function() {
+  this.exporter.export(this);
 }
 

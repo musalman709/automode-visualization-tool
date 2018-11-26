@@ -30,6 +30,12 @@ function GraphEditorNode(id, pos) {
 
 GraphEditorNode.prototype = Object.create(GraphEditorElement.prototype);
 
+GraphEditorNode.prototype.getName = function() {
+  return this.id;
+}
+GraphEditorNode.prototype.isNode = function() {
+  return true;
+}
 GraphEditorNode.prototype.getSVGElement = function() {
 	return this.g;
 }
@@ -40,6 +46,9 @@ GraphEditorNode.prototype.move = function(newPos) {
 	this.outgoingPos = {x:newPos.x, y:newPos.y+25};
 	
 	this.updateEdges();
+}
+GraphEditorNode.prototype.getPosition = function() {
+  return {x:this.rect.attr("x"), y:this.rect.attr("y")};
 }
 GraphEditorNode.prototype.onSelect = function() {
 	this.rect.attr("class", "nodeFrame selected");
@@ -70,6 +79,9 @@ GraphEditorNode.prototype.addIncomingEdge = function(edge) {
 GraphEditorNode.prototype.removeIncomingEdge = function(edge) {
 	this.incomingEdges.remove(edge);
 }
+GraphEditorNode.prototype.getIncomingEdges = function() {
+  return this.incomingEdges;
+}
 GraphEditorNode.prototype.addOutgoingEdge = function(edge) {
 	if(edge instanceof GraphEditorEdge) {
 		this.outgoingEdges.add(edge);
@@ -77,6 +89,9 @@ GraphEditorNode.prototype.addOutgoingEdge = function(edge) {
 }
 GraphEditorNode.prototype.removeOutgoingEdge = function(edge) {
 	this.outgoingEdges.remove(edge);
+}
+GraphEditorNode.prototype.getOutgoingEdges = function() {
+  return this.outgoingEdges;
 }
 GraphEditorNode.prototype.updateEdges = function() {
 	for(var i = 0; i < this.incomingEdges.length; ++i) {
@@ -110,11 +125,20 @@ function GraphEditorEdge(id, srcElement, destElement) {
 
 GraphEditorEdge.prototype = Object.create(GraphEditorElement.prototype);
 
+GraphEditorEdge.prototype.getName = function() {
+  return this.id;
+}
+GraphEditorEdge.prototype.isNode = function() {
+  return false;
+}
 GraphEditorEdge.prototype.getSVGElement = function() {
 	return this.g;
 }
 GraphEditorEdge.prototype.move = function(newPos) {
 	this.update();
+}
+GraphEditorEdge.prototype.getPosition = function() {
+  return {x:this.line.attr("x1"), y:this.line.attr("y1")};
 }
 GraphEditorEdge.prototype.update = function() {
 	this.line.attr("x1", this.srcElement.outgoingPos.x);
@@ -132,5 +156,11 @@ GraphEditorEdge.prototype.onRemoval = function() {
 	this.srcElement.removeOutgoingEdge(this);
 	this.destElement.removeIncomingEdge(this);
 	this.getSVGElement().remove();
+}
+GraphEditorEdge.prototype.getSrcNode = function() {
+	return this.srcElement;
+}
+GraphEditorEdge.prototype.getDestNode = function() {
+	return this.destElement;
 }
 
