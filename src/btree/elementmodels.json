@@ -141,7 +141,7 @@
 			"display_tag": "circle",
 			"display_opts": {
 				"class": "nodeFrame",
-				"r": 30,
+				"r": "30",
 				"cx": "0",
 				"cy": "0"
 			},

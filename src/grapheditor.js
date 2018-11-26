@@ -1,36 +1,54 @@
 "use strict";
 
 /**
+ * Create a select option for a model
+ */
+function createModelOption(model, graphEditor, element, value, text) {
+  var opt_tag = $('<option></option>');
+
+  opt_tag.val(value);
+  opt_tag.html(text);
+  opt_tag.click(function(obj) {
+    element.setModel(model);
+    graphEditor.callExporter();
+  });
+
+  if(model === element.getModel()) {
+    opt_tag.attr("selected", "selected");
+  }
+
+  return opt_tag;
+}
+
+/**
  * Create a select list for nodes/edges models
  */
 function createModelsSelectMenu(graphEditor, element) {
 
   var modelsArray = undefined;
+  var defaultModel = undefined;
 
+  // get the models
   if(element.isNode()) {
     modelsArray = graphEditor.getNodeModels();
+    defaultModel = defaultNodeModel();
   } else {
     modelsArray = graphEditor.getEdgeModels();
+    defaultModel = defaultEdgeModel();
   }
 
+  // build the combo box
   var select_tag = $('<select></select>');
   select_tag.addClass("paramselect");
 
+  // add the option for default model
+  select_tag.append(createModelOption(defaultModel, graphEditor, element,
+    -1, defaultModel.name));
+
+  // add one option per available model
   modelsArray.forEach(function(model) {
-    var opt_tag = $('<option></option>');
-
-    opt_tag.val(model.id);
-    opt_tag.html(model.name);
-    opt_tag.click(function(obj) {
-      element.setModel(model);
-      graphEditor.callExporter();
-    });
-
-    if(model === element.getModel()) {
-      opt_tag.attr("selected", "selected");
-    }
-
-    select_tag.append(opt_tag);
+    select_tag.append(createModelOption(model, graphEditor, element,
+      model.id, model.name));
   });
 
   return select_tag;

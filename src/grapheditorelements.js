@@ -130,8 +130,6 @@ function GraphEditorEdge(id, srcElement, destElement) {
 
 	this.g = createSVGElement("g", {id:this.id});
 
-	/*modify here for the json queries*/
-
 	this.line = createSVGElement("line", {class:"arrow", stroke:"black",
 		"marker-end":"url(#arrowhead)"});
 	this.g.append(this.line);

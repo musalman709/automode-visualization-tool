@@ -2,7 +2,7 @@
 function defaultNodeModel() {
 
   return {
-    "name": "default",
+    "name": "-- default --",
 		"id": "-1",
 		"display_tag": "rect",
 		"display_opts": {
@@ -29,5 +29,13 @@ function defaultNodeModel() {
 			"x": "0",
 			"y": "25"
 		}
+  };
+}
+
+function defaultEdgeModel() {
+
+  return {
+    "name": "-- default --",
+    "id": "-1"
   };
 }
