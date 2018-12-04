@@ -66,11 +66,15 @@ GraphEditorNewEdgeTool.prototype.onMouseDown = function(pos, element) {
 	  // already first element clicked
 		if(this.lastNodeClicked !== undefined
 		&& this.lastNodeClicked !== element) {
+		  // create edge
 			this.edgeCounter += 1;
-			this.graphEditor.addElement(
-				new GraphEditorEdge("edge_"+this.edgeCounter,
+			var edge = new GraphEditorEdge("edge_"+this.edgeCounter,
 				this.lastNodeClicked, element)
-				);
+			// if edge valid, add it
+			if(edge.isValid()) {
+			  this.graphEditor.addElement(edge);
+			}
+			// deleselect
 			this.lastNodeClicked = undefined;
 			this.graphEditor.setSelectedElement(undefined);
 		// no previous element

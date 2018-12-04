@@ -40,6 +40,17 @@ GraphEditorNode.prototype.setModel = function(model) {
 
   this.model = model;
 
+  // remove edges if there's too much
+  while(this.model.max_incoming_edges >= 0 &&
+    this.incomingEdges.length > this.model.max_incoming_edges) {
+		this.incomingEdges[0].onRemoval();
+	}
+	while(this.model.max_outgoing_edges >= 0 &&
+    this.outgoingEdges.length > this.model.max_outgoing_edges) {
+		this.outgoingEdges[0].onRemoval();
+	}
+
+  // remake frame
   this.frame.remove();
   this.text.remove();
   this.buildSVGElements();
@@ -80,6 +91,7 @@ GraphEditorNode.prototype.onRemoval = function() {
 		this.outgoingEdges[0].onRemoval();
 	}
 	this.getSVGElement().remove();
+	this.graphEditor.removeElement(this);
 }
 GraphEditorNode.prototype.getIncomingPoint = function() {
 	return this.incomingPos;
@@ -87,10 +99,16 @@ GraphEditorNode.prototype.getIncomingPoint = function() {
 GraphEditorNode.prototype.getOutgoingPoint = function() {
 	return this.outgoingPos;
 }
+GraphEditorNode.prototype.canHaveMoreIncomingEdges = function() {
+  return this.model.max_incoming_edges < 0 ||
+    (this.model.max_incoming_edges - this.incomingEdges.length > 0);
+}
 GraphEditorNode.prototype.addIncomingEdge = function(edge) {
-	if(edge instanceof GraphEditorEdge) {
+	if(edge instanceof GraphEditorEdge && this.canHaveMoreIncomingEdges()) {
 		this.incomingEdges.add(edge);
+		return true;
 	}
+	return false;
 }
 GraphEditorNode.prototype.removeIncomingEdge = function(edge) {
 	this.incomingEdges.remove(edge);
@@ -98,10 +116,16 @@ GraphEditorNode.prototype.removeIncomingEdge = function(edge) {
 GraphEditorNode.prototype.getIncomingEdges = function() {
   return this.incomingEdges;
 }
+GraphEditorNode.prototype.canHaveMoreOutgoingEdges = function() {
+  return this.model.max_outgoing_edges < 0 ||
+    (this.model.max_outgoing_edges - this.outgoingEdges.length > 0);
+}
 GraphEditorNode.prototype.addOutgoingEdge = function(edge) {
-	if(edge instanceof GraphEditorEdge) {
+	if(edge instanceof GraphEditorEdge && this.canHaveMoreOutgoingEdges()) {
 		this.outgoingEdges.add(edge);
+		return true;
 	}
+	return false;
 }
 GraphEditorNode.prototype.removeOutgoingEdge = function(edge) {
 	this.outgoingEdges.remove(edge);
@@ -122,25 +146,35 @@ GraphEditorNode.prototype.updateEdges = function() {
 
 function GraphEditorEdge(id, srcElement, destElement) {
 	GraphEditorElement.call(this);
-	this.srcElement = srcElement;
-	this.destElement = destElement;
+	this.srcElement = undefined;
+	this.destElement = undefined;
 	this.id = id;
-	
-	this.model = undefined;
 
-	this.g = createSVGElement("g", {id:this.id});
-
-	this.line = createSVGElement("line", {class:"arrow", stroke:"black",
-		"marker-end":"url(#arrowhead)"});
-	this.g.append(this.line);
+	this.model = defaultEdgeModel();
 	
-	this.srcElement.addOutgoingEdge(this);
-	this.destElement.addIncomingEdge(this);
-	this.update();
+	if(srcElement.canHaveMoreOutgoingEdges() &&
+	  destElement.canHaveMoreIncomingEdges()) {
+
+	  this.srcElement = srcElement;
+	  this.destElement = destElement;
+
+	  this.g = createSVGElement("g", {id:this.id});
+
+	  this.line = createSVGElement("line", {class:"arrow", stroke:"black",
+		  "marker-end":"url(#arrowhead)"});
+	  this.g.append(this.line);
+
+	  this.srcElement.addOutgoingEdge(this);
+	  this.destElement.addIncomingEdge(this);
+	  this.update();
+	}
 }
 
 GraphEditorEdge.prototype = Object.create(GraphEditorElement.prototype);
 
+GraphEditorEdge.prototype.isValid = function() {
+  return this.srcElement !== undefined && this.destElement !== undefined;
+}
 GraphEditorEdge.prototype.getName = function() {
   return this.id;
 }
@@ -183,6 +217,7 @@ GraphEditorEdge.prototype.onRemoval = function() {
 	this.srcElement.removeOutgoingEdge(this);
 	this.destElement.removeIncomingEdge(this);
 	this.getSVGElement().remove();
+	this.graphEditor.removeElement(this);
 }
 GraphEditorEdge.prototype.getSrcNode = function() {
 	return this.srcElement;

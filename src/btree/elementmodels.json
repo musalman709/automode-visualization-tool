@@ -3,6 +3,8 @@
 		{
 			"name": "Selector",
 			"id": "0",
+			"max_incoming_edges": "1",
+			"max_outgoing_edges": "10",
 			"display_tag": "rect",
 			"display_opts": {
 				"class": "nodeFrame",
@@ -30,6 +32,8 @@
 		{
 			"name": "Selector*",
 			"id": "1",
+			"max_incoming_edges": "1",
+			"max_outgoing_edges": "10",
 			"display_tag": "rect",
 			"display_opts": {
 				"class": "nodeFrame",
@@ -57,6 +61,8 @@
 		{
 			"name": "Sequence",
 			"id": "2",
+			"max_incoming_edges": "1",
+			"max_outgoing_edges": "10",
 			"display_tag": "rect",
 			"display_opts": {
 				"class": "nodeFrame",
@@ -84,6 +90,8 @@
 		{
 			"name": "Sequence*",
 			"id": "3",
+			"max_incoming_edges": "1",
+			"max_outgoing_edges": "10",
 			"display_tag": "rect",
 			"display_opts": {
 				"class": "nodeFrame",
@@ -111,6 +119,8 @@
 		{
 			"name": "Decorator",
 			"id": "4",
+			"max_incoming_edges": "1",
+			"max_outgoing_edges": "10",
 			"display_tag": "rect",
 			"display_opts": {
 				"class": "nodeFrame",
@@ -138,6 +148,8 @@
 		{
 			"name": "Action",
 			"id": "5",
+			"max_incoming_edges": "1",
+			"max_outgoing_edges": "0",
 			"display_tag": "circle",
 			"display_opts": {
 				"class": "nodeFrame",
@@ -164,6 +176,8 @@
 		{
 			"name": "Condition",
 			"id": "6",
+			"max_incoming_edges": "1",
+			"max_outgoing_edges": "0",
 			"display_tag": "polygon",
 			"display_opts": {
 				"class": "nodeFrame",
