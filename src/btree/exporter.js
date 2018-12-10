@@ -109,6 +109,15 @@ BTreeExporter.prototype.expNodeChildren = function(node, nodeID) {
 
 BTreeExporter.prototype.expNodeParams = function(node, nodeID) {
 
-  return "";
+  var pdict = node.getParamDict();
+  var str = "";
+
+  for(var key in pdict) {
+    if(pdict.hasOwnProperty(key)) {
+      str += "--" + key + nodeID + " " + pdict[key] + " ";
+    }
+  }
+
+  return str;
 }
 

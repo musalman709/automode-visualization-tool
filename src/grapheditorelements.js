@@ -4,7 +4,12 @@ function GraphEditorNode(id, pos) {
 	this.id = id;
 	this.incomingEdges = [];
 	this.outgoingEdges = [];
+
 	this.model = defaultNodeModel();
+	this.param = defaultNodeParam();
+
+	this.paramdict = {};
+	this.paramcontainer = undefined;
 	
 	this.pos = {x:0, y:0};
 	this.g = createSVGElement("g", {id:this.id});
@@ -61,10 +66,41 @@ GraphEditorNode.prototype.setModel = function(model) {
 GraphEditorNode.prototype.getModel = function() {
   return this.model;
 }
-GraphEditorNode.prototype.buildParamPane = function() {
-  var container = $('<div></div>');
-  container.append('<p>Parameters [TODO]</p>');
-  return container;
+GraphEditorNode.prototype.setParam = function(param) {
+  if(this.param === undefined) {
+    this.param = defaultNodeParam();
+  } else {
+    this.param = param;
+  }
+
+  this.paramdict = {};
+
+  if(this.param.categories.length > 0) {
+    this.setParamValue(this.param.categoryid, this.param.categories[0].id);
+  }
+}
+GraphEditorNode.prototype.getParam = function() {
+  return this.param;
+}
+GraphEditorNode.prototype.setParamValue = function(param, value) {
+  this.paramdict[param] = value;
+
+  if(param == this.param.categoryid) {
+    this.paramdict = {};
+    this.paramdict[this.param.categoryid] = value;
+
+    var pdict = this.paramdict;
+    this.param.categories.forEach(function(c) {
+      if(c.id == value) {
+        c.param.forEach(function(p) {
+          pdict[p.id] = p.min;
+        });
+      }
+    });
+  }
+}
+GraphEditorNode.prototype.getParamDict = function() {
+  return this.paramdict;
 }
 GraphEditorNode.prototype.move = function(newPos) {
 	this.pos = newPos;
@@ -151,6 +187,7 @@ function GraphEditorEdge(id, srcElement, destElement) {
 	this.id = id;
 
 	this.model = defaultEdgeModel();
+	this.param = defaultEdgeParam();
 	
 	if(srcElement.canHaveMoreOutgoingEdges() &&
 	  destElement.canHaveMoreIncomingEdges()) {
@@ -190,10 +227,17 @@ GraphEditorEdge.prototype.setModel = function(model) {
 GraphEditorEdge.prototype.getModel = function() {
   return this.model;
 }
-GraphEditorEdge.prototype.buildParamPane = function() {
-  var container = $('<div></div>');
-  container.append('<p>Parameters [TODO]</p>');
-  return container;
+GraphEditorEdge.prototype.setParam = function(param) {
+  this.param = param;
+}
+GraphEditorEdge.prototype.getParam = function() {
+  return this.param;
+}
+GraphEditorEdge.prototype.setParamValue = function(param, value) {
+  // pass
+}
+GraphEditorEdge.prototype.getParamDict = function() {
+  return {};
 }
 GraphEditorEdge.prototype.move = function(newPos) {
 	this.update();

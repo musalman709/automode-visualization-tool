@@ -11,6 +11,7 @@ function switchToBTree(graphEditor) {
   graphEditor.setExporter(exporter);
 
   loadElementModels("btree/nodemodels.json", "btree/edgemodels.json", graphEditor);
+  loadElementParams("btree/nodeparams.json", "btree/edgemodels.json", graphEditor);
 
   $("#switchlink").click(function() {
     switchToFSM(graphEditor);
@@ -29,7 +30,8 @@ function switchToFSM(graphEditor) {
   var exporter = undefined;
   graphEditor.setExporter(exporter);
 
-  loadElementModels("fsm/nodemodels.json", "fsm/edgemodels.jsm", graphEditor);
+  loadElementModels("fsm/nodemodels.json", "fsm/edgemodels.json", graphEditor);
+  loadElementParams("fsm/nodeparams.json", "fsm/edgemodels.json", graphEditor);
 
   $("#switchlink").click(function() {
     switchToBTree(graphEditor);
@@ -39,8 +41,8 @@ function switchToFSM(graphEditor) {
 
 function loadElementModels(nodes_url, edges_url, graphEditor) {
 
-  graphEditor.setNodeModels(undefined);
-  graphEditor.setEdgeModels(undefined);
+  graphEditor.setNodeModels([]);
+  graphEditor.setEdgeModels([]);
 
   $.ajax({
     dataType: "json",
@@ -62,6 +64,31 @@ function loadElementModels(nodes_url, edges_url, graphEditor) {
 }
 
 
+function loadElementParams(nodes_url, edges_url, graphEditor) {
+
+  graphEditor.setNodeParams([]);
+  graphEditor.setEdgeParams([]);
+
+  $.ajax({
+    dataType: "json",
+    url: nodes_url,
+    mimeType: "application/json",
+    success: function(result){
+      graphEditor.setNodeParams(result);
+    }
+  });
+
+  $.ajax({
+    dataType: "json",
+    url: edges_url,
+    mimeType: "application/json",
+    success: function(result){
+      graphEditor.setEdgeParams(result);
+    }
+  });
+}
+
+
 $(document).ready(function(){
 
 	grapheditor = new GraphEditor(
@@ -75,3 +102,4 @@ $(document).ready(function(){
 
 	switchToBTree(grapheditor);
 });
+

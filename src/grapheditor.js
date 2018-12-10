@@ -3,13 +3,15 @@
 /**
  * Create a select option for a model
  */
-function createModelOption(model, graphEditor, element, value, text) {
+function createModelOption(model, param, graphEditor, element) {
   var opt_tag = $('<option></option>');
 
-  opt_tag.val(value);
-  opt_tag.html(text);
+  opt_tag.val(model.id);
+  opt_tag.html(model.name);
   opt_tag.click(function(obj) {
     element.setModel(model);
+    element.setParam(param);
+    graphEditor.updateParamPane();
     graphEditor.callExporter();
   });
 
@@ -27,14 +29,17 @@ function createModelsSelectMenu(graphEditor, element) {
 
   var modelsArray = undefined;
   var defaultModel = undefined;
+  var defaultParam = undefined;
 
   // get the models
   if(element.isNode()) {
     modelsArray = graphEditor.getNodeModels();
     defaultModel = defaultNodeModel();
+    defaultParam = defaultNodeParam();
   } else {
     modelsArray = graphEditor.getEdgeModels();
     defaultModel = defaultEdgeModel();
+    defaultParam = defaultEdgeParam();
   }
 
   // build the combo box
@@ -42,18 +47,87 @@ function createModelsSelectMenu(graphEditor, element) {
   select_tag.addClass("paramselect");
 
   // add the option for default model
-  select_tag.append(createModelOption(defaultModel, graphEditor, element,
-    -1, defaultModel.name));
+  select_tag.append(createModelOption(defaultModel, defaultParam, graphEditor,
+    element));
 
   // add one option per available model
-  if(modelsArray !== undefined) {
-    modelsArray.forEach(function(model) {
-      select_tag.append(createModelOption(model, graphEditor, element,
-        model.id, model.name));
-    });
-  }
+  modelsArray.forEach(function(model) {
+    var param = undefined;
+    if(element.isNode()) {
+      param = graphEditor.getNodeParamById(model.id);
+    } else {
+      param = graphEditor.getEdgeParamById(model.id);
+    }
+    select_tag.append(createModelOption(model, param, graphEditor, element));
+  });
 
   return select_tag;
+}
+
+/**
+ * Create a select list for nodes/edge category
+ */
+function createCategorySelectMenu(params, element, catvalue, graphEditor) {
+  var catselect = $("<select></select>");
+  catselect.addClass("paramselect");
+  params.categories.forEach(function(c){
+    var opt = $("<option></option>");
+    opt.val(c.id);
+    opt.text(c.name);
+    if(c.id == catvalue) {
+      opt.attr("selected", "selected");
+    }
+    opt.click(function(obj) {
+      element.setParamValue(params.categoryid, c.id);
+      graphEditor.updateParamPane();
+      graphEditor.callExporter();
+    });
+    catselect.append(opt);
+  });
+
+  return catselect;
+}
+
+/**
+ * Create an input for a node/edge parameter
+ */
+function createParameterInput(param, element, graphEditor) {
+  var paraminput = $("<input type=number></input>");
+  paraminput.addClass("paraminput");
+  paraminput.attr("name", param.id);
+  paraminput.attr("min", param.min);
+  paraminput.attr("max", param.max);
+  paraminput.attr("step", param.step);
+  paraminput.attr("value", param.min);
+  paraminput.val(element.getParamDict()[param.id]);
+  paraminput.on('change', function() {
+    element.setParamValue(param.id, paraminput.val());
+    graphEditor.callExporter();
+  });
+  return paraminput;
+}
+
+/**
+ * Create the pane for node/edge category with each corresponding parameter
+ */
+function createParamPane(params, element, container, graphEditor) {
+  if(params.categories.length > 0) {
+
+    container.append($("<p>Category</p>"));
+
+    var catvalue = element.getParamDict()[params.categoryid];
+    container.append(createCategorySelectMenu(params, element, catvalue,
+      graphEditor));
+
+    params.categories.forEach(function(c) {
+      if(c.id == catvalue) {
+        c.param.forEach(function(p) {
+          container.append("<p>" + p.name + "</p>");
+          container.append(createParameterInput(p, element, graphEditor));
+        });
+      }
+    });
+  }
 }
 
 
@@ -68,7 +142,11 @@ GraphEditorElement.prototype.isNode = function() {}
 GraphEditorElement.prototype.getSVGElement = function() {}
 GraphEditorElement.prototype.setModel = function(model) {}
 GraphEditorElement.prototype.getModel = function() {}
+GraphEditorElement.prototype.setParam = function(param) {}
+GraphEditorElement.prototype.getParam = function() {}
 GraphEditorElement.prototype.buildParamPane = function() {}
+GraphEditorElement.prototype.setParamValue = function(param, value) {}
+GraphEditorElement.prototype.getParamDict = function() {}
 GraphEditorElement.prototype.move = function(newPos) {}
 GraphEditorElement.prototype.getPosition = function() {}
 GraphEditorElement.prototype.update = function() {}
@@ -100,8 +178,10 @@ function GraphEditor(graphcontainer, toolscontainer, paramcontainer) {
 	this.paramcontainer = paramcontainer;
 	this.exporter = undefined;
 	this.svg = undefined;
-	this.nodemodels = undefined;
-	this.edgemodels = undefined;
+	this.nodemodels = [];
+	this.nodeparams = [];
+	this.edgemodels = [];
+	this.edgeparams = [];
 	this.elements = [];
 	this.tools = [];
 	this.currentTool = undefined;
@@ -142,16 +222,60 @@ GraphEditor.prototype.setNodeModels = function(data) {
   this.nodemodels = data;
 }
 
+GraphEditor.prototype.setNodeParams = function(data) {
+  this.nodeparams = data;
+}
+
 GraphEditor.prototype.setEdgeModels = function(data) {
   this.edgemodels = data;
+}
+
+GraphEditor.prototype.setEdgeParams = function(data) {
+  this.edgeparams = data;
 }
 
 GraphEditor.prototype.getNodeModels = function() {
   return this.nodemodels;
 }
 
+GraphEditor.prototype.getNodeParams = function() {
+  return this.nodeparams;
+}
+
+GraphEditor.prototype.getNodeParamById = function(id) {
+  var param = undefined;
+  this.nodeparams.forEach(function(p) {
+    if(p.nodeid == id) {
+      param = p;
+    }
+  });
+
+  if(param === undefined) {
+    return defaultNodeParam();
+  }
+  return param;
+}
+
 GraphEditor.prototype.getEdgeModels = function() {
   return this.edgemodels;
+}
+
+GraphEditor.prototype.getEdgeParamById = function(id) {
+  var param = undefined;
+  this.edgeparams.forEach(function(p) {
+    if(p.edgeid == id) {
+      param = p;
+    }
+  });
+
+  if(param === undefined) {
+    return defaultEdgeParam();
+  }
+  return param;
+}
+
+GraphEditor.prototype.getEdgeParams = function() {
+  return this.edgeparams;
 }
 
 GraphEditor.prototype.addElement = function(element) {
@@ -198,14 +322,23 @@ GraphEditor.prototype.setSelectedElement = function(element) {
 	}
 	
 	this.selectedElement = element;
-	
 	this.paramcontainer.empty();
 
 	if(this.selectedElement !== undefined) {
 		this.selectedElement.onSelect();
-
-		this.paramcontainer.append(createModelsSelectMenu(this, element));
+    this.updateParamPane();
 	}
+}
+
+GraphEditor.prototype.updateParamPane = function() {
+  this.paramcontainer.empty();
+  if(this.selectedElement !== undefined) {
+    this.paramcontainer.append($("<p>Type</p>"));
+	  this.paramcontainer.append(createModelsSelectMenu(this,
+	    this.selectedElement));
+	  createParamPane(this.selectedElement.getParam(), this.selectedElement,
+	    this.paramcontainer, this);
+  }
 }
 
 GraphEditor.prototype.addTool = function(tool) {
