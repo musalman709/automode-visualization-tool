@@ -34,6 +34,27 @@ function defaultNodeModel() {
   };
 }
 
+function defaultNodeParam() {
+
+  return {
+    "nodeid": "-1",
+    "categories": [
+      {
+        "name": "-- default --",
+        "id": "0",
+        "param": [
+          {
+            "name": "p",
+            "min": "0",
+            "max": "1",
+            "step": "0.01"
+          }
+        ]
+      }
+    ]
+  };
+}
+
 function defaultEdgeModel() {
 
   return {

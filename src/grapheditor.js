@@ -46,10 +46,12 @@ function createModelsSelectMenu(graphEditor, element) {
     -1, defaultModel.name));
 
   // add one option per available model
-  modelsArray.forEach(function(model) {
-    select_tag.append(createModelOption(model, graphEditor, element,
-      model.id, model.name));
-  });
+  if(modelsArray !== undefined) {
+    modelsArray.forEach(function(model) {
+      select_tag.append(createModelOption(model, graphEditor, element,
+        model.id, model.name));
+    });
+  }
 
   return select_tag;
 }
@@ -98,7 +100,8 @@ function GraphEditor(graphcontainer, toolscontainer, paramcontainer) {
 	this.paramcontainer = paramcontainer;
 	this.exporter = undefined;
 	this.svg = undefined;
-	this.elementmodels = undefined;
+	this.nodemodels = undefined;
+	this.edgemodels = undefined;
 	this.elements = [];
 	this.tools = [];
 	this.currentTool = undefined;
@@ -135,26 +138,20 @@ GraphEditor.prototype.createGraph = function() {
 	this.svg.append(this.defs);
 }
 
-GraphEditor.prototype.setElementModels = function(data) {
-  this.elementmodels = data;
+GraphEditor.prototype.setNodeModels = function(data) {
+  this.nodemodels = data;
 }
 
-GraphEditor.prototype.getElementModels = function() {
-  return this.elementmodels;
+GraphEditor.prototype.setEdgeModels = function(data) {
+  this.edgemodels = data;
 }
 
 GraphEditor.prototype.getNodeModels = function() {
-  if(this.elementmodels === undefined)
-    return undefined;
-
-  return this.elementmodels.nodes;
+  return this.nodemodels;
 }
 
 GraphEditor.prototype.getEdgeModels = function() {
-  if(this.elementmodels === undefined)
-    return undefined;
-
-  return this.elementmodels.edges;
+  return this.edgemodels;
 }
 
 GraphEditor.prototype.addElement = function(element) {
@@ -207,9 +204,7 @@ GraphEditor.prototype.setSelectedElement = function(element) {
 	if(this.selectedElement !== undefined) {
 		this.selectedElement.onSelect();
 
-		if(this.elementmodels !== undefined){
-		  this.paramcontainer.append(createModelsSelectMenu(this, element));
-		}
+		this.paramcontainer.append(createModelsSelectMenu(this, element));
 	}
 }
 
