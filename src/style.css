@@ -123,6 +123,15 @@ aside {
   width: 94%;
 }
 
+.textparam {
+  float: left;
+}
+
+.textrange {
+  color: gray;
+  float: right;
+}
+
 article {
 	overflow: auto;
 	position: absolute;

@@ -2,6 +2,7 @@
 	{
 		"name": "Selector",
 		"id": "0",
+		"display_text": "Sel",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"display_tag": "rect",
@@ -12,7 +13,6 @@
 			"x": "-25",
 			"y": "-25"
 		},
-		"display_text": "sel",
 		"display_text_opts": {
 			"text-anchor": "middle",
 			"alignment-baseline": "central",
@@ -31,6 +31,7 @@
 	{
 		"name": "Selector*",
 		"id": "1",
+		"display_text": "Sel*",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"display_tag": "rect",
@@ -41,7 +42,6 @@
 			"x": "-25",
 			"y": "-25"
 		},
-		"display_text": "sel*",
 		"display_text_opts": {
 			"text-anchor": "middle",
 			"alignment-baseline": "central",
@@ -60,6 +60,7 @@
 	{
 		"name": "Sequence",
 		"id": "2",
+		"display_text": "Seq",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"display_tag": "rect",
@@ -70,7 +71,6 @@
 			"x": "-25",
 			"y": "-25"
 		},
-		"display_text": "seq",
 		"display_text_opts": {
 			"text-anchor": "middle",
 			"alignment-baseline": "central",
@@ -89,6 +89,7 @@
 	{
 		"name": "Sequence*",
 		"id": "3",
+		"display_text": "Seq*",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"display_tag": "rect",
@@ -99,7 +100,6 @@
 			"x": "-25",
 			"y": "-25"
 		},
-		"display_text": "seq*",
 		"display_text_opts": {
 			"text-anchor": "middle",
 			"alignment-baseline": "central",
@@ -118,6 +118,7 @@
 	{
 		"name": "Decorator",
 		"id": "4",
+		"display_text": "Dec",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"display_tag": "rect",
@@ -128,7 +129,6 @@
 			"x": "-25",
 			"y": "-25"
 		},
-		"display_text": "dec",
 		"display_text_opts": {
 			"text-anchor": "middle",
 			"alignment-baseline": "central",
@@ -147,6 +147,7 @@
 	{
 		"name": "Action",
 		"id": "5",
+		"display_text": "A",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "0",
 		"display_tag": "circle",
@@ -156,7 +157,6 @@
 			"cx": "0",
 			"cy": "0"
 		},
-		"display_text": "A",
 		"display_text_opts": {
 			"text-anchor": "middle",
 			"alignment-baseline": "central",
@@ -175,6 +175,7 @@
 	{
 		"name": "Condition",
 		"id": "6",
+		"display_text": "C",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "0",
 		"display_tag": "polygon",
@@ -182,7 +183,6 @@
 			"class": "nodeFrame",
 			"points": "35,0,0,35,-35,0,0,-35"
 		},
-		"display_text": "C",
 		"display_text_opts": {
 			"text-anchor": "middle",
 			"alignment-baseline": "central",

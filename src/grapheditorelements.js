@@ -75,6 +75,8 @@ GraphEditorNode.prototype.setParam = function(param) {
 
   this.paramdict = {};
 
+  // A node model can have no parameters
+  // If it have, set default values
   if(this.param.categories.length > 0) {
     this.setParamValue(this.param.categoryid, this.param.categories[0].id);
   }
@@ -89,12 +91,21 @@ GraphEditorNode.prototype.setParamValue = function(param, value) {
     this.paramdict = {};
     this.paramdict[this.param.categoryid] = value;
 
+    // category change, reset dict with new set of parameters
     var pdict = this.paramdict;
+    var that = this;
     this.param.categories.forEach(function(c) {
       if(c.id == value) {
         c.param.forEach(function(p) {
           pdict[p.id] = p.min;
         });
+
+        // Update displayed label
+        if(c.hasOwnProperty("display_name")) {
+          that.text.html(c.display_name);
+        } else {
+          that.text.html(that.model.display_text);
+        }
       }
     });
   }

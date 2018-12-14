@@ -7,6 +7,7 @@
   			{
 				"name": "Exploration",
 				"id": "0",
+				"display_name": "Exp",
 				"param": [
 					{
 						"name": "p",
@@ -27,6 +28,7 @@
 			{
 				"name": "Stop",
 				"id": "1",
+				"display_name": "Stop",
 				"param": [
 					{
 						"name": "p",
@@ -40,6 +42,7 @@
 			{
 				"name": "Photoaxis",
 				"id": "2",
+				"display_name": "Pha",
 				"param": [
 					{
 						"name": "p",
@@ -53,6 +56,7 @@
 			{
 				"name": "Anti-photoaxis",
 				"id": "3",
+				"display_name": "APha",
 				"param": [
 					{
 						"name": "p",
@@ -66,6 +70,7 @@
 			{
 				"name": "Attraction",
 				"id": "4",
+				"display_name": "Attr",
 				"param": [
 					{
 						"name": "p",
@@ -86,6 +91,7 @@
 			{
 				"name": "Repulsion",
 				"id": "5",
+				"display_name": "Rep",
 				"param": [
 					{
 						"name": "p",
@@ -113,6 +119,7 @@
 			{
 				"name": "Black floor",
 				"id": "0",
+				"display_name": "Bflr",
 				"param": [
 					{
 						"name": "p",
@@ -126,6 +133,7 @@
 			{
 				"name": "Gray floor",
 				"id": "1",
+				"display_name": "Gflr",
 				"param": [
 					{
 						"name": "p",
@@ -139,6 +147,7 @@
 			{
 				"name": "Neightbors count",
 				"id": "3",
+				"display_name": "Ngb",
 				"param": [
 					{
 						"name": "p",
@@ -159,6 +168,7 @@
 			{
 				"name": "Inverted neightbors count",
 				"id": "4",
+				"display_name": "INgb",
 				"param": [
 					{
 						"name": "p",
@@ -177,8 +187,9 @@
 				]
 			},
 			{
-				"name": "Fixed p",
+				"name": "Fixed Probability",
 				"id": "5",
+				"display_name": "FPrb",
 				"param": [
 					{
 						"name": "p",
@@ -192,6 +203,7 @@
 			{
 				"name": "Light",
 				"id": "6",
+				"display_name": "Lght",
 				"param": [
 					{
 						"name": "p",

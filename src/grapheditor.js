@@ -122,7 +122,8 @@ function createParamPane(params, element, container, graphEditor) {
     params.categories.forEach(function(c) {
       if(c.id == catvalue) {
         c.param.forEach(function(p) {
-          container.append("<p>" + p.name + "</p>");
+          container.append("<p>" + p.name + "<span class=\"textrange\">[" +
+            p.min + ", " + p.max + "]</span>" + "</p>");
           container.append(createParameterInput(p, element, graphEditor));
         });
       }
