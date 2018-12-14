@@ -59,6 +59,11 @@ header {
   flex-grow: 5;
 }
 
+#cmdline {
+  font-size: 13px;
+  font-family: monospace;
+}
+
 #cmdline-container button {
   margin: 0px;
   padding: 4px;
