@@ -10,14 +10,14 @@
 				"display_name": "Exp",
 				"param": [
 					{
-						"name": "p",
+						"name": "Success Probability",
 						"id": "p",
 						"min": "0",
 						"max": "1",
 						"step": "0.01"
 					},
 					{
-						"name": "rwm",
+						"name": "Steps Range",
 						"id": "rwm",
 						"min": "0",
 						"max": "100",
@@ -31,7 +31,7 @@
 				"display_name": "Stop",
 				"param": [
 					{
-						"name": "p",
+						"name": "Success Probability",
 						"id": "p",
 						"min": "0",
 						"max": "1",
@@ -45,7 +45,7 @@
 				"display_name": "Pha",
 				"param": [
 					{
-						"name": "p",
+						"name": "Success Probability",
 						"id": "p",
 						"min": "0",
 						"max": "1",
@@ -59,7 +59,7 @@
 				"display_name": "APha",
 				"param": [
 					{
-						"name": "p",
+						"name": "Success Probability",
 						"id": "p",
 						"min": "0",
 						"max": "1",
@@ -73,14 +73,14 @@
 				"display_name": "Attr",
 				"param": [
 					{
-						"name": "p",
+						"name": "Success Probability",
 						"id": "p",
 						"min": "0",
 						"max": "1",
 						"step": "0.01"
 					},
 					{
-						"name": "att",
+						"name": "Attraction",
 						"id": "att",
 						"min": "1",
 						"max": "5",
@@ -94,14 +94,14 @@
 				"display_name": "Rep",
 				"param": [
 					{
-						"name": "p",
+						"name": "Success Probability",
 						"id": "p",
 						"min": "0",
 						"max": "1",
 						"step": "0.01"
 					},
 					{
-						"name": "rep",
+						"name": "Repulsion",
 						"id": "rep",
 						"min": "1",
 						"max": "5",
@@ -122,7 +122,7 @@
 				"display_name": "Bflr",
 				"param": [
 					{
-						"name": "p",
+						"name": "Probability",
 						"id": "p",
 						"min": "0",
 						"max": "1",
@@ -136,7 +136,7 @@
 				"display_name": "Gflr",
 				"param": [
 					{
-						"name": "p",
+						"name": "Probability",
 						"id": "p",
 						"min": "0",
 						"max": "1",
@@ -150,14 +150,14 @@
 				"display_name": "Ngb",
 				"param": [
 					{
-						"name": "p",
+						"name": "ƞ",
 						"id": "p",
 						"min": "0",
 						"max": "20",
 						"step": "1"
 					},
 					{
-						"name": "w",
+						"name": "ξ",
 						"id": "w",
 						"min": "1",
 						"max": "10",
@@ -171,14 +171,14 @@
 				"display_name": "INgb",
 				"param": [
 					{
-						"name": "p",
+						"name": "ƞ",
 						"id": "p",
 						"min": "0",
 						"max": "20",
 						"step": "1"
 					},
 					{
-						"name": "w",
+						"name": "ξ",
 						"id": "w",
 						"min": "1",
 						"max": "10",
@@ -192,7 +192,7 @@
 				"display_name": "FPrb",
 				"param": [
 					{
-						"name": "p",
+						"name": "Probability",
 						"id": "p",
 						"min": "0",
 						"max": "1",
@@ -206,7 +206,7 @@
 				"display_name": "Lght",
 				"param": [
 					{
-						"name": "p",
+						"name": "Probability",
 						"id": "p",
 						"min": "0",
 						"max": "1",

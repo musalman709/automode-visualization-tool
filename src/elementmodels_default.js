@@ -19,7 +19,7 @@ function defaultNodeModel() {
 		"display_text": "[node]",
 		"display_text_opts": {
 			"text-anchor": "middle",
-			"alignment-baseline": "central",
+			"dominant-baseline": "middle",
 			"x": "0",
 			"y": "0"
 		},

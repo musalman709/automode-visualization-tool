@@ -2,7 +2,7 @@
 	{
 		"name": "Selector",
 		"id": "0",
-		"display_text": "Sel",
+		"display_text": "?",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"display_tag": "rect",
@@ -14,8 +14,9 @@
 			"y": "-25"
 		},
 		"display_text_opts": {
+			"class": "textbigfont",
 			"text-anchor": "middle",
-			"alignment-baseline": "central",
+			"dominant-baseline": "middle",
 			"x": "0",
 			"y": "0"
 		},
@@ -31,7 +32,7 @@
 	{
 		"name": "Selector*",
 		"id": "1",
-		"display_text": "Sel*",
+		"display_text": "?*",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"display_tag": "rect",
@@ -43,8 +44,9 @@
 			"y": "-25"
 		},
 		"display_text_opts": {
+			"class": "textbigfont",
 			"text-anchor": "middle",
-			"alignment-baseline": "central",
+			"dominant-baseline": "middle",
 			"x": "0",
 			"y": "0"
 		},
@@ -60,7 +62,7 @@
 	{
 		"name": "Sequence",
 		"id": "2",
-		"display_text": "Seq",
+		"display_text": "⟶",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"display_tag": "rect",
@@ -72,8 +74,9 @@
 			"y": "-25"
 		},
 		"display_text_opts": {
+			"class": "textbigfont",
 			"text-anchor": "middle",
-			"alignment-baseline": "central",
+			"dominant-baseline": "middle",
 			"x": "0",
 			"y": "0"
 		},
@@ -89,7 +92,7 @@
 	{
 		"name": "Sequence*",
 		"id": "3",
-		"display_text": "Seq*",
+		"display_text": "⟶*",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"display_tag": "rect",
@@ -101,8 +104,9 @@
 			"y": "-25"
 		},
 		"display_text_opts": {
+			"class": "textbigfont",
 			"text-anchor": "middle",
-			"alignment-baseline": "central",
+			"dominant-baseline": "middle",
 			"x": "0",
 			"y": "0"
 		},
@@ -118,7 +122,7 @@
 	{
 		"name": "Decorator",
 		"id": "4",
-		"display_text": "Dec",
+		"display_text": "δ",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"display_tag": "rect",
@@ -130,8 +134,9 @@
 			"y": "-25"
 		},
 		"display_text_opts": {
+			"class": "textbigfont",
 			"text-anchor": "middle",
-			"alignment-baseline": "central",
+			"dominant-baseline": "middle",
 			"x": "0",
 			"y": "0"
 		},
@@ -159,7 +164,7 @@
 		},
 		"display_text_opts": {
 			"text-anchor": "middle",
-			"alignment-baseline": "central",
+			"dominant-baseline": "middle",
 			"x": "0",
 			"y": "0"
 		},
@@ -185,7 +190,7 @@
 		},
 		"display_text_opts": {
 			"text-anchor": "middle",
-			"alignment-baseline": "central",
+			"dominant-baseline": "middle",
 			"x": "0",
 			"y": "0"
 		},

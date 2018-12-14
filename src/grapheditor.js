@@ -113,7 +113,7 @@ function createParameterInput(param, element, graphEditor) {
 function createParamPane(params, element, container, graphEditor) {
   if(params.categories.length > 0) {
 
-    container.append($("<p>Category</p>"));
+    container.append($("<p class=\"asidetitle\">Category</p>"));
 
     var catvalue = element.getParamDict()[params.categoryid];
     container.append(createCategorySelectMenu(params, element, catvalue,
@@ -122,8 +122,9 @@ function createParamPane(params, element, container, graphEditor) {
     params.categories.forEach(function(c) {
       if(c.id == catvalue) {
         c.param.forEach(function(p) {
-          container.append("<p>" + p.name + "<span class=\"textrange\">[" +
-            p.min + ", " + p.max + "]</span>" + "</p>");
+          container.append("<p class=\"paramname\">" + p.name +
+            "<span class=\"textrange\">[" + p.min + "; " + p.max + "]</span>" +
+            "</p>");
           container.append(createParameterInput(p, element, graphEditor));
         });
       }
@@ -334,7 +335,7 @@ GraphEditor.prototype.setSelectedElement = function(element) {
 GraphEditor.prototype.updateParamPane = function() {
   this.paramcontainer.empty();
   if(this.selectedElement !== undefined) {
-    this.paramcontainer.append($("<p>Type</p>"));
+    this.paramcontainer.append($("<p class=\"asidetitle\">Type</p>"));
 	  this.paramcontainer.append(createModelsSelectMenu(this,
 	    this.selectedElement));
 	  createParamPane(this.selectedElement.getParam(), this.selectedElement,
