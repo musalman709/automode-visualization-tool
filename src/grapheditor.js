@@ -221,6 +221,14 @@ GraphEditor.prototype.createGraph = function() {
 	this.svg.append(this.defs);
 }
 
+GraphEditor.prototype.width = function() {
+  return this.svg.width();
+}
+
+GraphEditor.prototype.height = function() {
+  return this.svg.height();
+}
+
 GraphEditor.prototype.setNodeModels = function(data) {
   this.nodemodels = data;
 }

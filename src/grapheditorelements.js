@@ -42,6 +42,7 @@ GraphEditorNode.prototype.getSVGElement = function() {
 }
 GraphEditorNode.prototype.setModel = function(model) {
   var pos = this.getPosition();
+  var selected = this.frame.hasClass("selected");
 
   this.model = model;
   if(this.model === undefined) {
@@ -62,7 +63,9 @@ GraphEditorNode.prototype.setModel = function(model) {
   this.frame.remove();
   this.text.remove();
   this.buildSVGElements();
-  this.frame.addClass("selected");
+  if(selected) {
+    this.frame.addClass("selected");
+  }
 
   this.move(pos);
 }
