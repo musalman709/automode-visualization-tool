@@ -23,7 +23,6 @@ GraphEditorSelectTool.prototype.onMouseDown = function(pos, element) {
 function GraphEditorNewNodeTool() {
 	GraphEditorTool.call(this);
 	this.graphEditor = undefined;
-	this.nodeCounter = 0;
 }
 GraphEditorNewNodeTool.prototype = Object.create(GraphEditorTool.prototype)
 
@@ -35,9 +34,8 @@ GraphEditorNewNodeTool.prototype.getName = function() {
 }
 GraphEditorNewNodeTool.prototype.onMouseDown = function(pos, element) {
 	if(element === undefined) {
-		this.nodeCounter += 1;
 		this.graphEditor.addElement(
-			new GraphEditorNode("node_"+this.nodeCounter, pos)
+			new GraphEditorNode("rd_node", pos)
 			);
 	}
 }
@@ -47,7 +45,6 @@ GraphEditorNewNodeTool.prototype.onMouseDown = function(pos, element) {
 function GraphEditorNewEdgeTool() {
 	GraphEditorTool.call(this);
 	this.graphEditor = undefined;
-	this.edgeCounter = 0;
 	this.lastNodeClicked = undefined;
 }
 GraphEditorNewEdgeTool.prototype = Object.create(GraphEditorTool.prototype)
@@ -67,8 +64,7 @@ GraphEditorNewEdgeTool.prototype.onMouseDown = function(pos, element) {
 		if(this.lastNodeClicked !== undefined
 		&& this.lastNodeClicked !== element) {
 		  // create edge
-			this.edgeCounter += 1;
-			var edge = new GraphEditorEdge("edge_"+this.edgeCounter,
+			var edge = new GraphEditorEdge("rd_edge",
 				this.lastNodeClicked, element)
 			// if edge valid, add it
 			if(edge.isValid()) {

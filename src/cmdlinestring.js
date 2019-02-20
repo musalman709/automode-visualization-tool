@@ -18,3 +18,10 @@ function exporttofile() {
     link.click();
   }
 }
+
+function importfromcmdline() {
+  var cmdline = $("#cmdline").val();
+
+  grapheditor.callImporter();
+}
+

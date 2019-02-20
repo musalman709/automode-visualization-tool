@@ -10,6 +10,9 @@ function switchToBTree(graphEditor) {
   var exporter = new BTreeExporter($("#cmdline"));
   graphEditor.setExporter(exporter);
 
+  var importer = new BTreeImporter($("#cmdline"));
+  graphEditor.setImporter(importer);
+
   loadElementModels("btree/nodemodels.json", "btree/edgemodels.json", graphEditor);
   loadElementParams("btree/nodeparams.json", "btree/edgemodels.json", graphEditor);
 
@@ -29,6 +32,9 @@ function switchToFSM(graphEditor) {
 
   var exporter = undefined;
   graphEditor.setExporter(exporter);
+
+  var importer = undefined;
+  graphEditor.setImporter(importer);
 
   loadElementModels("fsm/nodemodels.json", "fsm/edgemodels.json", graphEditor);
   loadElementParams("fsm/nodeparams.json", "fsm/edgemodels.json", graphEditor);

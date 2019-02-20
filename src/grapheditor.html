@@ -13,6 +13,7 @@
   <script src="init.js"></script>
   <script src="cmdlinestring.js"></script>
   <script src="btree/exporter.js"></script>
+  <script src="btree/importer.js"></script>
 	<link rel="stylesheet" type="text/css" href="style.css"></link>
 </head>
 <body>
@@ -44,7 +45,7 @@
 		  <a id="switchlink" href="#">switch</a>
 	  </div>
 	  <div id="cmdline-container">
-		  <input id="cmdline" type="text" placeholder="Command line string"></input><button onclick="copytoclipboard();">Copy</button><button onclick="exporttofile();">Download</button>
+		  <input id="cmdline" type="text" placeholder="Command line string" onchange="importfromcmdline();"></input><button onclick="copytoclipboard();">Copy</button><button onclick="exporttofile();">Download</button>
 		</div>
 	</header>
 </body>

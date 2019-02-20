@@ -5,7 +5,7 @@ function BTreeExporter(outputHTML) {
 }
 
 BTreeExporter.prototype.setText = function(text) {
-  this.outputHTML.attr("value", text);
+  this.outputHTML.val(text);
 }
 
 BTreeExporter.prototype.export = function(graphEditor) {
@@ -68,7 +68,7 @@ BTreeExporter.prototype.expNode = function(node, nodeID) {
   var type = node.getModel().id;
   if(type < 0) throw "Invalid configuration : nodes types are not selected";
 
-  var str = "-n" + nodeID + " " + type + " ";
+  var str = "--n" + nodeID + " " + type + " ";
 
   str += this.expNodeContent(node, nodeID);
 

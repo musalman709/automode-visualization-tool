@@ -179,6 +179,7 @@ function GraphEditor(graphcontainer, toolscontainer, paramcontainer) {
 	this.toolscontainer = toolscontainer;
 	this.paramcontainer = paramcontainer;
 	this.exporter = undefined;
+	this.importer = undefined;
 	this.svg = undefined;
 	this.nodemodels = [];
 	this.nodeparams = [];
@@ -240,6 +241,17 @@ GraphEditor.prototype.getNodeModels = function() {
   return this.nodemodels;
 }
 
+GraphEditor.prototype.getNodeModelById = function(id) {
+  var model = undefined;
+  this.nodemodels.forEach(function(m) {
+    if(m.id == id) {
+      model = m;
+    }
+  });
+
+  return model;
+}
+
 GraphEditor.prototype.getNodeParams = function() {
   return this.nodeparams;
 }
@@ -252,9 +264,6 @@ GraphEditor.prototype.getNodeParamById = function(id) {
     }
   });
 
-  if(param === undefined) {
-    return defaultNodeParam();
-  }
   return param;
 }
 
@@ -417,5 +426,13 @@ GraphEditor.prototype.setExporter = function(exporter) {
 
 GraphEditor.prototype.callExporter = function() {
   this.exporter.export(this);
+}
+
+GraphEditor.prototype.setImporter = function(importer) {
+  this.importer = importer;
+}
+
+GraphEditor.prototype.callImporter = function() {
+  this.importer.import(this);
 }
 

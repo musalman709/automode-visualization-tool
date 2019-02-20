@@ -44,6 +44,9 @@ GraphEditorNode.prototype.setModel = function(model) {
   var pos = this.getPosition();
 
   this.model = model;
+  if(this.model === undefined) {
+    this.model = defaultNodeModel();
+  }
 
   // remove edges if there's too much
   while(this.model.max_incoming_edges >= 0 &&
@@ -67,7 +70,7 @@ GraphEditorNode.prototype.getModel = function() {
   return this.model;
 }
 GraphEditorNode.prototype.setParam = function(param) {
-  if(this.param === undefined) {
+  if(param === undefined) {
     this.param = defaultNodeParam();
   } else {
     this.param = param;
