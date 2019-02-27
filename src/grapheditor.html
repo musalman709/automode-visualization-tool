@@ -46,7 +46,8 @@
 		  <a id="switchlink" href="#">switch</a>
 	  </div>
 	  <div id="cmdline-container">
-		  <input id="cmdline" type="text" placeholder="Command line string" onchange="importfromcmdline();"></input><button onclick="copytoclipboard();">Copy</button><button onclick="exporttofile();">Download</button>
+	    <input id="openfileinput" type="file" style="display: none;" onchange="importfromfile();"></input>
+		  <button class="left" onclick="triggeropenfile();">Open</button><input id="cmdline" type="text" placeholder="Command line string" onchange="importfromcmdline();"></input><button class="right" onclick="copytoclipboard();">Copy</button><button class="right" onclick="exporttofile();">Save</button>
 		</div>
 	</header>
 </body>

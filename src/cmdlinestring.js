@@ -25,3 +25,17 @@ function importfromcmdline() {
   grapheditor.callImporter();
 }
 
+function triggeropenfile() {
+  $("#openfileinput").click();
+}
+
+function importfromfile() {
+  var input = document.getElementById("openfileinput");
+  var reader = new FileReader();
+  reader.readAsText(input.files[0]);
+  reader.onloadend = function(event){
+    $("#cmdline").val(reader.result);
+    grapheditor.callImporter();
+  }
+}
+

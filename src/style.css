@@ -68,7 +68,14 @@ header {
   margin: 0px;
   padding: 4px;
   border: 1px solid black;
+}
+
+#cmdline-container button.right {
   border-left: 0px;
+}
+
+#cmdline-container button.left {
+  border-right: 0px;
 }
 
 section {
