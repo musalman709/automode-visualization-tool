@@ -61,3 +61,30 @@ function setBTreeNodePosition(node, info, area) {
     widthAccumulator += relwidth;
   }
 }
+
+
+
+function BTreeBeautifyTool() {
+	GraphEditorTool.call(this);
+}
+BTreeBeautifyTool.prototype = Object.create(GraphEditorTool.prototype);
+
+BTreeBeautifyTool.prototype.getToolId = function() {
+	return "btree_beautify";
+}
+BTreeBeautifyTool.prototype.getName = function() {
+	return "Beautify";
+}
+BTreeBeautifyTool.prototype.onToolSelect = function() {
+  try {
+    this.graphEditor.setSelectedElement(undefined);
+
+    var root = findBTreeRoot(this.graphEditor);
+    beautifyBTree(this.graphEditor, root);
+
+  } catch(err) {
+    // pass
+  }
+
+  this.graphEditor.setCurrentTool(undefined);
+}

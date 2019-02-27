@@ -16,6 +16,14 @@ function switchToBTree(graphEditor) {
   loadElementModels("btree/nodemodels.json", "btree/edgemodels.json", graphEditor);
   loadElementParams("btree/nodeparams.json", "btree/edgemodels.json", graphEditor);
 
+  graphEditor.clearTools();
+	graphEditor.addTool(new GraphEditorSelectTool());
+	graphEditor.addTool(new GraphEditorNewNodeTool());
+	graphEditor.addTool(new GraphEditorNewEdgeTool());
+	graphEditor.addTool(new GraphEditorDraggingTool());
+	graphEditor.addTool(new GraphEditorDeleteTool());
+  graphEditor.addTool(new BTreeBeautifyTool());
+
   $("#switchlink").click(function() {
     switchToFSM(graphEditor);
   });
@@ -38,6 +46,13 @@ function switchToFSM(graphEditor) {
 
   loadElementModels("fsm/nodemodels.json", "fsm/edgemodels.json", graphEditor);
   loadElementParams("fsm/nodeparams.json", "fsm/edgemodels.json", graphEditor);
+
+  graphEditor.clearTools();
+	graphEditor.addTool(new GraphEditorSelectTool());
+	graphEditor.addTool(new GraphEditorNewNodeTool());
+	graphEditor.addTool(new GraphEditorNewEdgeTool());
+	graphEditor.addTool(new GraphEditorDraggingTool());
+	graphEditor.addTool(new GraphEditorDeleteTool());
 
   $("#switchlink").click(function() {
     switchToBTree(graphEditor);
@@ -100,11 +115,6 @@ $(document).ready(function(){
 	grapheditor = new GraphEditor(
 		$("#graph-container"), $("#tools-container"),
 		$("#param-container"));
-	grapheditor.addTool(new GraphEditorSelectTool());
-	grapheditor.addTool(new GraphEditorNewNodeTool());
-	grapheditor.addTool(new GraphEditorNewEdgeTool());
-	grapheditor.addTool(new GraphEditorDraggingTool());
-	grapheditor.addTool(new GraphEditorDeleteTool());
 
 	switchToBTree(grapheditor);
 });

@@ -391,6 +391,12 @@ GraphEditor.prototype.setCurrentTool = function(tool) {
 	}
 }
 
+GraphEditor.prototype.clearTools = function() {
+  this.setCurrentTool(undefined);
+  this.tools = [];
+	this.toolscontainer.empty();
+}
+
 GraphEditor.prototype.SVGCoordFromHTML = function(x, y) {
 	var svgPt = this.svg[0].createSVGPoint();
 	svgPt.x = x;

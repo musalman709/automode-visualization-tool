@@ -50,7 +50,7 @@ BTreeImporter.prototype.import = function(graphEditor) {
     while(! iterator.end()) {
       var key = iterator.next();
 
-      if(this.isStartArg(key))
+      if(this.isStartArg(key) || key == "")
         continue;
 
       var value = iterator.next();
