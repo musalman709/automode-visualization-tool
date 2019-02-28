@@ -349,6 +349,10 @@ GraphEditor.prototype.setSelectedElement = function(element) {
 	}
 }
 
+GraphEditor.prototype.getSelectedElement = function() {
+	return this.selectedElement;
+}
+
 GraphEditor.prototype.updateParamPane = function() {
   this.paramcontainer.empty();
   if(this.selectedElement !== undefined) {
@@ -406,7 +410,6 @@ GraphEditor.prototype.SVGCoordFromHTML = function(x, y) {
 }
 
 GraphEditor.prototype.onMouseDown = function(e, element) {
-	this.setSelectedElement(element);
 	if(this.currentTool !== undefined) {
 		var pos = this.SVGCoordFromHTML(e.pageX, e.pageY);
 		this.currentTool.onMouseDown(pos, element);

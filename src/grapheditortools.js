@@ -33,10 +33,11 @@ GraphEditorNewNodeTool.prototype.getName = function() {
 	return "Add Node";
 }
 GraphEditorNewNodeTool.prototype.onMouseDown = function(pos, element) {
+  this.graphEditor.setSelectedElement(undefined);
 	if(element === undefined) {
-		this.graphEditor.addElement(
-			new GraphEditorNode("rd_node", pos)
-			);
+	  var node = new GraphEditorNode("rd_node", pos);
+		this.graphEditor.addElement(node);
+		this.graphEditor.setSelectedElement(node);
 	}
 }
 
@@ -45,42 +46,41 @@ GraphEditorNewNodeTool.prototype.onMouseDown = function(pos, element) {
 function GraphEditorNewEdgeTool() {
 	GraphEditorTool.call(this);
 	this.graphEditor = undefined;
-	this.lastNodeClicked = undefined;
 }
 GraphEditorNewEdgeTool.prototype = Object.create(GraphEditorTool.prototype)
 
+GraphEditorNewEdgeTool.prototype.onToolSelect = function() {
+  this.graphEditor.setSelectedElement(undefined);
+}
 GraphEditorNewEdgeTool.prototype.getToolId = function() {
 	return "addedge";
 }
 GraphEditorNewEdgeTool.prototype.getName = function() {
 	return "Add Edge";
 }
-GraphEditorNewEdgeTool.prototype.onToolDeselect = function() {
-	this.lastNodeClicked = undefined;
-}
 GraphEditorNewEdgeTool.prototype.onMouseDown = function(pos, element) {
-	if(element !== undefined && element.isNode()) {
-	  // already first element clicked
-		if(this.lastNodeClicked !== undefined
-		&& this.lastNodeClicked !== element) {
-		  // create edge
-			var edge = new GraphEditorEdge("rd_edge",
-				this.lastNodeClicked, element)
-			// if edge valid, add it
-			if(edge.isValid()) {
-			  this.graphEditor.addElement(edge);
-			}
-			// deleselect
-			this.lastNodeClicked = undefined;
-			this.graphEditor.setSelectedElement(undefined);
-		// no previous element
-		} else {
-			this.lastNodeClicked = element;
-		}
-	} else { // element undefined or not a node
-		this.lastNodeClicked = undefined;
-		this.graphEditor.setSelectedElement(undefined);
-	}
+  if(element === undefined) {
+    this.graphEditor.setSelectedElement(undefined);
+  }
+  else {
+    var selected = this.graphEditor.getSelectedElement();
+
+    if(selected === undefined) {
+      this.graphEditor.setSelectedElement(element);
+    }
+    else {
+      if(element.isNode() && selected.isNode()) {
+        // create edge
+	      var edge = new GraphEditorEdge("rd_edge", selected, element)
+	      // if edge valid, add it
+	      if(edge.isValid()) {
+	        this.graphEditor.addElement(edge);
+	      }
+      }
+		  // deleselect
+		  this.graphEditor.setSelectedElement(undefined);
+    }
+  }
 }
 
 
@@ -103,6 +103,7 @@ GraphEditorDraggingTool.prototype.getName = function() {
 }
 GraphEditorDraggingTool.prototype.onMouseDown = function(pos, element) { 
 	this.setDragged(element);
+	this.graphEditor.setSelectedElement(element);
 }
 GraphEditorDraggingTool.prototype.onMouseUp = function(pos) {
 	this.setDragged(undefined);
@@ -130,7 +131,7 @@ GraphEditorDeleteTool.prototype.getToolId = function() {
 GraphEditorDeleteTool.prototype.getName = function() {
 	return "Delete";
 }
-GraphEditorDeleteTool.prototype.onMouseDown = function(pos, element) { 
+GraphEditorDeleteTool.prototype.onMouseDown = function(pos, element) {
 	if(element !== undefined) {
 		var that = this;
 		element.onRemoval();
