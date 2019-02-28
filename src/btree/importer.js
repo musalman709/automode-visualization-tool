@@ -64,12 +64,15 @@ BTreeImporter.prototype.import = function(graphEditor) {
 
     graphEditor.clearElements();
 
-    var node = this.importNode(graphEditor, dict, "root");
+    if(cmdlinestring !== "")
+    {
+      var node = this.importNode(graphEditor, dict, "root");
+
+      beautifyBTree(graphEditor, node);
+    }
 
     // reset cmdline to proper one
     graphEditor.callExporter();
-
-    beautifyBTree(graphEditor, node);
 
   } catch(err) {
     graphEditor.clearElements();
