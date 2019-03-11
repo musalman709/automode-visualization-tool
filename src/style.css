@@ -78,6 +78,10 @@ header {
   border-right: 0px;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
 section {
 	padding: 0px;
 	margin: 0px;

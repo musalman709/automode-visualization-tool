@@ -109,6 +109,9 @@ function loadElementParams(nodes_url, edges_url, graphEditor) {
   });
 }
 
+$(document).keydown(function(event) {
+  cmdline_keydown(event);
+});
 
 $(document).ready(function(){
 

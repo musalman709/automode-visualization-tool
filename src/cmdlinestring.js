@@ -39,3 +39,20 @@ function importfromfile() {
   }
 }
 
+function cmdline_keydown(event) {
+  if(event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
+    if(event.key == "s") {
+      event.preventDefault();
+      exporttofile();
+    }
+    if(event.key == "c") {
+      event.preventDefault();
+      copytoclipboard();
+    }
+    if(event.key == "o") {
+      event.preventDefault();
+      triggeropenfile();
+    }
+  }
+}
+
