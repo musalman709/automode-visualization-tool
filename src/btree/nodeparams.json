@@ -40,7 +40,7 @@
 				]
 			},
 			{
-				"name": "Photoaxis",
+				"name": "Phototaxis",
 				"id": "2",
 				"display_name": "Pha",
 				"param": [
@@ -54,7 +54,7 @@
 				]
 			},
 			{
-				"name": "Anti-photoaxis",
+				"name": "Anti-phototaxis",
 				"id": "3",
 				"display_name": "APha",
 				"param": [
@@ -159,7 +159,7 @@
 				]
 			},
 			{
-				"name": "Neightbors count",
+				"name": "Neighbors count",
 				"id": "3",
 				"display_name": "Ngb",
 				"param": [
@@ -180,7 +180,7 @@
 				]
 			},
 			{
-				"name": "Inverted neightbors count",
+				"name": "Inverted neighbors count",
 				"id": "4",
 				"display_name": "INgb",
 				"param": [
