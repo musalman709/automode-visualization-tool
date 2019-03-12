@@ -17,7 +17,7 @@ function switchToBTree(graphEditor) {
   loadElementParams("btree/nodeparams.json", "btree/edgemodels.json", graphEditor);
 
   graphEditor.clearTools();
-	graphEditor.addTool(new GraphEditorSelectTool());
+	graphEditor.addTool(new GraphEditorSelectTool(), true);
 	graphEditor.addTool(new GraphEditorNewNodeTool());
 	graphEditor.addTool(new GraphEditorNewEdgeTool());
 	graphEditor.addTool(new GraphEditorDraggingTool());
@@ -48,7 +48,7 @@ function switchToFSM(graphEditor) {
   loadElementParams("fsm/nodeparams.json", "fsm/edgemodels.json", graphEditor);
 
   graphEditor.clearTools();
-	graphEditor.addTool(new GraphEditorSelectTool());
+	graphEditor.addTool(new GraphEditorSelectTool(), true);
 	graphEditor.addTool(new GraphEditorNewNodeTool());
 	graphEditor.addTool(new GraphEditorNewEdgeTool());
 	graphEditor.addTool(new GraphEditorDraggingTool());

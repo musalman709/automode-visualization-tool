@@ -187,6 +187,7 @@ function GraphEditor(graphcontainer, toolscontainer, paramcontainer) {
 	this.edgeparams = [];
 	this.elements = [];
 	this.tools = [];
+	this.defaultTool = undefined;
 	this.currentTool = undefined;
 	this.selectedElement = undefined;
 	
@@ -364,7 +365,7 @@ GraphEditor.prototype.updateParamPane = function() {
   }
 }
 
-GraphEditor.prototype.addTool = function(tool) {
+GraphEditor.prototype.addTool = function(tool, isdefault = false) {
 	if(tool instanceof GraphEditorTool) {
 		this.tools.push(tool);
 		tool.graphEditor = this;
@@ -376,7 +377,24 @@ GraphEditor.prototype.addTool = function(tool) {
 			graphEditor.setCurrentTool(tool);
 		});
 		this.toolscontainer.append(element);
+
+		if(isdefault) {
+		  this.setDefaultTool(tool);
+		}
 	}
+}
+
+GraphEditor.prototype.setDefaultTool = function(tool) {
+  if(this.tools.contains(tool)) {
+    this.defaultTool = tool;
+
+    if(this.currentTool === undefined) {
+      this.setCurrentTool(tool);
+    }
+  }
+  else {
+    this.defaultTool = undefined;
+  }
 }
 
 GraphEditor.prototype.setCurrentTool = function(tool) {
@@ -388,6 +406,10 @@ GraphEditor.prototype.setCurrentTool = function(tool) {
 	
 	this.currentTool = tool;
 	
+	if(this.currentTool == undefined) {
+	  this.currentTool = this.defaultTool;
+	}
+
 	if(this.currentTool !== undefined) {
 		$("#tool_" + this.currentTool.getToolId())
 		.attr("class", "tool selected");
@@ -397,6 +419,7 @@ GraphEditor.prototype.setCurrentTool = function(tool) {
 
 GraphEditor.prototype.clearTools = function() {
   this.setCurrentTool(undefined);
+  this.setDefaultTool(undefined);
   this.tools = [];
 	this.toolscontainer.empty();
 }
