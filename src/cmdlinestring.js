@@ -4,8 +4,6 @@ function copytoclipboard() {
 }
 
 function exporttofile() {
-  // https://stackoverflow.com/questions/14964035/how-to-export-javascript-array-info-to-csv-on-client-side
-
   var cmdline = $("#cmdline").val()
 
   if(cmdline != "") {
@@ -34,7 +32,8 @@ function importfromfile() {
   var reader = new FileReader();
   reader.readAsText(input.files[0]);
   reader.onloadend = function(event){
-    $("#cmdline").val(reader.result);
+    var cmdline = reader.result.split("\n")[0];
+    $("#cmdline").val(cmdline);
     grapheditor.callImporter();
   }
 }

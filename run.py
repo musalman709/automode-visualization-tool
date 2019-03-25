@@ -14,7 +14,7 @@ def editor():
     return root_file("grapheditor.html")
 
 @app.route("/<path>")
-def file(path):
+def root_file(path):
     return send_from_directory('src/', path)
 
 @app.route("/btree/<path>")
