@@ -31,7 +31,6 @@ def exec_request():
 
     if cmdline.startswith("--bt-config") or cmdline.startswith("--fsm-config"):
         config = configparser.ConfigParser()
-        print(CONFIG_INI_FILE)
         config.read(CONFIG_INI_FILE)
 
         cmdline = cmdline.split(" ")
