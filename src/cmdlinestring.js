@@ -39,6 +39,23 @@ function importfromfile() {
   }
 }
 
+function execinsimulator() {
+  var cmdline = $("#cmdline").val();
+  var data = {cmdline:cmdline};
+
+  $.ajax({
+      url: 'exec',
+      data: data,
+      type: 'POST',
+      success: function(response) {
+          console.log(response);
+      },
+      error: function(error) {
+          console.log(error);
+      }
+  });
+}
+
 function cmdline_keydown(event) {
   if(event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
     if(event.key == "s") {
@@ -52,6 +69,10 @@ function cmdline_keydown(event) {
     if(event.key == "o") {
       event.preventDefault();
       triggeropenfile();
+    }
+    if(event.key == "e") {
+      event.preventDefault();
+      execinsimulator();
     }
   }
 }
