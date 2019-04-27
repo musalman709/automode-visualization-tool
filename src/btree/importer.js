@@ -1,3 +1,7 @@
+
+/**
+ * Iterator over the string tree, extracting one argument at a time
+ */
 function CmdLineIterator(cmdlinestring) {
   this.args = cmdlinestring.split(" ");
   this.i = 0;
@@ -23,9 +27,12 @@ CmdLineIterator.prototype.end = function() {
   return this.i >= this.args.length;
 }
 
+
 function BTreeImporter(inputHTML) {
   this.inputHTML = inputHTML;
 }
+
+BTreeImporter.prototype = Object.create(GraphEditorImporter.prototype);
 
 BTreeImporter.prototype.isStartArg = function(arg) {
   return arg == "--bt-config";

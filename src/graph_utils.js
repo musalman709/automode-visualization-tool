@@ -1,3 +1,6 @@
+/**
+ * Utility functions for graphs
+ */
 
 /**
  * Create a new SVG element (in JQuery object)

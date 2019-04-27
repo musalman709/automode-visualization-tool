@@ -1,4 +1,9 @@
 /**
+ * Utility functions for standard Array objects
+ */
+"use strict";
+
+/**
  * Return true if the array contains an object obj
  */
 Array.prototype.contains = function(obj) {

@@ -150,7 +150,7 @@
 		}
 	},
 	{
-		"name": "Behavior",
+		"name": "Action",
 		"id": "5",
 		"display_text": "A",
 		"max_incoming_edges": "1",

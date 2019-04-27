@@ -1,18 +1,26 @@
+/**
+ * Node and edges objects
+ */
 
 function GraphEditorNode(id, pos) {
 	GraphEditorElement.call(this);
 	this.id = id;
+
+	// egdes
 	this.incomingEdges = [];
 	this.outgoingEdges = [];
 
+  // model and parameters
 	this.model = defaultNodeModel();
 	this.param = defaultNodeParam();
-
 	this.paramdict = {};
 	this.paramcontainer = undefined;
 	
+	// graphics
 	this.pos = {x:0, y:0};
 	this.g = createSVGElement("g", {id:this.id});
+	this.frame = undefined;
+	this.text = undefined;
 
 	this.buildSVGElements();
 	this.move(pos);
@@ -137,6 +145,7 @@ GraphEditorNode.prototype.onDeselect = function() {
 	this.frame.attr("class", "nodeFrame");
 }
 GraphEditorNode.prototype.onRemoval = function() {
+  // delete edges before delete node
 	while(this.incomingEdges.length > 0) {
 		this.incomingEdges[0].onRemoval();
 	}
@@ -196,16 +205,22 @@ GraphEditorNode.prototype.updateEdges = function() {
 }
 
 
-
+/**
+ * Bind two nodes ('src' and 'dest')
+ */
 function GraphEditorEdge(id, srcElement, destElement) {
 	GraphEditorElement.call(this);
+	// src and dest
 	this.srcElement = undefined;
 	this.destElement = undefined;
+
 	this.id = id;
 
+  // model and parameters
 	this.model = defaultEdgeModel();
 	this.param = defaultEdgeParam();
 	
+	// bind src and dest
 	if(srcElement.canHaveMoreOutgoingEdges() &&
 	  destElement.canHaveMoreIncomingEdges()) {
 
@@ -263,6 +278,7 @@ GraphEditorEdge.prototype.getPosition = function() {
   return {x:this.line.attr("x1"), y:this.line.attr("y1")};
 }
 GraphEditorEdge.prototype.update = function() {
+  // move arrow when src or dest moved
 	this.line.attr("x1", this.srcElement.outgoingPos.x);
 	this.line.attr("y1", this.srcElement.outgoingPos.y);
 	this.line.attr("x2", this.destElement.incomingPos.x);

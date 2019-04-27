@@ -1,3 +1,6 @@
+/**
+ * Default models
+ */
 
 function defaultNodeModel() {
 

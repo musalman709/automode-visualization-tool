@@ -1,3 +1,7 @@
+/**
+ * Event functions for import/export string
+ */
+
 function copytoclipboard() {
   $("#cmdline").select();
   document.execCommand("copy");

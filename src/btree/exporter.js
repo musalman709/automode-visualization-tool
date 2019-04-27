@@ -1,4 +1,3 @@
-
 function findBTreeRoot(graphEditor) {
 
   var elements = graphEditor.getElements();
@@ -30,6 +29,8 @@ function BTreeExporter(outputHTML) {
   this.outputHTML.text("");
 }
 
+BTreeExporter.prototype = Object.create(GraphEditorExporter.prototype);
+
 BTreeExporter.prototype.setText = function(text) {
   this.outputHTML.val(text);
 }
@@ -48,7 +49,7 @@ BTreeExporter.prototype.export = function(graphEditor) {
     // Try to find root node
     root = findBTreeRoot(graphEditor);
 
-    // build tree
+    // build string
     this.setText(this.expRootNode(root));
 
   } catch(err) {

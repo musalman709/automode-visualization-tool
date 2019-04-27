@@ -1,4 +1,10 @@
+/**
+ * Initialisations functions
+ */
 
+/**
+ * Initialise editor and tools for BTrees
+ */
 function switchToBTree(graphEditor) {
 
   $("#title").text("AutoMoDe Behavior Trees Editor");
@@ -29,7 +35,9 @@ function switchToBTree(graphEditor) {
   });
 }
 
-
+/**
+ * Initialise tools and editor for FSM
+ */
 function switchToFSM(graphEditor) {
 
   $("#title").text("AutoMoDe Finite States Machines Editor");
@@ -59,7 +67,9 @@ function switchToFSM(graphEditor) {
   });
 }
 
-
+/**
+ * Load node/edge models from config file
+ */
 function loadElementModels(nodes_url, edges_url, graphEditor) {
 
   graphEditor.setNodeModels([]);
@@ -84,7 +94,9 @@ function loadElementModels(nodes_url, edges_url, graphEditor) {
   });
 }
 
-
+/**
+ * Load node/edge param data from config file
+ */
 function loadElementParams(nodes_url, edges_url, graphEditor) {
 
   graphEditor.setNodeParams([]);
@@ -109,10 +121,17 @@ function loadElementParams(nodes_url, edges_url, graphEditor) {
   });
 }
 
+/**
+ * Key pressed events
+ */
 $(document).keydown(function(event) {
   cmdline_keydown(event);
 });
 
+
+/**
+ * Initialisation when loading ends
+ */
 $(document).ready(function(){
 
 	grapheditor = new GraphEditor(

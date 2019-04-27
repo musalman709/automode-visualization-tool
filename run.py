@@ -10,7 +10,7 @@ if len(sys.argv) > 1 :
 app = Flask(__name__)
 
 @app.route("/")
-def editor():
+def editor_file():
     return root_file("grapheditor.html")
 
 @app.route("/<path>")

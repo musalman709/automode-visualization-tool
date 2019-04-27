@@ -1,4 +1,10 @@
+/**
+ * Beautifier algorithm
+ */
 
+/**
+ * Move nodes to make the tree looks better
+ */
 function beautifyBTree(graphEditor, rootNode) {
 
   var area = {x:0, y:0, w:0, h:0, relh:0, relw:0};
@@ -10,6 +16,9 @@ function beautifyBTree(graphEditor, rootNode) {
   setBTreeNodePosition(rootNode, rootInfo, area);
 }
 
+/**
+ * Recursively collect node informations
+ */
 function getBTreeNodeInfo(node) {
 
   var info = {depth:1, cumulativeChildrenNb:0, childrenInfo:[]};
@@ -31,6 +40,9 @@ function getBTreeNodeInfo(node) {
   return info;
 }
 
+/**
+ * Recursively update node positions
+ */
 function setBTreeNodePosition(node, info, area) {
 
   if(area.relh == 0)
@@ -63,7 +75,9 @@ function setBTreeNodePosition(node, info, area) {
 }
 
 
-
+/**
+ * Beautify tool
+ */
 function BTreeBeautifyTool() {
 	GraphEditorTool.call(this);
 }
@@ -76,6 +90,7 @@ BTreeBeautifyTool.prototype.getName = function() {
 	return "Beautify";
 }
 BTreeBeautifyTool.prototype.onToolSelect = function() {
+  // call beautifier algo
   try {
     this.graphEditor.setSelectedElement(undefined);
 
@@ -86,5 +101,6 @@ BTreeBeautifyTool.prototype.onToolSelect = function() {
     // pass
   }
 
+  // Reselect default tool
   this.graphEditor.setCurrentTool(undefined);
 }

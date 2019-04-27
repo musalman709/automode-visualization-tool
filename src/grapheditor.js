@@ -1,139 +1,10 @@
-"use strict";
+/**
+ * GraphEditor main prototypes
+ */
 
 /**
- * Create a select option for a model
+ * Prototype of node and edges
  */
-function createModelOption(model, param, graphEditor, element) {
-  var opt_tag = $('<option></option>');
-
-  opt_tag.val(model.id);
-  opt_tag.html(model.name);
-  opt_tag.click(function(obj) {
-    element.setModel(model);
-    element.setParam(param);
-    graphEditor.updateParamPane();
-    graphEditor.callExporter();
-  });
-
-  if(model === element.getModel()) {
-    opt_tag.attr("selected", "selected");
-  }
-
-  return opt_tag;
-}
-
-/**
- * Create a select list for nodes/edges models
- */
-function createModelsSelectMenu(graphEditor, element) {
-
-  var modelsArray = undefined;
-  var defaultModel = undefined;
-  var defaultParam = undefined;
-
-  // get the models
-  if(element.isNode()) {
-    modelsArray = graphEditor.getNodeModels();
-    defaultModel = defaultNodeModel();
-    defaultParam = defaultNodeParam();
-  } else {
-    modelsArray = graphEditor.getEdgeModels();
-    defaultModel = defaultEdgeModel();
-    defaultParam = defaultEdgeParam();
-  }
-
-  // build the combo box
-  var select_tag = $('<select></select>');
-  select_tag.addClass("paramselect");
-
-  // add the option for default model
-  select_tag.append(createModelOption(defaultModel, defaultParam, graphEditor,
-    element));
-
-  // add one option per available model
-  modelsArray.forEach(function(model) {
-    var param = undefined;
-    if(element.isNode()) {
-      param = graphEditor.getNodeParamById(model.id);
-    } else {
-      param = graphEditor.getEdgeParamById(model.id);
-    }
-    select_tag.append(createModelOption(model, param, graphEditor, element));
-  });
-
-  return select_tag;
-}
-
-/**
- * Create a select list for nodes/edge category
- */
-function createCategorySelectMenu(params, element, catvalue, graphEditor) {
-  var catselect = $("<select></select>");
-  catselect.addClass("paramselect");
-  params.categories.forEach(function(c){
-    var opt = $("<option></option>");
-    opt.val(c.id);
-    opt.text(c.name);
-    if(c.id == catvalue) {
-      opt.attr("selected", "selected");
-    }
-    opt.click(function(obj) {
-      element.setParamValue(params.categoryid, c.id);
-      graphEditor.updateParamPane();
-      graphEditor.callExporter();
-    });
-    catselect.append(opt);
-  });
-
-  return catselect;
-}
-
-/**
- * Create an input for a node/edge parameter
- */
-function createParameterInput(param, element, graphEditor) {
-  var paraminput = $("<input type=number></input>");
-  paraminput.addClass("paraminput");
-  paraminput.attr("name", param.id);
-  paraminput.attr("min", param.min);
-  paraminput.attr("max", param.max);
-  paraminput.attr("step", param.step);
-  paraminput.attr("value", param.min);
-  paraminput.val(element.getParamDict()[param.id]);
-  paraminput.on('change', function() {
-    element.setParamValue(param.id, paraminput.val());
-    graphEditor.callExporter();
-  });
-  return paraminput;
-}
-
-/**
- * Create the pane for node/edge category with each corresponding parameter
- */
-function createParamPane(params, element, container, graphEditor) {
-  if(params.categories.length > 0) {
-
-    container.append($("<p class=\"asidetitle\">Module</p>"));
-
-    var catvalue = element.getParamDict()[params.categoryid];
-    container.append(createCategorySelectMenu(params, element, catvalue,
-      graphEditor));
-
-    params.categories.forEach(function(c) {
-      if(c.id == catvalue) {
-        c.param.forEach(function(p) {
-          container.append("<p class=\"paramname\">" + p.name +
-            "<span class=\"textrange\">[" + p.min + "; " + p.max + "]</span>" +
-            "</p>");
-          container.append(createParameterInput(p, element, graphEditor));
-        });
-      }
-    });
-  }
-}
-
-
-
 function GraphEditorElement() {
 	this.grapheditor = undefined;
 }
@@ -146,7 +17,6 @@ GraphEditorElement.prototype.setModel = function(model) {}
 GraphEditorElement.prototype.getModel = function() {}
 GraphEditorElement.prototype.setParam = function(param) {}
 GraphEditorElement.prototype.getParam = function() {}
-GraphEditorElement.prototype.buildParamPane = function() {}
 GraphEditorElement.prototype.setParamValue = function(param, value) {}
 GraphEditorElement.prototype.getParamDict = function() {}
 GraphEditorElement.prototype.move = function(newPos) {}
@@ -156,8 +26,9 @@ GraphEditorElement.prototype.onSelect = function() {}
 GraphEditorElement.prototype.onDeselect = function() {}
 GraphEditorElement.prototype.onRemoval = function() {}
 
-
-
+/**
+ * Prototype of editor tools
+ */
 function GraphEditorTool() {
 	this.grapheditor = undefined;
 }
@@ -168,24 +39,46 @@ GraphEditorTool.prototype.onMouseUp = function(pos) {}
 GraphEditorTool.prototype.onMouseLeave = function() {}
 GraphEditorTool.prototype.onMouseMove = function(pos) {}
 
+/**
+ * Prototype of graph to string exporters
+ */
+function GraphEditorExporter() {}
+GraphEditorExporter.prototype.export = function() {}
+
+/**
+ * Prototype of string to graph importer
+ */
+function GraphEditorImporter() {}
+GraphEditorImporter.prototype.import = function() {}
 
 
 /**
- * Create a GraphEditor, an object that manages tools and graph elements,
+ * Object that manages tools and graph elements,
  * create the svg area and receive input from the user 
  */
 function GraphEditor(graphcontainer, toolscontainer, paramcontainer) {
+  // html elements
 	this.graphcontainer = graphcontainer;
 	this.toolscontainer = toolscontainer;
 	this.paramcontainer = paramcontainer;
+
+	// import / export
 	this.exporter = undefined;
 	this.importer = undefined;
+
+	// svg html element
 	this.svg = undefined;
+
+	// models lists
 	this.nodemodels = [];
 	this.nodeparams = [];
 	this.edgemodels = [];
 	this.edgeparams = [];
+
+	// graph elements
 	this.elements = [];
+
+	// tools
 	this.tools = [];
 	this.defaultTool = undefined;
 	this.currentTool = undefined;
@@ -195,14 +88,15 @@ function GraphEditor(graphcontainer, toolscontainer, paramcontainer) {
 	
 	var that = this;
 	
+	// events
 	this.svg.on("mousedown", function(e) { that.onMouseDown(e); });
 	this.svg.on("mouseup", function(e) { that.onMouseUp(e);	});
 	this.svg.on("mouseleave", function(e) {	that.onMouseLeave(e); });
 	this.svg.on("mousemove", function(e) { that.onMouseMove(e);	});
 }
 
-
 GraphEditor.prototype.createGraph = function() {
+  // Initialisation function
 	this.graphcontainer.empty();
 	this.toolscontainer.empty();
 	this.paramcontainer.empty();
@@ -329,7 +223,7 @@ GraphEditor.prototype.getElements = function() {
 }
 
 GraphEditor.prototype.clearElements = function() {
-  // Not the more efficient but we are sur that all elements
+  // Not the most efficient but we are sur that all elements
   // are deleted properly
   while(this.elements.length > 0) {
     this.removeElement(this.elements[this.elements.length-1]);
@@ -337,6 +231,7 @@ GraphEditor.prototype.clearElements = function() {
 }
 
 GraphEditor.prototype.setSelectedElement = function(element) {
+  // unselect previous element
 	if(this.selectedElement !== undefined) {
 		this.selectedElement.onDeselect();
 	}
@@ -344,6 +239,7 @@ GraphEditor.prototype.setSelectedElement = function(element) {
 	this.selectedElement = element;
 	this.paramcontainer.empty();
 
+  // select new element
 	if(this.selectedElement !== undefined) {
 		this.selectedElement.onSelect();
     this.updateParamPane();
@@ -357,9 +253,11 @@ GraphEditor.prototype.getSelectedElement = function() {
 GraphEditor.prototype.updateParamPane = function() {
   this.paramcontainer.empty();
   if(this.selectedElement !== undefined) {
+    // model selector
     this.paramcontainer.append($("<p class=\"asidetitle\">Type</p>"));
 	  this.paramcontainer.append(createModelsSelectMenu(this,
 	    this.selectedElement));
+	  // parameter elements
 	  createParamPane(this.selectedElement.getParam(), this.selectedElement,
 	    this.paramcontainer, this);
   }
@@ -369,9 +267,9 @@ GraphEditor.prototype.addTool = function(tool, isdefault = false) {
 	if(tool instanceof GraphEditorTool) {
 		this.tools.push(tool);
 		tool.graphEditor = this;
-		
+
 		var graphEditor = this;
-		var element = jQuery("<p/>", {class:"tool", 
+		var element = jQuery("<p/>", {class:"tool",
 		id:"tool_" + tool.getToolId(), text:tool.getName()});
 		element.on("click", function(e) {
 			graphEditor.setCurrentTool(tool);
@@ -461,18 +359,30 @@ GraphEditor.prototype.addSVGElement = function(element) {
 }
 
 GraphEditor.prototype.setExporter = function(exporter) {
-  this.exporter = exporter;
+  if(exporter instanceof GraphEditorExporter) {
+    this.exporter = exporter;
+  } else {
+    this.exporter = undefined;
+  }
 }
 
 GraphEditor.prototype.callExporter = function() {
-  this.exporter.export(this);
+  if(this.exporter !== undefined) {
+    this.exporter.export(this);
+  }
 }
 
 GraphEditor.prototype.setImporter = function(importer) {
-  this.importer = importer;
+  if(importer instanceof GraphEditorImporter) {
+    this.importer = importer;
+  } else {
+    this.importer = undefined;
+  }
 }
 
 GraphEditor.prototype.callImporter = function() {
-  this.importer.import(this);
+  if(this.importer !== undefined) {
+    this.importer.import(this);
+  }
 }
 

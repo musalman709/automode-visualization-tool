@@ -3,6 +3,7 @@
   		"nodename": "Action",
   		"nodeid": "5",
   		"categoryid": "a",
+  		"categoriesname": "Behavior",
   		"categories": [
   			{
 				"name": "Exploration",
@@ -115,6 +116,7 @@
 		"nodename": "Condition",
 		"nodeid": "6",
 		"categoryid": "c",
+  		"categoriesname": "Condition",
 		"categories": [
 			{
 				"name": "Black floor",

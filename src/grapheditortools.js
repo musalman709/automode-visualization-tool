@@ -1,4 +1,10 @@
+/**
+ * Shared tools between Btree and FSM
+ */
 
+/**
+ * Select the clicked element
+ */
 function GraphEditorSelectTool() {
 	GraphEditorTool.call(this);
 	this.graphEditor = undefined;
@@ -19,7 +25,9 @@ GraphEditorSelectTool.prototype.onMouseDown = function(pos, element) {
 	}
 }
 
-
+/**
+ * Create a new node at click pos
+ */
 function GraphEditorNewNodeTool() {
 	GraphEditorTool.call(this);
 	this.graphEditor = undefined;
@@ -34,6 +42,7 @@ GraphEditorNewNodeTool.prototype.getName = function() {
 }
 GraphEditorNewNodeTool.prototype.onMouseDown = function(pos, element) {
   this.graphEditor.setSelectedElement(undefined);
+  // only create node if mouse over empty space
 	if(element === undefined) {
 	  var node = new GraphEditorNode("rd_node", pos);
 		this.graphEditor.addElement(node);
@@ -41,8 +50,9 @@ GraphEditorNewNodeTool.prototype.onMouseDown = function(pos, element) {
 	}
 }
 
-
-
+/**
+ * Create a new edge between two nodes
+ */
 function GraphEditorNewEdgeTool() {
 	GraphEditorTool.call(this);
 	this.graphEditor = undefined;
@@ -50,6 +60,7 @@ function GraphEditorNewEdgeTool() {
 GraphEditorNewEdgeTool.prototype = Object.create(GraphEditorTool.prototype)
 
 GraphEditorNewEdgeTool.prototype.onToolSelect = function() {
+  // deselect previous element
   this.graphEditor.setSelectedElement(undefined);
 }
 GraphEditorNewEdgeTool.prototype.getToolId = function() {
@@ -59,9 +70,11 @@ GraphEditorNewEdgeTool.prototype.getName = function() {
 	return "Add Edge";
 }
 GraphEditorNewEdgeTool.prototype.onMouseDown = function(pos, element) {
+  // select first element
   if(element === undefined) {
     this.graphEditor.setSelectedElement(undefined);
   }
+  // on second element clicked, create edge between them
   else {
     var selected = this.graphEditor.getSelectedElement();
 
@@ -83,11 +96,13 @@ GraphEditorNewEdgeTool.prototype.onMouseDown = function(pos, element) {
   }
 }
 
-
-
+/**
+ * Drag an element
+ */
 function GraphEditorDraggingTool() {
 	GraphEditorTool.call(this);
 	this.graphEditor = undefined;
+	// the current dragged element
 	this.dragged = undefined;
 }
 GraphEditorDraggingTool.prototype = Object.create(GraphEditorTool.prototype)
@@ -102,24 +117,29 @@ GraphEditorDraggingTool.prototype.getName = function() {
 	return "Drag";
 }
 GraphEditorDraggingTool.prototype.onMouseDown = function(pos, element) { 
+  // drag start
 	this.setDragged(element);
 	this.graphEditor.setSelectedElement(element);
 }
 GraphEditorDraggingTool.prototype.onMouseUp = function(pos) {
+  // drag end
 	this.setDragged(undefined);
 }
 GraphEditorDraggingTool.prototype.onMouseLeave = function() {
+  // drag end
 	this.setDragged(undefined);
 }
 GraphEditorDraggingTool.prototype.onMouseMove = function(pos) {
+  // drag in progress, move element to mouse pos
 	if(this.dragged !== undefined) {
 		this.dragged.move(pos);
 		this.graphEditor.callExporter();
 	}
 }
 
-
-
+/**
+ * Delete element
+ */
 function GraphEditorDeleteTool() {
 	GraphEditorTool.call(this);
 }
@@ -132,6 +152,7 @@ GraphEditorDeleteTool.prototype.getName = function() {
 	return "Delete";
 }
 GraphEditorDeleteTool.prototype.onMouseDown = function(pos, element) {
+  // remove cliked element
 	if(element !== undefined) {
 		var that = this;
 		element.onRemoval();
