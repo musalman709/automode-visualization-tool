@@ -3,10 +3,7 @@
 import sys, configparser, webbrowser, subprocess
 from flask import Flask, request, send_from_directory
 
-CONFIG_INI_FILE = "config.ini"
-if len(sys.argv) > 1 :
-    CONFIG_INI_FILE = sys.argv[1]
-
+CONFIG_INI_FILE = ""
 app = Flask(__name__)
 
 @app.route("/")
@@ -35,7 +32,13 @@ def exec_request():
 
         cmdline = cmdline.split(" ")
         arguments = [config['ARGOS']['automode_path'], "-n", "-c", \
-                     config['ARGOS']['scenario_path']] + cmdline
+                     config['ARGOS']['scenario_path']]
+
+        if config.has_option('ARGOS', 'seed'):
+            arguments += ["--seed", config['ARGOS']['seed']]
+
+        arguments += cmdline
+
         print("[EXECUTION REQUEST]", " ".join(arguments))
         subprocess.run(arguments)
     else:
@@ -44,6 +47,13 @@ def exec_request():
     return ""
 
 if __name__ == "__main__":
+
+    if len(sys.argv) > 1 :
+        CONFIG_INI_FILE = sys.argv[1]
+    else:
+        print("Usage : ./run.py <configfile>", file=sys.stderr)
+        exit()
+
     webbrowser.open('localhost:5000', autoraise=True)
     app.run()
     print()
