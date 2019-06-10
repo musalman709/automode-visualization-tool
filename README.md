@@ -34,6 +34,9 @@ required parameters to launch the simulation, especially the path to
 the ARGoS executable and the path to the scenario file. 
 The file `config.ini` serves as a template.
 
+Once the server is started, the editor should open by itself. If not,
+open the address `localhost:5000` in your web browser.
+
 ### Opening the editor without server
 
 Just open the file `src/grapheditor.html` in your web browser.
