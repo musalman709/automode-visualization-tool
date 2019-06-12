@@ -6,7 +6,7 @@
  * Prototype of node and edges
  */
 function GraphEditorElement() {
-	this.grapheditor = undefined;
+	this.graphEditor = undefined;
 }
 GraphEditorElement.prototype.getName = function() {
   return "<unknown element>";
@@ -30,7 +30,7 @@ GraphEditorElement.prototype.onRemoval = function() {}
  * Prototype of editor tools
  */
 function GraphEditorTool() {
-	this.grapheditor = undefined;
+	this.graphEditor = undefined;
 }
 GraphEditorTool.prototype.onToolSelect = function() {}
 GraphEditorTool.prototype.onToolDeselect = function() {}
@@ -168,6 +168,17 @@ GraphEditor.prototype.getNodeParamById = function(id) {
   });
 
   return param;
+}
+
+GraphEditor.prototype.getEdgeModelById = function(id) {
+  var model = undefined;
+  this.edgemodels.forEach(function(m) {
+    if(m.id == id) {
+      model = m;
+    }
+  });
+
+  return model;
 }
 
 GraphEditor.prototype.getEdgeModels = function() {

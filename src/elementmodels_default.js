@@ -50,8 +50,9 @@ function defaultEdgeModel() {
 
   return {
     "name": "-- default --",
-    "id": "-1"
-  };
+    "id": "-1",
+    "display_opts" : "arrowthick"
+    };
 }
 
 function defaultEdgeParam() {

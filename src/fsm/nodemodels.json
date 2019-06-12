@@ -1,1 +1,30 @@
-[]
+[
+	{
+		"name": "State",
+		"id": "0",
+		"display_text": "S",
+		"max_incoming_edges": "10",
+		"max_outgoing_edges": "10",
+		"display_tag": "circle",
+		"display_opts": {
+			"class": "nodeFrame",
+			"r": "30",
+			"cx": "0",
+			"cy": "0"
+		},
+		"display_text_opts": {
+			"text-anchor": "middle",
+			"dominant-baseline": "middle",
+			"x": "0",
+			"y": "0"
+		},
+		"incoming_point": {
+			"x": "0",
+			"y": "-30"
+		},
+		"outgoing_point": {
+			"x": "0",
+			"y": "30"
+		}
+	}
+]

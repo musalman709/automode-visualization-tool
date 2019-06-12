@@ -20,7 +20,7 @@ function switchToBTree(graphEditor) {
   graphEditor.setImporter(importer);
 
   loadElementModels("btree/nodemodels.json", "btree/edgemodels.json", graphEditor);
-  loadElementParams("btree/nodeparams.json", "btree/edgemodels.json", graphEditor);
+  loadElementParams("btree/nodeparams.json", "btree/edgeparams.json", graphEditor);
 
   graphEditor.clearTools();
 	graphEditor.addTool(new GraphEditorSelectTool(), true);
@@ -46,14 +46,14 @@ function switchToFSM(graphEditor) {
 
   graphEditor.clearElements();
 
-  var exporter = undefined;
+  var exporter = new FSMExporter($("#cmdline"));
   graphEditor.setExporter(exporter);
 
-  var importer = undefined;
+  var importer = new FSMImporter($("#cmdline"));
   graphEditor.setImporter(importer);
 
   loadElementModels("fsm/nodemodels.json", "fsm/edgemodels.json", graphEditor);
-  loadElementParams("fsm/nodeparams.json", "fsm/edgemodels.json", graphEditor);
+  loadElementParams("fsm/nodeparams.json", "fsm/edgeparams.json", graphEditor);
 
   graphEditor.clearTools();
 	graphEditor.addTool(new GraphEditorSelectTool(), true);
@@ -138,6 +138,6 @@ $(document).ready(function(){
 		$("#graph-container"), $("#tools-container"),
 		$("#param-container"));
 
-	switchToBTree(grapheditor);
+	switchToFSM(grapheditor);
 });
 
