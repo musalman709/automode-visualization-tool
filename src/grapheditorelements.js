@@ -139,10 +139,10 @@ GraphEditorNode.prototype.getPosition = function() {
   return this.pos;
 }
 GraphEditorNode.prototype.onSelect = function() {
-  this.frame.attr("class", "nodeFrame selected");
+  this.frame.addClass("selected");
 }
 GraphEditorNode.prototype.onDeselect = function() {
-  this.frame.attr("class", "nodeFrame");
+  this.frame.removeClass("selected");
 }
 GraphEditorNode.prototype.onRemoval = function() {
   // delete edges before delete node
@@ -325,10 +325,10 @@ GraphEditorEdge.prototype.update = function() {
   this.line.attr("y2", this.destElement.incomingPos.y);
 }
 GraphEditorEdge.prototype.onSelect = function() {
-  this.line.attr("class", "arrow selected");
+  this.line.addClass("selected");
 }
 GraphEditorEdge.prototype.onDeselect = function() {
-  this.line.attr("class", "arrowthick");
+  this.line.removeClass("selected");
 }
 GraphEditorEdge.prototype.onRemoval = function() {
   this.srcElement.removeOutgoingEdge(this);
