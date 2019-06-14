@@ -83,18 +83,16 @@ FSMExporter.prototype.expNodeParams = function(node, nodeCounter) {
 
 FSMExporter.prototype.expTransitions = function(graphEditor, elements){
     var str = "";
-    var nodeCounter = 0;
     for (var i = 0; i < elements.length; i++) {
         var node = elements[i];
         if(node.isNode()){
             if(node.getOutgoingEdges().length>0){
-                str += "--n"+nodeCounter + " " + node.getOutgoingEdges().length+" ";
+                str += "--n"+i + " " + node.getOutgoingEdges().length+" ";
                 for (var j = 0; j <node.getOutgoingEdges().length; j++) {
                     target = this.getIdFromElement(node.getOutgoingEdges()[j].getDestNode(), elements);
                     str += "--n"+i+"x"+j+" "+target+" ";
                     str += this.expEdgeParams(node.getOutgoingEdges()[j], i, j, target)
                 }
-                nodeCounter++;
             }
         }
     }
