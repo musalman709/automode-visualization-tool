@@ -9,7 +9,7 @@ function switchToBTree(graphEditor) {
 
   $("#title").text("AutoMoDe Behavior Trees Editor");
   $("#switchlink").text("switch to finite states machines");
-  $("#cmdline").attr("value", "");
+  $("#cmdline").val("");
 
   graphEditor.clearElements();
 
@@ -42,7 +42,7 @@ function switchToFSM(graphEditor) {
 
   $("#title").text("AutoMoDe Finite States Machines Editor");
   $("#switchlink").text("switch to behavior trees");
-  $("#cmdline").attr("value", "");
+  $("#cmdline").val("");
 
   graphEditor.clearElements();
 
