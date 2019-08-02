@@ -88,6 +88,7 @@ GraphEditorNewEdgeTool.prototype.onMouseDown = function(pos, element) {
 	      // if edge valid, add it
 	      if(edge.isValid()) {
 	        this.graphEditor.addElement(edge);
+		  	this.graphEditor.setSelectedElement(edge);
 	      }
       }
 		  // deleselect

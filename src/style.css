@@ -200,11 +200,11 @@ line.arrow {
 	stroke-width: 1px;
 	stroke: black;
 }
-line.arrowthick {
+.arrowthick {
 	stroke-width: 2px;
 	stroke: black;
 }
-line.selected {
+.selected {
 	stroke-width: 1px;
 	stroke: blue;
 }

@@ -2,6 +2,9 @@
     {
         "name": "Condition",
         "id": "0",
-        "display_opts": "arrowthick"
+		"display_text": "S",
+        "display_opts": {
+        	"class" : "arrowthick"},
+        "display_tag": "line"
     }
 ]

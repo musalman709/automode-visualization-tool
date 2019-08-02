@@ -23,10 +23,28 @@ CmdLineIterator.prototype.next = function() {
   return elem;
 }
 
+CmdLineIterator.prototype.previous = function() {
+  if(this.i <= 0)
+    return "";
+
+  while(this.args[this.i] == "")
+  {
+    this.i -= 1;
+    if(this.i <= 0)
+      return "";
+  }
+
+  var elem = this.args[this.i];
+  return elem;    
+}
+
 CmdLineIterator.prototype.end = function() {
   return this.i >= this.args.length;
 }
 
+CmdLineIterator.prototype.reset = function(){
+    this.i = 0;
+}
 
 function FSMImporter(inputHTML) {
   this.inputHTML = inputHTML;
@@ -48,6 +66,10 @@ FSMImporter.prototype.isValue = function(arg) {
 
 FSMImporter.prototype.isCorrectState = function(arg, i){
     return arg == ("--s"+i);
+}
+
+FSMImporter.prototype.isCorrectTransition = function(arg, i){
+    return arg == ("--n"+i);
 }
 
 FSMImporter.prototype.import = function(graphEditor) {//this "compiles" the command line and generates the graph
@@ -79,30 +101,47 @@ FSMImporter.prototype.import = function(graphEditor) {//this "compiles" the comm
         for(var i = 0; i<nbStates;i++){//there must be exaclty nbStates of states definition
             state = iterator.next();
             if(! this.isCorrectState(state, i)){
-                throw "the state definition is not correct, plase verify it, problem with " + state;
+                if (! this.isCorrectTransition(state, i-1)){
+                    throw "the state definition is not correct, plase verify it, problem with " + state;
+                } else { 
+                    while (! this.isCorrectState(iterator.next(),i)){}
+                        iterator.previous();
+                }
             }
             behav = iterator.next();
-            this.importNode(graphEditor, behav, i, iterator)//will import the node and the parameters
+            this.importNode(graphEditor, behav, i, iterator);//will import the node and the parameters
         }
 
         console.log("states imported")
-
-        while(! iterator.end()) { //import the edges
-            var nextItem = iterator.next();  // should be of type --nAxB or of type --nS
-            if(nextItem=="" || nextItem.length==4){ //--type --nS i is not useful as every edge is written afterwards
-                iterator.next()
-                continue;
+        iterator.reset();
+        var stateCounter = 0;
+        count=0;
+        while(! iterator.end() || count>100) { //import the edges
+            var nextItem = iterator.next();  // should be of type --nS if there is a transition. the right state number does not need to be verified
+            if(! this.isCorrectState(nextItem, stateCounter)){
+                if(this.isCorrectTransition(nextItem, (stateCounter-1))){
+                    var numberOfEdges = iterator.next(); //this tells us how many edges there is
+                    for(let n=0;n<numberOfEdges;n++){
+                        var startNode = iterator.next()[3]; //needs the A from --nAxB
+                        startNodeObj = graphEditor.getElements()[startNode]; // this works because the first elements to be created are the nodes
+                        var transNumber = nextItem[5];
+                        var destNode = iterator.next();
+                        if(destNode>=startNode){
+                            destNode++;
+                        }
+                        destNodeObj = graphEditor.getElements()[destNode];
+                        console.log("startNode: "+startNode+" destNode: "+destNode);
+                        this.importEdges(graphEditor, iterator, startNodeObj, destNodeObj);
+                    }
+                } else { //no transition for that node and we read the privious node to reset the iterator
+                    
+                }
+            }else{
+                stateCounter++;
             }
-            var startNode = nextItem[3]; //needs the A from --nAxB
-            startNode = graphEditor.getElements()[startNode] // this works because the first elements to be created are the nodes
-            var transNumber = nextItem[5];
-            var destNode = iterator.next();
-            destNode = graphEditor.getElements()[destNode];
-            this.importEdges(graphEditor, iterator, startNode, destNode);
+            count++;
         }
-
         console.log("String imported")
-
         // reset cmdline to proper one
         graphEditor.callExporter();
     } catch(err) {
@@ -173,7 +212,7 @@ FSMImporter.prototype.importEdges = function(graphEditor, iterator, startNode, d
     }
 }
 
-FSMImporter.prototype.importEdgeParams = function(edge, iterator, transType) {  //TODO
+FSMImporter.prototype.importEdgeParams = function(edge, iterator, transType) { 
     var param = edge.getParam();
 
     if(param.categories.length > 0)

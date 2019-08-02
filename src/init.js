@@ -12,6 +12,7 @@ function switchToBTree(graphEditor) {
   $("#cmdline").val("");
 
   graphEditor.clearElements();
+  grapheditor.setMode("btree");
 
   var exporter = new BTreeExporter($("#cmdline"));
   graphEditor.setExporter(exporter);
@@ -45,6 +46,7 @@ function switchToFSM(graphEditor) {
   $("#cmdline").val("");
 
   graphEditor.clearElements();
+  grapheditor.setMode("fsm");
 
   var exporter = new FSMExporter($("#cmdline"));
   graphEditor.setExporter(exporter);
@@ -137,7 +139,6 @@ $(document).ready(function(){
 	grapheditor = new GraphEditor(
 		$("#graph-container"), $("#tools-container"),
 		$("#param-container"));
-
 	switchToFSM(grapheditor);
 });
 

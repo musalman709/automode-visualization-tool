@@ -37,6 +37,8 @@ GraphEditorNode.prototype.buildSVGElements = function()
 
     this.g.append(this.frame);
     this.g.append(this.text);
+
+    this.onSelect();
 }
 
 GraphEditorNode.prototype.getName = function() {
@@ -242,6 +244,7 @@ GraphEditorEdge.prototype.buildSVGElements = function()
 
     this.srcElement.addOutgoingEdge(this);
     this.destElement.addIncomingEdge(this);
+    this.onSelect();
     this.update();
 }
 
@@ -264,6 +267,7 @@ GraphEditorEdge.prototype.setModel = function(model) {
       this.model = defaultEdgeModel();
     }
 
+    this.line.remove();
     this.buildSVGElements();
     if(selected) {
       this.line.addClass("selected");

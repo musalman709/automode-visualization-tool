@@ -93,6 +93,9 @@ function GraphEditor(graphcontainer, toolscontainer, paramcontainer) {
 	this.svg.on("mouseup", function(e) { that.onMouseUp(e);	});
 	this.svg.on("mouseleave", function(e) {	that.onMouseLeave(e); });
 	this.svg.on("mousemove", function(e) { that.onMouseMove(e);	});
+
+	//mode
+	this.mode = "";
 }
 
 GraphEditor.prototype.createGraph = function() {
@@ -397,3 +400,14 @@ GraphEditor.prototype.callImporter = function() {
   }
 }
 
+GraphEditor.prototype.getMode = function(){
+	return this.mode;
+}
+
+GraphEditor.prototype.setMode = function(mode){
+	if(mode === "fsm" || mode === "btree"){
+		this.mode=mode;
+	}else{
+		console.log("Wrong mode selected");
+	}
+}

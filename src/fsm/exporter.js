@@ -20,11 +20,11 @@ FSMExporter.prototype.export = function(graphEditor) {
     }
 
     // Get the number of states
-    nbS = this.findNbStates(graphEditor);
+    nbS = this.findNbStates(graphEditor, elements);
 
     // build string 
-    var str = this.expStates(nbS, graphEditor);
-    str += this.expTransitions(graphEditor, elements);
+    var str = this.expStates(nbS, graphEditor, elements);
+
     this.setText(str);
 
   } catch(err) {
@@ -33,9 +33,8 @@ FSMExporter.prototype.export = function(graphEditor) {
 }
 
 
-FSMExporter.prototype.findNbStates = function(graphEditor){
+FSMExporter.prototype.findNbStates = function(graphEditor, elements){
     
-    var elements = graphEditor.getElements();
     var nbS = 0;
 
     for( var i = 0;i<elements.length; i++){
@@ -43,23 +42,23 @@ FSMExporter.prototype.findNbStates = function(graphEditor){
             nbS++;
         }
     }
-    if(nbS == 0){
+    if(nbS === 0){
         throw "Invalid configuration : no node found";
     }
     return nbS;
 }
 
-FSMExporter.prototype.expStates = function(nbS, graphEditor){//TODO
+FSMExporter.prototype.expStates = function(nbS, graphEditor, elements){
 
     var str = "--fsm-config ";
     
     str += "--nstates " + nbS +" ";
 
-    var elements = graphEditor.getElements();
     var nodeCounter = 0;
     for (var i =0; i <elements.length; i++){
         if( elements[i].isNode()){
             str += this.expNodeParams(elements[i], nodeCounter);
+            str += this.expTransitions(graphEditor, elements, i, nodeCounter);
             nodeCounter++;
         }
     }
@@ -81,21 +80,17 @@ FSMExporter.prototype.expNodeParams = function(node, nodeCounter) {
   return str;
 }
 
-FSMExporter.prototype.expTransitions = function(graphEditor, elements){
+FSMExporter.prototype.expTransitions = function(graphEditor, elements, i, nodeCounter){
     var str = "";
-    for (var i = 0; i < elements.length; i++) {
-        var node = elements[i];
-        if(node.isNode()){
-            if(node.getOutgoingEdges().length>0){
-                str += "--n"+i + " " + node.getOutgoingEdges().length+" ";
-                for (var j = 0; j <node.getOutgoingEdges().length; j++) {
-                    target = this.getIdFromElement(node.getOutgoingEdges()[j].getDestNode(), elements);
-                    str += "--n"+i+"x"+j+" "+target+" ";
-                    str += this.expEdgeParams(node.getOutgoingEdges()[j], i, j, target)
-                }
+    node = elements[i];
+    if(node.getOutgoingEdges().length>0){
+            str += "--n"+nodeCounter + " " + node.getOutgoingEdges().length+" ";
+            for (var j = 0; j <node.getOutgoingEdges().length; j++) {
+                target = this.getNodeNumber(node.getOutgoingEdges()[j].getDestNode(), elements);
+                str += "--n"+nodeCounter+"x"+j+" "+target+" ";
+                str += this.expEdgeParams(node.getOutgoingEdges()[j], nodeCounter, j, target)
             }
         }
-    }
     return str;
 }
 
@@ -119,4 +114,16 @@ FSMExporter.prototype.getIdFromElement = function(element, elementList){
         }
     }
     return -1;
+}
+
+FSMExporter.prototype.getNodeNumber = function(element, elementList){
+  var counter=0;
+  for(let i = 0; i<elementList.length;i++){
+    if (elementList[i].isNode() && element == elementList[i]){
+        return counter;
+    }else{
+      counter++;
+    }
+  }
+return -1;
 }
