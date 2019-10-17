@@ -78,29 +78,26 @@ function setBTreeNodePosition(node, info, area) {
 /**
  * Beautify tool
  */
-function BTreeBeautifyTool() {
-	GraphEditorTool.call(this);
-}
-BTreeBeautifyTool.prototype = Object.create(GraphEditorTool.prototype);
-
-BTreeBeautifyTool.prototype.getToolId = function() {
-	return "btree_beautify";
-}
-BTreeBeautifyTool.prototype.getName = function() {
-	return "Beautify";
-}
-BTreeBeautifyTool.prototype.onToolSelect = function() {
-  // call beautifier algo
-  try {
-    this.graphEditor.setSelectedElement(undefined);
-
-    var root = findBTreeRoot(this.graphEditor);
-    beautifyBTree(this.graphEditor, root);
-
-  } catch(err) {
-    // pass
+class BTreeBeautifyTool extends GraphEditorTool{
+  getToolId() {
+    return "btree_beautify";
   }
-
-  // Reselect default tool
-  this.graphEditor.setCurrentTool(undefined);
+  getName() {
+    return "Beautify";
+  }
+  onToolSelect() {
+    // call beautifier algo
+    try {
+      this.graphEditor.setSelectedElement(undefined);
+      var root = findBTreeRoot(this.graphEditor);
+      beautifyBTree(this.graphEditor, root);
+    }
+    catch (err) {
+      // pass
+    }
+    // Reselect default tool
+    this.graphEditor.setCurrentTool(undefined);
+  }
 }
+
+
