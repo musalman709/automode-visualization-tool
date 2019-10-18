@@ -1,4 +1,6 @@
-function findBTreeRoot(graphEditor) {
+import { GraphEditorExporter } from "../grapheditor";
+
+export function findBTreeRoot(graphEditor) {
 
   var elements = graphEditor.getElements();
   var root = undefined;
@@ -24,7 +26,7 @@ function findBTreeRoot(graphEditor) {
     return root;
 }
 
-class BTreeExporter extends GraphEditorExporter{
+export class BTreeExporter extends GraphEditorExporter{
   constructor(outputHTML) {
     super(outputHTML);
     this.outputHTML = outputHTML;

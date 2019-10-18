@@ -1,9 +1,11 @@
 "use strict";
 
+import { defaultEdgeModel, defaultEdgeParam, defaultNodeModel, defaultNodeParam } from "./elementmodels_default";
+
 /**
  * Create a select option for a model
  */
-function createModelOption(model, param, graphEditor, element) {
+export function createModelOption(model, param, graphEditor, element) {
   var opt_tag = $('<option></option>');
 
   opt_tag.val(model.id);
@@ -25,7 +27,7 @@ function createModelOption(model, param, graphEditor, element) {
 /**
  * Create a select list for nodes/edges models
  */
-function createModelsSelectMenu(graphEditor, element) {
+export function createModelsSelectMenu(graphEditor, element) {
 
   var modelsArray = undefined;
   var defaultModel = undefined;
@@ -67,7 +69,7 @@ function createModelsSelectMenu(graphEditor, element) {
 /**
  * Create a select list for nodes/edge category
  */
-function createCategorySelectMenu(params, element, catvalue, graphEditor) {
+export function createCategorySelectMenu(params, element, catvalue, graphEditor) {
   var catselect = $("<select></select>");
   catselect.addClass("paramselect");
   params.categories.forEach(function(c){
@@ -91,7 +93,7 @@ function createCategorySelectMenu(params, element, catvalue, graphEditor) {
 /**
  * Create an input for a node/edge parameter
  */
-function createParameterInput(param, element, graphEditor) {
+export function createParameterInput(param, element, graphEditor) {
   var paraminput = $("<input type=number></input>");
   paraminput.addClass("paraminput");
   paraminput.attr("name", param.id);
@@ -110,7 +112,7 @@ function createParameterInput(param, element, graphEditor) {
 /**
  * Create the pane for node/edge category with each corresponding parameter
  */
-function createParamPane(params, element, container, graphEditor) {
+export function createParamPane(params, element, container, graphEditor) {
   if(params.categories.length > 0) {
 
     container.append($("<p class=\"asidetitle\">" + params.categoriesname + "</p>"));

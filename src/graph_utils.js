@@ -5,7 +5,7 @@
 /**
  * Create a new SVG element (in JQuery object)
  */
-function createSVGElement(tagname, attrObject) {
+export function createSVGElement(tagname, attrObject) {
 	var svgElem = document.createElementNS("http://www.w3.org/2000/svg",
 		tagname);
 	Object.keys(attrObject).forEach(function(key) {
@@ -17,8 +17,8 @@ function createSVGElement(tagname, attrObject) {
 /**
  * Sum two points
  */
-function points_sum(p1, p2) {
-  p = {
+export function points_sum(p1, p2) {
+  const p = {
     x:(parseInt(p1.x) + parseInt(p2.x)),
     y:(parseInt(p1.y) + parseInt(p2.y))
   };
@@ -28,8 +28,8 @@ function points_sum(p1, p2) {
 /**
  * Subtract two points
  */
-function points_substract(p1, p2) {
-  p = {
+export function points_substract(p1, p2) {
+  const p = {
     x:(parseInt(p1.x) - parseInt(p2.x)),
     y:(parseInt(p1.y) - parseInt(p2.y))
   };

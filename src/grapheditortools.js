@@ -1,10 +1,13 @@
+import { GraphEditorTool } from "./grapheditor";
+import { GraphEditorEdge, GraphEditorNode } from "./grapheditorelements";
+
 /**
  * Shared tools between Btree and FSM
  */
 /**
  * Select the clicked element
  */
-class GraphEditorSelectTool extends GraphEditorTool{
+export class GraphEditorSelectTool extends GraphEditorTool{
 	constructor() {
 		super();
 		this.graphEditor = undefined;
@@ -29,7 +32,7 @@ class GraphEditorSelectTool extends GraphEditorTool{
 /**
  * Create a new node at click pos
  */
-class GraphEditorNewNodeTool extends GraphEditorTool{
+export class GraphEditorNewNodeTool extends GraphEditorTool{
 	constructor() {
 		super();
 		this.graphEditor = undefined;
@@ -55,7 +58,7 @@ class GraphEditorNewNodeTool extends GraphEditorTool{
 /**
  * Create a new edge between two nodes
  */
-class GraphEditorNewEdgeTool extends GraphEditorTool{
+export class GraphEditorNewEdgeTool extends GraphEditorTool{
 	constructor() {
 		super();
 		this.graphEditor = undefined;
@@ -102,7 +105,7 @@ class GraphEditorNewEdgeTool extends GraphEditorTool{
 /**
  * Drag an element
  */
-class GraphEditorDraggingTool  extends GraphEditorTool{
+export class GraphEditorDraggingTool  extends GraphEditorTool{
 	constructor() {
 		super();
 		this.graphEditor = undefined;
@@ -144,7 +147,7 @@ class GraphEditorDraggingTool  extends GraphEditorTool{
 /**
  * Delete element
  */
-class GraphEditorDeleteTool extends GraphEditorTool{
+export class GraphEditorDeleteTool extends GraphEditorTool{
 	constructor() {
 		super();
 	}

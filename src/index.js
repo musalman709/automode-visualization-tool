@@ -1,3 +1,12 @@
+import { GraphEditorSelectTool, GraphEditorNewNodeTool, GraphEditorNewEdgeTool, GraphEditorDraggingTool, GraphEditorDeleteTool } from "./grapheditortools";
+import { BTreeBeautifyTool } from "./btree/beautifier";
+import { BTreeExporter } from "./btree/exporter";
+import { BTreeImporter } from "./btree/importer";
+import { FSMExporter } from "./fsm/exporter";
+import { FSMImporter } from "./fsm/importer";
+import { GraphEditor } from "./grapheditor";
+import { cmdline_keydown, importfromfile, triggeropenfile, importfromcmdline, copytoclipboard, exporttofile, execinsimulator } from "./cmdlinestring";
+
 /**
  * Initialisations functions
  */
@@ -12,7 +21,7 @@ function switchToBTree(graphEditor) {
   $("#cmdline").val("");
 
   graphEditor.clearElements();
-  grapheditor.setMode("btree");
+  graphEditor.setMode("btree");
 
   var exporter = new BTreeExporter($("#cmdline"));
   graphEditor.setExporter(exporter);
@@ -46,7 +55,7 @@ function switchToFSM(graphEditor) {
   $("#cmdline").val("");
 
   graphEditor.clearElements();
-  grapheditor.setMode("fsm");
+  graphEditor.setMode("fsm");
 
   var exporter = new FSMExporter($("#cmdline"));
   graphEditor.setExporter(exporter);
@@ -135,10 +144,22 @@ $(document).keydown(function(event) {
  * Initialisation when loading ends
  */
 $(document).ready(function(){
-
-	grapheditor = new GraphEditor(
+  let grapheditor = new GraphEditor(
 		$("#graph-container"), $("#tools-container"),
-		$("#param-container"));
+    $("#param-container"));
+  const openFileInput = document.querySelector('#openfileinput');
+  const openFileButton = document.querySelector('#openfilebutton');
+  const cmdline = document.querySelector('#cmdline');
+  const copyButton = document.querySelector('#copybutton');
+  const fileExportButton = document.querySelector('#fileexportbutton');
+  const executeButton = document.querySelector('#executebutton');
+
+  openFileInput.addEventListener('change', () => importfromfile(grapheditor));
+  openFileButton.addEventListener('click', triggeropenfile);
+  cmdline.addEventListener('change', () => importfromcmdline(grapheditor));
+  copyButton.addEventListener('click', copytoclipboard);
+  fileExportButton.addEventListener('click', exporttofile);
+  executeButton.addEventListener('click', execinsimulator);
+	
 	switchToFSM(grapheditor);
 });
-

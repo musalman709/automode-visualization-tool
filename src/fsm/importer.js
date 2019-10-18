@@ -1,3 +1,5 @@
+import { GraphEditorImporter } from "../grapheditor";
+import { GraphEditorNode, GraphEditorEdge } from "../grapheditorelements";
 
 /**
  * Iterator over the string tree, extracting one argument at a time
@@ -42,7 +44,7 @@ class CmdLineIterator {
 
 
 
-class FSMImporter extends GraphEditorImporter{
+export class FSMImporter extends GraphEditorImporter {
     constructor(inputHTML) {
         super();
         this.inputHTML = inputHTML;
@@ -218,13 +220,3 @@ class FSMImporter extends GraphEditorImporter{
         }
     }
 }
-
-
-
-
-
-
-
-
-
-

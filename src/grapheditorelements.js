@@ -1,7 +1,11 @@
+import { GraphEditorElement } from "./grapheditor";
+import { defaultNodeModel, defaultNodeParam, defaultEdgeModel, defaultEdgeParam } from "./elementmodels_default";
+import { createSVGElement, points_sum } from "./graph_utils";
+
 /**
  * Node and edges objects
  */
-class GraphEditorNode extends GraphEditorElement{
+export class GraphEditorNode extends GraphEditorElement{
   constructor(id, pos) {
     super();
     this.id = id;
@@ -193,7 +197,7 @@ class GraphEditorNode extends GraphEditorElement{
 /**
  * Bind two nodes ('src' and 'dest')
  */
-class GraphEditorEdge extends GraphEditorElement{
+export class GraphEditorEdge extends GraphEditorElement{
   constructor(id, srcElement, destElement) {
     super();
     // src and dest

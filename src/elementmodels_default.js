@@ -2,7 +2,7 @@
  * Default models
  */
 
-function defaultNodeModel() {
+export function defaultNodeModel() {
 
   return {
     "name": "-- default --",
@@ -37,7 +37,7 @@ function defaultNodeModel() {
   };
 }
 
-function defaultNodeParam() {
+export function defaultNodeParam() {
 
   return {
     "nodeid": "-1",
@@ -46,7 +46,7 @@ function defaultNodeParam() {
   };
 }
 
-function defaultEdgeModel() {
+export function defaultEdgeModel() {
 
   return {
     "name": "-- default --",
@@ -54,7 +54,7 @@ function defaultEdgeModel() {
     };
 }
 
-function defaultEdgeParam() {
+export function defaultEdgeParam() {
   return {
     "edgeid": "-1",
     "categoryid": "d",

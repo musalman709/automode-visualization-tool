@@ -1,3 +1,6 @@
+import { GraphEditorTool } from "../grapheditor";
+import { findBTreeRoot } from "./exporter";
+
 /**
  * Beautifier algorithm
  */
@@ -78,7 +81,7 @@ function setBTreeNodePosition(node, info, area) {
 /**
  * Beautify tool
  */
-class BTreeBeautifyTool extends GraphEditorTool{
+export class BTreeBeautifyTool extends GraphEditorTool{
   getToolId() {
     return "btree_beautify";
   }

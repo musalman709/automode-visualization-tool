@@ -1,3 +1,5 @@
+import { GraphEditorImporter } from "../grapheditor";
+import { GraphEditorNode, GraphEditorEdge } from "../grapheditorelements";
 
 /**
  * Iterator over the string tree, extracting one argument at a time
@@ -27,7 +29,7 @@ class CmdLineIterator {
 
 
 
-class BTreeImporter extends GraphEditorImporter{
+export class BTreeImporter extends GraphEditorImporter{
   constructor(inputHTML) {
     super(inputHTML)
     this.inputHTML = inputHTML;

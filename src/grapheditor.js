@@ -1,4 +1,7 @@
-class GraphEditorElement {
+import { createSVGElement } from "./graph_utils";
+import { createModelsSelectMenu, createParamPane } from "./sidepanels";
+
+export class GraphEditorElement {
 	constructor() {
 		this.graphEditor = undefined;
 	}
@@ -24,7 +27,7 @@ class GraphEditorElement {
 /**
  * Prototype of editor tools
  */
-class GraphEditorTool {
+export class GraphEditorTool {
 	constructor() {
 		this.graphEditor = undefined;
 	}
@@ -39,14 +42,14 @@ class GraphEditorTool {
 /**
  * Prototype of graph to string exporters
  */
-class GraphEditorExporter {
+export class GraphEditorExporter {
 	export() { }
 }
 
 /**
  * Prototype of string to graph importer
  */
-class GraphEditorImporter {
+export class GraphEditorImporter {
 	import() { }
 }
 
@@ -55,7 +58,7 @@ class GraphEditorImporter {
  * Object that manages tools and graph elements,
  * create the svg area and receive input from the user
  */
-class GraphEditor {
+export class GraphEditor {
 	constructor(graphcontainer, toolscontainer, paramcontainer) {
 		// html elements
 		this.graphcontainer = graphcontainer;

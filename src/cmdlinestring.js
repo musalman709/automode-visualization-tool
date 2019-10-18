@@ -2,12 +2,12 @@
  * Event functions for import/export string
  */
 
-function copytoclipboard() {
+export function copytoclipboard() {
   $("#cmdline").select();
   document.execCommand("copy");
 }
 
-function exporttofile() {
+export function exporttofile() {
   var cmdline = $("#cmdline").val()
 
   if(cmdline != "") {
@@ -21,17 +21,17 @@ function exporttofile() {
   }
 }
 
-function importfromcmdline() {
+export function importfromcmdline(grapheditor) {
   var cmdline = $("#cmdline").val();
 
   grapheditor.callImporter();
 }
 
-function triggeropenfile() {
+export function triggeropenfile() {
   $("#openfileinput").click();
 }
 
-function importfromfile() {
+export function importfromfile(grapheditor) {
   var input = document.getElementById("openfileinput");
   var reader = new FileReader();
   reader.readAsText(input.files[0]);
@@ -42,7 +42,7 @@ function importfromfile() {
   }
 }
 
-function execinsimulator() {
+export function execinsimulator() {
   var cmdline = $("#cmdline").val();
   var data = {cmdline:cmdline};
 
@@ -59,7 +59,7 @@ function execinsimulator() {
   });
 }
 
-function cmdline_keydown(event) {
+export function cmdline_keydown(event) {
   if(event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
     if(event.key == "s") {
       event.preventDefault();

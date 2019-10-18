@@ -1,4 +1,6 @@
-class FSMExporter extends GraphEditorExporter{
+import { GraphEditorExporter } from "../grapheditor";
+
+export class FSMExporter extends GraphEditorExporter{
   constructor(outputHTML) {
     super();
     this.outputHTML = outputHTML;
@@ -16,7 +18,7 @@ class FSMExporter extends GraphEditorExporter{
         return;
       }
       // Get the number of states
-      nbS = this.findNbStates(graphEditor, elements);
+      const nbS = this.findNbStates(graphEditor, elements);
       // build string 
       var str = this.expStates(nbS, graphEditor, elements);
       this.setText(str);
@@ -62,9 +64,10 @@ class FSMExporter extends GraphEditorExporter{
   }
   expTransitions(graphEditor, elements, i, nodeCounter) {
     var str = "";
-    node = elements[i];
+    const node = elements[i];
     if (node.getOutgoingEdges().length > 0) {
       str += "--n" + nodeCounter + " " + node.getOutgoingEdges().length + " ";
+      let target;
       for (var j = 0; j < node.getOutgoingEdges().length; j++) {
         target = this.getNodeNumber(node.getOutgoingEdges()[j].getDestNode(), elements);
         str += "--n" + nodeCounter + "x" + j + " " + target + " ";
