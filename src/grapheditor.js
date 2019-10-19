@@ -247,7 +247,7 @@ export class GraphEditor {
                 class: "tool",
                 id: "tool_" + tool.getToolId(), text: tool.getName()
             });
-            element.on("click", function (e) {
+            element.on("click", function () {
                 graphEditor.setCurrentTool(tool);
             });
             this.toolscontainer.append(element);
@@ -308,7 +308,7 @@ export class GraphEditor {
             this.currentTool.onMouseUp(pos);
         }
     }
-    onMouseLeave(e) {
+    onMouseLeave() {
         if (this.currentTool !== undefined) {
             this.currentTool.onMouseLeave();
         }
@@ -356,7 +356,7 @@ export class GraphEditor {
             this.mode = mode;
         }
         else {
-            console.log("Wrong mode selected");
+            throw new Error("Wrong mode selected");
         }
     }
 }

@@ -15,10 +15,9 @@ import { cmdline_keydown, importfromfile, triggeropenfile, importfromcmdline, co
  * Initialise editor and tools for BTrees
  */
 function switchToBTree(graphEditor) {
-
-    $("#title").text("AutoMoDe Behavior Trees Editor");
-    $("#switchlink").text("switch to finite states machines");
-    $("#cmdline").val("");
+    document.querySelector("#title").textContent = "AutoMoDe Behavior Trees Editor";
+    document.querySelector("#switchlink").textContent = "switch to finite states machines";
+    document.querySelector("#cmdline").value = "";
 
     graphEditor.clearElements();
     graphEditor.setMode("btree");
@@ -49,10 +48,9 @@ function switchToBTree(graphEditor) {
  * Initialise tools and editor for FSM
  */
 function switchToFSM(graphEditor) {
-
-    $("#title").text("AutoMoDe Finite States Machines Editor");
-    $("#switchlink").text("switch to behavior trees");
-    $("#cmdline").val("");
+    document.querySelector("#title").textContent = "AutoMoDe Finite States Machines Editor";
+    document.querySelector("#switchlink").textContent = "switch to behavior trees";
+    document.querySelector("#cmdline").value = "";
 
     graphEditor.clearElements();
     graphEditor.setMode("fsm");
@@ -135,29 +133,27 @@ function loadElementParams(nodes_url, edges_url, graphEditor) {
 /**
  * Key pressed events
  */
-document.addEventListener('keydown', cmdline_keydown);
+document.addEventListener("keydown", cmdline_keydown);
 
 
 /**
  * Initialisation when loading ends
  */
-$(document).ready(function(){
-    let grapheditor = new GraphEditor(
-        $("#graph-container"), $("#tools-container"),
-        $("#param-container"));
-    const openFileInput = document.querySelector('#openfileinput');
-    const openFileButton = document.querySelector('#openfilebutton');
-    const cmdline = document.querySelector('#cmdline');
-    const copyButton = document.querySelector('#copybutton');
-    const fileExportButton = document.querySelector('#fileexportbutton');
-    const executeButton = document.querySelector('#executebutton');
+let grapheditor = new GraphEditor(
+    $("#graph-container"), $("#tools-container"),
+    $("#param-container"));
+const openFileInput = document.querySelector("#openfileinput");
+const openFileButton = document.querySelector("#openfilebutton");
+const cmdline = document.querySelector("#cmdline");
+const copyButton = document.querySelector("#copybutton");
+const fileExportButton = document.querySelector("#fileexportbutton");
+const executeButton = document.querySelector("#executebutton");
 
-    openFileInput.addEventListener('change', () => importfromfile(grapheditor));
-    openFileButton.addEventListener('click', triggeropenfile);
-    cmdline.addEventListener('change', () => importfromcmdline(grapheditor));
-    copyButton.addEventListener('click', copytoclipboard);
-    fileExportButton.addEventListener('click', exporttofile);
-    executeButton.addEventListener('click', execinsimulator);
+openFileInput.addEventListener("change", () => importfromfile(grapheditor));
+openFileButton.addEventListener("click", triggeropenfile);
+cmdline.addEventListener("change", () => importfromcmdline(grapheditor));
+copyButton.addEventListener("click", copytoclipboard);
+fileExportButton.addEventListener("click", exporttofile);
+executeButton.addEventListener("click", execinsimulator);
 	
-    switchToFSM(grapheditor);
-});
+switchToFSM(grapheditor);

@@ -3,12 +3,12 @@
  */
 
 export function copytoclipboard() {
-    $("#cmdline").select();
+    document.querySelector("#cmdline").select();
     document.execCommand("copy");
 }
 
 export function exporttofile() {
-    var cmdline = $("#cmdline").val()
+    const cmdline = document.querySelector("#cmdline").value;
 
     if(cmdline != "") {
         var encodedUri = encodeURI("data:text," + cmdline);
@@ -26,7 +26,7 @@ export function importfromcmdline(grapheditor) {
 }
 
 export function triggeropenfile() {
-    $("#openfileinput").click();
+    document.querySelector("#openfileinput").click();
 }
 
 export function importfromfile(grapheditor) {
@@ -35,26 +35,23 @@ export function importfromfile(grapheditor) {
     reader.readAsText(input.files[0]);
     reader.onloadend = function(){
         var cmdline = reader.result.split("\n")[0];
-        $("#cmdline").val(cmdline);
+        document.querySelector("#cmdline").value = cmdline;
         grapheditor.callImporter();
-    }
+    };
 }
 
-export function execinsimulator() {
-    var cmdline = $("#cmdline").val();
-    var data = {cmdline:cmdline};
-
-    $.ajax({
-        url: 'exec',
-        data: data,
-        type: 'POST',
-        success: function(response) {
-            console.log(response);
-        },
-        error: function(error) {
-            console.log(error);
+export async function execinsimulator() {
+    const cmdline = document.querySElector("#cmdline").value;
+    const execUrl = "/exec";
+    const response = await fetch(execUrl, {
+        method: "POST",
+        body: JSON.stringify(cmdline),
+        headers: {
+            "Content-Type": "application/json"
         }
     });
+    if (! response.ok) 
+        throw new Error("Network error");
 }
 
 export function cmdline_keydown(event) {
