@@ -8,15 +8,15 @@ import { findBTreeRoot } from "./exporter";
 /**
  * Move nodes to make the tree looks better
  */
-function beautifyBTree(graphEditor, rootNode) {
+export function beautifyBTree(graphEditor, rootNode) {
 
-  var area = {x:0, y:0, w:0, h:0, relh:0, relw:0};
-  area.w = graphEditor.width();
-  area.h = graphEditor.height();
+    var area = {x:0, y:0, w:0, h:0, relh:0, relw:0};
+    area.w = graphEditor.width();
+    area.h = graphEditor.height();
 
-  var rootInfo = getBTreeNodeInfo(rootNode);
+    var rootInfo = getBTreeNodeInfo(rootNode);
 
-  setBTreeNodePosition(rootNode, rootInfo, area);
+    setBTreeNodePosition(rootNode, rootInfo, area);
 }
 
 /**
@@ -24,23 +24,23 @@ function beautifyBTree(graphEditor, rootNode) {
  */
 function getBTreeNodeInfo(node) {
 
-  var info = {depth:1, cumulativeChildrenNb:0, childrenInfo:[]};
-  var edges = node.getOutgoingEdges();
+    var info = {depth:1, cumulativeChildrenNb:0, childrenInfo:[]};
+    var edges = node.getOutgoingEdges();
 
-  if(edges.length == 0) {
-    info.cumulativeChildrenNb = 1;
-  }
-
-  edges.forEach(function(e) {
-    var i = getBTreeNodeInfo(e.getDestNode());
-    if(info.depth < i.depth + 1) {
-      info.depth = i.depth + 1;
+    if(edges.length == 0) {
+        info.cumulativeChildrenNb = 1;
     }
-    info.cumulativeChildrenNb += i.cumulativeChildrenNb;
-    info.childrenInfo.push(i);
-  });
 
-  return info;
+    edges.forEach(function(e) {
+        var i = getBTreeNodeInfo(e.getDestNode());
+        if(info.depth < i.depth + 1) {
+            info.depth = i.depth + 1;
+        }
+        info.cumulativeChildrenNb += i.cumulativeChildrenNb;
+        info.childrenInfo.push(i);
+    });
+
+    return info;
 }
 
 /**
@@ -48,33 +48,33 @@ function getBTreeNodeInfo(node) {
  */
 function setBTreeNodePosition(node, info, area) {
 
-  if(area.relh == 0)
-    area.relh = area.h / info.depth;
-  if(area.relw == 0)
-    area.relw = area.w / info.cumulativeChildrenNb;
+    if(area.relh == 0)
+        area.relh = area.h / info.depth;
+    if(area.relw == 0)
+        area.relw = area.w / info.cumulativeChildrenNb;
 
-  node.move({x:(area.x + area.w/2), y:(area.y + area.relh/2)});
+    node.move({x:(area.x + area.w/2), y:(area.y + area.relh/2)});
 
-  var edges = node.getOutgoingEdges();
-  var widthAccumulator = 0;
+    var edges = node.getOutgoingEdges();
+    var widthAccumulator = 0;
 
-  for(var i = 0; i < edges.length; ++i) {
-    var n = edges[i].getDestNode();
-    var ci = info.childrenInfo[i];
+    for(var i = 0; i < edges.length; ++i) {
+        var n = edges[i].getDestNode();
+        var ci = info.childrenInfo[i];
 
-    var relwidth = area.relw * ci.cumulativeChildrenNb;
+        var relwidth = area.relw * ci.cumulativeChildrenNb;
 
-    var a = {x:area.x + widthAccumulator,
-             y:area.y + area.relh,
-             w:relwidth,
-             h:area.h - area.relh,
-             relw:area.relw,
-             relh:area.relh};
+        var a = {x:area.x + widthAccumulator,
+            y:area.y + area.relh,
+            w:relwidth,
+            h:area.h - area.relh,
+            relw:area.relw,
+            relh:area.relh};
 
-    setBTreeNodePosition(n, ci, a);
+        setBTreeNodePosition(n, ci, a);
 
-    widthAccumulator += relwidth;
-  }
+        widthAccumulator += relwidth;
+    }
 }
 
 
@@ -82,25 +82,25 @@ function setBTreeNodePosition(node, info, area) {
  * Beautify tool
  */
 export class BTreeBeautifyTool extends GraphEditorTool{
-  getToolId() {
-    return "btree_beautify";
-  }
-  getName() {
-    return "Beautify";
-  }
-  onToolSelect() {
+    getToolId() {
+        return "btree_beautify";
+    }
+    getName() {
+        return "Beautify";
+    }
+    onToolSelect() {
     // call beautifier algo
-    try {
-      this.graphEditor.setSelectedElement(undefined);
-      var root = findBTreeRoot(this.graphEditor);
-      beautifyBTree(this.graphEditor, root);
+        try {
+            this.graphEditor.setSelectedElement(undefined);
+            var root = findBTreeRoot(this.graphEditor);
+            beautifyBTree(this.graphEditor, root);
+        }
+        catch (err) {
+            // pass
+        }
+        // Reselect default tool
+        this.graphEditor.setCurrentTool(undefined);
     }
-    catch (err) {
-      // pass
-    }
-    // Reselect default tool
-    this.graphEditor.setCurrentTool(undefined);
-  }
 }
 
 

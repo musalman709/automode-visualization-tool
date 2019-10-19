@@ -94,7 +94,7 @@ export class FSMImporter extends GraphEditorImporter {
                         throw "the state definition is not correct, plase verify it, problem with " + state;
                     }
                     else {
-                        while (!this.isCorrectState(iterator.next(), i)) { }
+                        while (!this.isCorrectState(iterator.next(), i));
                         iterator.previous();
                     }
                 }
@@ -104,7 +104,7 @@ export class FSMImporter extends GraphEditorImporter {
             console.log("states imported");
             iterator.reset();
             var stateCounter = 0;
-            count = 0;
+            let count = 0;
             while (!iterator.end() || count > 100) { //import the edges
                 var nextItem = iterator.next(); // should be of type --nS if there is a transition. the right state number does not need to be verified
                 if (!this.isCorrectState(nextItem, stateCounter)) {
@@ -112,13 +112,12 @@ export class FSMImporter extends GraphEditorImporter {
                         var numberOfEdges = iterator.next(); //this tells us how many edges there is
                         for (let n = 0; n < numberOfEdges; n++) {
                             var startNode = iterator.next()[3]; //needs the A from --nAxB
-                            startNodeObj = graphEditor.getElements()[startNode]; // this works because the first elements to be created are the nodes
-                            var transNumber = nextItem[5];
+                            let startNodeObj = graphEditor.getElements()[startNode]; // this works because the first elements to be created are the nodes
                             var destNode = iterator.next();
                             if (destNode >= startNode) {
                                 destNode++;
                             }
-                            destNodeObj = graphEditor.getElements()[destNode];
+                            let destNodeObj = graphEditor.getElements()[destNode];
                             console.log("startNode: " + startNode + " destNode: " + destNode);
                             this.importEdges(graphEditor, iterator, startNodeObj, destNodeObj);
                         }
@@ -169,7 +168,7 @@ export class FSMImporter extends GraphEditorImporter {
             // get params
             category.param.forEach(function (p) {
                 let next = iterator.next();
-                currentParam = next.substring(2, next.length - 1);
+                let currentParam = next.substring(2, next.length - 1);
                 if (p.id == currentParam) { //No verification if the parameter is valid, we assume the value is; could check with the min/max value
                     var value = iterator.next();
                     node.setParamValue(p.id, value);
@@ -207,6 +206,7 @@ export class FSMImporter extends GraphEditorImporter {
             // set edge category
             edge.setParamValue(param.categoryid, transType);
             // get params
+            let currentParam;
             category.param.forEach(function (p) {
                 currentParam = iterator.next()[2];
                 if (p.id == currentParam) { //No verification if the parameter is valid, we assume it is; could check with the min/max value
