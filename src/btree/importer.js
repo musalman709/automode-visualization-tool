@@ -1,4 +1,4 @@
-import { GraphEditorImporter } from "../grapheditor";
+import GraphEditorImporter from "../GraphEditorImporter";
 import { GraphEditorNode, GraphEditorEdge } from "../grapheditorelements";
 import { beautifyBTree } from "./beautifier";
 

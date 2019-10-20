@@ -1,4 +1,4 @@
-import { GraphEditorElement } from "./grapheditor";
+import GraphEditorElement from "./GraphEditorElement";
 import { defaultNodeModel, defaultNodeParam, defaultEdgeModel, defaultEdgeParam } from "./elementmodels_default";
 import { createSVGElement, points_sum } from "./graph_utils";
 
@@ -182,10 +182,10 @@ export class GraphEditorNode extends GraphEditorElement{
         return this.outgoingEdges;
     }
     updateEdges() {
-        for (var i = 0; i < this.incomingEdges.length; ++i) {
+        for (let i = 0; i < this.incomingEdges.length; ++i) {
             this.incomingEdges[i].update();
         }
-        for (var i = 0; i < this.outgoingEdges.length; ++i) {
+        for (let i = 0; i < this.outgoingEdges.length; ++i) {
             this.outgoingEdges[i].update();
         }
     }

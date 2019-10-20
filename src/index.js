@@ -1,10 +1,10 @@
 import { GraphEditorSelectTool, GraphEditorNewNodeTool, GraphEditorNewEdgeTool, GraphEditorDraggingTool, GraphEditorDeleteTool } from "./grapheditortools";
 import { BTreeBeautifyTool } from "./btree/beautifier";
-import { BTreeExporter } from "./btree/exporter";
+import BTreeExporter from "./btree/exporter";
 import { BTreeImporter } from "./btree/importer";
 import { FSMExporter } from "./fsm/exporter";
 import { FSMImporter } from "./fsm/importer";
-import { GraphEditor } from "./grapheditor";
+import GraphEditor from "./grapheditor";
 import { cmdline_keydown, importfromfile, triggeropenfile, importfromcmdline, copytoclipboard, exporttofile, execinsimulator } from "./cmdlinestring";
 
 /**
@@ -22,7 +22,7 @@ function switchToBTree(graphEditor) {
     graphEditor.clearElements();
     graphEditor.setMode("btree");
 
-    var exporter = new BTreeExporter($("#cmdline"));
+    var exporter = new BTreeExporter();
     graphEditor.setExporter(exporter);
 
     var importer = new BTreeImporter($("#cmdline"));
@@ -55,7 +55,7 @@ function switchToFSM(graphEditor) {
     graphEditor.clearElements();
     graphEditor.setMode("fsm");
 
-    var exporter = new FSMExporter($("#cmdline"));
+    var exporter = new FSMExporter();
     graphEditor.setExporter(exporter);
 
     var importer = new FSMImporter($("#cmdline"));

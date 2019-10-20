@@ -1,65 +1,16 @@
 import { createSVGElement } from "./graph_utils";
 import { createModelsSelectMenu, createParamPane } from "./sidepanels";
 import { defaultEdgeParam } from "./elementmodels_default";
-
-export class GraphEditorElement {
-    constructor() {
-        this.graphEditor = undefined;
-    }
-    getName() {
-        return "<unknown element>";
-    }
-    isNode() { }
-    getSVGElement() { }
-    setModel(model) { }
-    getModel() { }
-    setParam(param) { }
-    getParam() { }
-    setParamValue(param, value) { }
-    getParamDict() { }
-    move(newPos) { }
-    getPosition() { }
-    update() { }
-    onSelect() { }
-    onDeselect() { }
-    onRemoval() { }
-}
-
-/**
- * Prototype of editor tools
- */
-export class GraphEditorTool {
-    constructor() {
-        this.graphEditor = undefined;
-    }
-    onToolSelect() { }
-    onToolDeselect() { }
-    onMouseDown(pos, element) { }
-    onMouseUp(pos) { }
-    onMouseLeave() { }
-    onMouseMove(pos) { }
-}
-
-/**
- * Prototype of graph to string exporters
- */
-export class GraphEditorExporter {
-    export() { }
-}
-
-/**
- * Prototype of string to graph importer
- */
-export class GraphEditorImporter {
-    import() { }
-}
-
+import GraphEditorTool from "./graphEditorTool";
+import GraphEditorElement from "./GraphEditorElement";
+import GraphEditorExporter from "./GraphEditorExporter";
+import GraphEditorImporter from "./GraphEditorImporter";
 
 /**
  * Object that manages tools and graph elements,
  * create the svg area and receive input from the user
  */
-export class GraphEditor {
+export default class GraphEditor {
     constructor(graphcontainer, toolscontainer, paramcontainer) {
         // html elements
         this.graphcontainer = graphcontainer;
@@ -332,7 +283,12 @@ export class GraphEditor {
     }
     callExporter() {
         if (this.exporter !== undefined) {
-            this.exporter.export(this);
+            const cmdline = document.querySelector("#cmdline");
+            try {
+                cmdline.value = this.exporter.export(this.getElements());
+            } catch(err) {
+                cmdline.value = err;
+            }
         }
     }
     setImporter(importer) {

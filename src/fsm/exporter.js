@@ -1,33 +1,18 @@
-import { GraphEditorExporter } from "../grapheditor";
+import GraphEditorExporter from "../GraphEditorExporter";
 
 export class FSMExporter extends GraphEditorExporter{
-    constructor(outputHTML) {
-        super();
-        this.outputHTML = outputHTML;
-        this.outputHTML.text("");
-    }
-    setText(text) {
-        this.outputHTML.val(text);
-    }
-    export(graphEditor) {
-        try {
-            var elements = graphEditor.getElements();
-            // If elements empty, set empty string
-            if (elements.length === 0) {
-                this.setText("");
-                return;
-            }
-            // Get the number of states
-            const nbS = this.findNbStates(graphEditor, elements);
-            // build string 
-            var str = this.expStates(nbS, graphEditor, elements);
-            this.setText(str);
+    export(elements) {
+        // If elements empty, set empty string
+        if (elements.length === 0) {
+            return "";
         }
-        catch (err) {
-            this.setText(err);
-        }
+        // Get the number of states
+        const nbS = this.findNbStates(elements);
+        // build string 
+        var str = this.expStates(nbS, elements);
+        return str;
     }
-    findNbStates(graphEditor, elements) {
+    findNbStates(elements) {
         var nbS = 0;
         for (var i = 0; i < elements.length; i++) {
             if (elements[i].isNode()) {
@@ -39,14 +24,14 @@ export class FSMExporter extends GraphEditorExporter{
         }
         return nbS;
     }
-    expStates(nbS, graphEditor, elements) {
+    expStates(nbS, elements) {
         var str = "--fsm-config ";
         str += "--nstates " + nbS + " ";
         var nodeCounter = 0;
         for (var i = 0; i < elements.length; i++) {
             if (elements[i].isNode()) {
                 str += this.expNodeParams(elements[i], nodeCounter);
-                str += this.expTransitions(graphEditor, elements, i, nodeCounter);
+                str += this.expTransitions(elements, i, nodeCounter);
                 nodeCounter++;
             }
         }
@@ -62,7 +47,7 @@ export class FSMExporter extends GraphEditorExporter{
         }
         return str;
     }
-    expTransitions(graphEditor, elements, i, nodeCounter) {
+    expTransitions(elements, i, nodeCounter) {
         var str = "";
         const node = elements[i];
         if (node.getOutgoingEdges().length > 0) {

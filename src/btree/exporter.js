@@ -1,57 +1,17 @@
-import { GraphEditorExporter } from "../grapheditor";
+import GraphEditorExporter from "../GraphEditorExporter";
+import { findBTreeRoot } from "./btreeutils";
 
-export function findBTreeRoot(graphEditor) {
-
-    var elements = graphEditor.getElements();
-    var root = undefined;
-
-    for(var i = 0; i < elements.length; ++i) {
-        var current = elements[i];
-
-        // root candidate
-        if(current.isNode() && current.getIncomingEdges().length === 0) {
-        // two or more roots, error
-            if(root !== undefined) {
-                throw "Invalid configuration : multiple root nodes detected";
-            }
-            // else
-            root = current;
+export default class BTreeExporter extends GraphEditorExporter{
+    export(elements) {
+        var root = undefined;
+        // If elements empty, set empty string
+        if (elements.length === 0) {
+            return "";
         }
-    }
-    // if no root found
-    if(root === undefined) {
-        throw "Invalid configuration : no root node found";
-    }
-
-    return root;
-}
-
-export class BTreeExporter extends GraphEditorExporter{
-    constructor(outputHTML) {
-        super();
-        this.outputHTML = outputHTML;
-        this.outputHTML.text("");
-    }
-    setText(text) {
-        this.outputHTML.val(text);
-    }
-    export(graphEditor) {
-        try {
-            var elements = graphEditor.getElements();
-            var root = undefined;
-            // If elements empty, set empty string
-            if (elements.length === 0) {
-                this.setText("");
-                return;
-            }
-            // Try to find root node
-            root = findBTreeRoot(graphEditor);
-            // build string
-            this.setText(this.expRootNode(root));
-        }
-        catch (err) {
-            this.setText(err);
-        }
+        // Try to find root node
+        root = findBTreeRoot(elements);
+        // build string
+        return this.expRootNode(root);
     }
     expRootNode(rootNode) {
         var str = "--bt-config ";

@@ -1,5 +1,5 @@
-import { GraphEditorTool } from "../grapheditor";
-import { findBTreeRoot } from "./exporter";
+import GraphEditorTool from "../graphEditorTool";
+import { findBTreeRoot } from "./btreeutils";
 
 /**
  * Beautifier algorithm
@@ -92,7 +92,7 @@ export class BTreeBeautifyTool extends GraphEditorTool{
     // call beautifier algo
         try {
             this.graphEditor.setSelectedElement(undefined);
-            var root = findBTreeRoot(this.graphEditor);
+            var root = findBTreeRoot(this.graphEditor.getElements());
             beautifyBTree(this.graphEditor, root);
         }
         catch (err) {

@@ -1,4 +1,4 @@
-import { GraphEditorImporter } from "../grapheditor";
+import GraphEditorImporter from "../GraphEditorImporter";
 import { GraphEditorNode, GraphEditorEdge } from "../grapheditorelements";
 
 /**
@@ -138,7 +138,7 @@ export class FSMImporter extends GraphEditorImporter {
             graphEditor.clearElements();
             // rewrite cmdline, so user can fix it
             this.inputHTML.val(cmdlinestring);
-            alert(err);
+            throw err;
         }
     }
     importNode(graphEditor, behav, i, iterator) {

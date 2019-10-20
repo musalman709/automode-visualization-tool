@@ -1,4 +1,4 @@
-import { GraphEditorTool } from "./grapheditor";
+import GraphEditorTool from "./graphEditorTool";
 import { GraphEditorEdge, GraphEditorNode } from "./grapheditorelements";
 
 /**
