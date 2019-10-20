@@ -49,10 +49,6 @@ function switchToBTree(graphEditor) {
     graphEditor.addTool(new GraphEditorDraggingTool());
     graphEditor.addTool(new GraphEditorDeleteTool());
     graphEditor.addTool(new BTreeBeautifyTool());
-
-    $("#switchlink").click(function() {
-        switchToFSM(graphEditor);
-    });
 }
 
 /**
@@ -83,65 +79,17 @@ function switchToFSM(graphEditor) {
     graphEditor.addTool(new GraphEditorNewEdgeTool());
     graphEditor.addTool(new GraphEditorDraggingTool());
     graphEditor.addTool(new GraphEditorDeleteTool());
+}
 
-    $("#switchlink").click(function() {
+/**
+ * Toggle between btree and FSM mode
+ */
+function toggleMode(graphEditor) {
+    if (grapheditor.getMode() === "fsm") {
         switchToBTree(graphEditor);
-    });
-}
-
-/**
- * Load node/edge models from config file
- */
-function loadElementModels(nodes_url, edges_url, graphEditor) {
-
-    graphEditor.setNodeModels([]);
-    graphEditor.setEdgeModels([]);
-
-
-    $.ajax({
-        dataType: "json",
-        url: nodes_url,
-        mimeType: "application/json",
-        success: function(result){
-            graphEditor.setNodeModels(result);
-        }
-    });
-
-    $.ajax({
-        dataType: "json",
-        url: edges_url,
-        mimeType: "application/json",
-        success: function(result){
-            graphEditor.setEdgeModels(result);
-        }
-    });
-}
-
-/**
- * Load node/edge param data from config file
- */
-function loadElementParams(nodes_url, edges_url, graphEditor) {
-
-    graphEditor.setNodeParams([]);
-    graphEditor.setEdgeParams([]);
-
-    $.ajax({
-        dataType: "json",
-        url: nodes_url,
-        mimeType: "application/json",
-        success: function(result){
-            graphEditor.setNodeParams(result);
-        }
-    });
-
-    $.ajax({
-        dataType: "json",
-        url: edges_url,
-        mimeType: "application/json",
-        success: function(result){
-            graphEditor.setEdgeParams(result);
-        }
-    });
+    } else {
+        switchToFSM(graphEditor);
+    }
 }
 
 /**
@@ -162,6 +110,7 @@ const cmdline = document.querySelector("#cmdline");
 const copyButton = document.querySelector("#copybutton");
 const fileExportButton = document.querySelector("#fileexportbutton");
 const executeButton = document.querySelector("#executebutton");
+const switchLink = document.querySelector("#switchlink");
 
 openFileInput.addEventListener("change", () => importfromfile(grapheditor));
 openFileButton.addEventListener("click", triggeropenfile);
@@ -169,5 +118,6 @@ cmdline.addEventListener("change", () => importfromcmdline(grapheditor));
 copyButton.addEventListener("click", copytoclipboard);
 fileExportButton.addEventListener("click", exporttofile);
 executeButton.addEventListener("click", execinsimulator);
+switchLink.addEventListener("click", () => toggleMode(grapheditor));
 	
 switchToFSM(grapheditor);

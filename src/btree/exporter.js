@@ -59,7 +59,7 @@ export default class BTreeExporter extends GraphEditorExporter{
     expNodeParams(node, nodeID) {
         var pdict = node.getParamDict();
         var str = "";
-        for (var key in pdict) {
+        for (const key in pdict) {
             if (pdict.hasOwnProperty(key)) {
                 str += "--" + key + nodeID + " " + pdict[key] + " ";
             }
