@@ -6,6 +6,15 @@ import { FSMExporter } from "./fsm/exporter";
 import { FSMImporter } from "./fsm/importer";
 import GraphEditor from "./grapheditor";
 import { cmdline_keydown, importfromfile, triggeropenfile, importfromcmdline, copytoclipboard, exporttofile, execinsimulator } from "./cmdlinestring";
+import btreeNodeModels from "./btree/nodemodels.json";
+import btreeEdgeModels from "./btree/edgemodels.json";
+import btreeNodeParams from "./btree/nodeparams.json";
+import btreeEdgeParams from "./btree/edgeparams.json";
+import fsmNodeModels from "./fsm/nodemodels.json";
+import fsmEdgeModels from "./fsm/edgemodels.json";
+import fsmNodeParams from "./fsm/nodeparams.json";
+import fsmEdgeParams from "./fsm/edgeparams.json";
+
 
 /**
  * Initialisations functions
@@ -28,8 +37,10 @@ function switchToBTree(graphEditor) {
     var importer = new BTreeImporter($("#cmdline"));
     graphEditor.setImporter(importer);
 
-    loadElementModels("btree/nodemodels.json", "btree/edgemodels.json", graphEditor);
-    loadElementParams("btree/nodeparams.json", "btree/edgeparams.json", graphEditor);
+    graphEditor.setNodeModels(btreeNodeModels);
+    graphEditor.setEdgeModels(btreeEdgeModels);
+    graphEditor.setNodeParams(btreeNodeParams);
+    graphEditor.setEdgeParams(btreeEdgeParams);
 
     graphEditor.clearTools();
     graphEditor.addTool(new GraphEditorSelectTool(), true);
@@ -61,8 +72,10 @@ function switchToFSM(graphEditor) {
     var importer = new FSMImporter($("#cmdline"));
     graphEditor.setImporter(importer);
 
-    loadElementModels("fsm/nodemodels.json", "fsm/edgemodels.json", graphEditor);
-    loadElementParams("fsm/nodeparams.json", "fsm/edgeparams.json", graphEditor);
+    graphEditor.setNodeModels(fsmNodeModels);
+    graphEditor.setEdgeModels(fsmEdgeModels);
+    graphEditor.setNodeParams(fsmNodeParams);
+    graphEditor.setEdgeParams(fsmEdgeParams);
 
     graphEditor.clearTools();
     graphEditor.addTool(new GraphEditorSelectTool(), true);
@@ -83,6 +96,7 @@ function loadElementModels(nodes_url, edges_url, graphEditor) {
 
     graphEditor.setNodeModels([]);
     graphEditor.setEdgeModels([]);
+
 
     $.ajax({
         dataType: "json",

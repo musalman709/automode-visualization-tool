@@ -2,3 +2,4 @@ myconfig.ini
 node_modules
 package-lock.json
 jsconfig.json
+dist
