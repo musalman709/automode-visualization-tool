@@ -34,7 +34,7 @@ function switchToBTree(graphEditor) {
     var exporter = new BTreeExporter();
     graphEditor.setExporter(exporter);
 
-    var importer = new BTreeImporter($("#cmdline"));
+    var importer = new BTreeImporter();
     graphEditor.setImporter(importer);
 
     graphEditor.setNodeModels(btreeNodeModels);
@@ -65,7 +65,7 @@ function switchToFSM(graphEditor) {
     var exporter = new FSMExporter();
     graphEditor.setExporter(exporter);
 
-    var importer = new FSMImporter($("#cmdline"));
+    var importer = new FSMImporter();
     graphEditor.setImporter(importer);
 
     graphEditor.setNodeModels(fsmNodeModels);

@@ -41,7 +41,7 @@ export function importfromfile(grapheditor) {
 }
 
 export async function execinsimulator() {
-    const cmdline = document.querySElector("#cmdline").value;
+    const cmdline = document.querySelector("#cmdline").value;
     const execUrl = "/exec";
     const response = await fetch(execUrl, {
         method: "POST",

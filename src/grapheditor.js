@@ -220,8 +220,8 @@ export default class GraphEditor {
     }
     setCurrentTool(tool) {
         if (this.currentTool !== undefined) {
-            $("#tool_" + this.currentTool.getToolId())
-                .attr("class", "tool");
+            const currentToolTag = document.querySelector(`#tool_${this.currentTool.getToolId()}`);
+            currentToolTag.setAttribute("class", "tool");
             this.currentTool.onToolDeselect();
         }
         this.currentTool = tool;
@@ -229,8 +229,8 @@ export default class GraphEditor {
             this.currentTool = this.defaultTool;
         }
         if (this.currentTool !== undefined) {
-            $("#tool_" + this.currentTool.getToolId())
-                .attr("class", "tool selected");
+            const currentToolTag = document.querySelector(`#tool_${this.currentTool.getToolId()}`);
+            currentToolTag.setAttribute("class", "tool selected");
             this.currentTool.onToolSelect();
         }
     }
@@ -301,7 +301,16 @@ export default class GraphEditor {
     }
     callImporter() {
         if (this.importer !== undefined) {
-            this.importer.import(this);
+            const cmdlineString = document.querySelector("#cmdline").value;
+            this.clearElements();
+            try {
+                this.importer.import(this, cmdlineString);
+                // reset cmdline to proper one
+                this.callExporter();
+            } catch (err) {
+                document.querySelector("#cmdline").value = cmdlineString;
+                alert(err);
+            }
         }
     }
     getMode() {

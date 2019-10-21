@@ -31,10 +31,6 @@ class CmdLineIterator {
 
 
 export class BTreeImporter extends GraphEditorImporter{
-    constructor(inputHTML) {
-        super();
-        this.inputHTML = inputHTML;
-    }
     isStartArg(arg) {
         return arg == "--bt-config";
     }
@@ -44,35 +40,23 @@ export class BTreeImporter extends GraphEditorImporter{
     isValue(arg) {
         return !isNaN(arg);
     }
-    import(graphEditor) {
-        try {
-            // build parameters dict
-            var cmdlinestring = this.inputHTML.val();
-            var iterator = new CmdLineIterator(cmdlinestring);
-            var dict = {};
-            while (!iterator.end()) {
-                var key = iterator.next();
-                if (this.isStartArg(key) || key == "")
-                    continue;
-                var value = iterator.next();
-                if (this.isArg(key) && this.isValue(value))
-                    dict[key] = value;
-                else
-                    throw "Argument " + key + " is invalid";
-            }
-            graphEditor.clearElements();
-            if (cmdlinestring !== "") {
-                var node = this.importNode(graphEditor, dict, "root");
-                beautifyBTree(graphEditor, node);
-            }
-            // reset cmdline to proper one
-            graphEditor.callExporter();
+    import(graphEditor, inputString) {
+        // build parameters dict
+        var iterator = new CmdLineIterator(inputString);
+        var dict = {};
+        while (!iterator.end()) {
+            var key = iterator.next();
+            if (this.isStartArg(key) || key == "")
+                continue;
+            var value = iterator.next();
+            if (this.isArg(key) && this.isValue(value))
+                dict[key] = value;
+            else
+                throw "Argument " + key + " is invalid";
         }
-        catch (err) {
-            graphEditor.clearElements();
-            // rewrite cmdline, so user can fix it
-            this.inputHTML.val(cmdlinestring);
-            alert(err);
+        if (inputString !== "") {
+            var node = this.importNode(graphEditor, dict, "root");
+            beautifyBTree(graphEditor, node);
         }
     }
     importNode(graphEditor, dict, nodeID) {

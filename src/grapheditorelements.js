@@ -198,6 +198,11 @@ export class GraphEditorNode extends GraphEditorElement{
  * Bind two nodes ('src' and 'dest')
  */
 export class GraphEditorEdge extends GraphEditorElement{
+    /**
+     * @param {string} id 
+     * @param {GraphEditorNode} srcElement 
+     * @param {GraphEditorNode} destElement 
+     */
     constructor(id, srcElement, destElement) {
         super();
         // src and dest

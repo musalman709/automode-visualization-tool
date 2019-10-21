@@ -45,10 +45,6 @@ class CmdLineIterator {
 
 
 export class FSMImporter extends GraphEditorImporter {
-    constructor(inputHTML) {
-        super();
-        this.inputHTML = inputHTML;
-    }
     isStartArg(arg) {
         return arg === "--fsm-config";
     }
@@ -64,82 +60,71 @@ export class FSMImporter extends GraphEditorImporter {
     isCorrectTransition(arg, i) {
         return arg == ("--n" + i);
     }
-    import(graphEditor) {
-        try {
-            // build parameters dict
-            console.log("starting to import");
-            var cmdlinestring = this.inputHTML.val();
-            var iterator = new CmdLineIterator(cmdlinestring);
-            graphEditor.clearElements();
-            var firstArg = iterator.next();
-            if (!this.isStartArg(firstArg)) {
-                throw "first arg must be --fsm-config and not " + firstArg + ".";
-            }
-            var secArg = iterator.next();
-            if (secArg.localeCompare("--nstates")) {
-                throw "second arg must be --nstates and not " + secArg + ".";
-            }
-            var nbStates = iterator.next();
-            if (!this.isValue(nbStates)) {
-                throw "the number of states must be a integer you wrote " + nbStates;
-            }
-            nbStates = Math.round(nbStates); //making sure it is an integer, 2.5 states would not work well
-            console.log("basic imports done");
-            var state = undefined;
-            var behav = undefined;
-            for (var i = 0; i < nbStates; i++) { //there must be exaclty nbStates of states definition
-                state = iterator.next();
-                if (!this.isCorrectState(state, i)) {
-                    if (!this.isCorrectTransition(state, i - 1)) {
-                        throw "the state definition is not correct, plase verify it, problem with " + state;
-                    }
-                    else {
-                        while (!this.isCorrectState(iterator.next(), i));
-                        iterator.previous();
-                    }
-                }
-                behav = iterator.next();
-                this.importNode(graphEditor, behav, i, iterator); //will import the node and the parameters
-            }
-            console.log("states imported");
-            iterator.reset();
-            var stateCounter = 0;
-            let count = 0;
-            while (!iterator.end() || count > 100) { //import the edges
-                var nextItem = iterator.next(); // should be of type --nS if there is a transition. the right state number does not need to be verified
-                if (!this.isCorrectState(nextItem, stateCounter)) {
-                    if (this.isCorrectTransition(nextItem, (stateCounter - 1))) {
-                        var numberOfEdges = iterator.next(); //this tells us how many edges there is
-                        for (let n = 0; n < numberOfEdges; n++) {
-                            var startNode = iterator.next()[3]; //needs the A from --nAxB
-                            let startNodeObj = graphEditor.getElements()[startNode]; // this works because the first elements to be created are the nodes
-                            var destNode = iterator.next();
-                            if (destNode >= startNode) {
-                                destNode++;
-                            }
-                            let destNodeObj = graphEditor.getElements()[destNode];
-                            console.log("startNode: " + startNode + " destNode: " + destNode);
-                            this.importEdges(graphEditor, iterator, startNodeObj, destNodeObj);
-                        }
-                    }
-                    else { //no transition for that node and we read the privious node to reset the iterator
-                    }
+    import(graphEditor, inputString) {
+        // build parameters dict
+        console.log("starting to import");
+        var iterator = new CmdLineIterator(inputString);
+        graphEditor.clearElements();
+        var firstArg = iterator.next();
+        if (!this.isStartArg(firstArg)) {
+            throw "first arg must be --fsm-config and not " + firstArg + ".";
+        }
+        var secArg = iterator.next();
+        if (secArg.localeCompare("--nstates")) {
+            throw "second arg must be --nstates and not " + secArg + ".";
+        }
+        var nbStates = iterator.next();
+        if (!this.isValue(nbStates)) {
+            throw "the number of states must be a integer you wrote " + nbStates;
+        }
+        nbStates = Math.round(nbStates); //making sure it is an integer, 2.5 states would not work well
+        console.log("basic imports done");
+        var state = undefined;
+        var behav = undefined;
+        for (var i = 0; i < nbStates; i++) { //there must be exaclty nbStates of states definition
+            state = iterator.next();
+            if (!this.isCorrectState(state, i)) {
+                if (!this.isCorrectTransition(state, i - 1)) {
+                    throw "the state definition is not correct, please verify it, problem with " + state;
                 }
                 else {
-                    stateCounter++;
+                    while (!this.isCorrectState(iterator.next(), i));
+                    iterator.previous();
                 }
-                count++;
             }
-            console.log("String imported");
-            // reset cmdline to proper one
-            graphEditor.callExporter();
+            behav = iterator.next();
+            this.importNode(graphEditor, behav, i, iterator); //will import the node and the parameters
         }
-        catch (err) {
-            graphEditor.clearElements();
-            // rewrite cmdline, so user can fix it
-            this.inputHTML.val(cmdlinestring);
-            throw err;
+        console.log("states imported");
+        iterator.reset();
+        var stateCounter = 0;
+        let count = 0;
+        while (!iterator.end() || count > 100) { //import the edges
+            var nextItem = iterator.next(); // should be of type --nS if there is a transition. the right state number does not need to be verified
+            if (!this.isCorrectState(nextItem, stateCounter)) {
+                if (this.isCorrectTransition(nextItem, (stateCounter - 1))) {
+                    var numberOfEdges = iterator.next(); //this tells us how many edges there is
+                    for (let n = 0; n < numberOfEdges; n++) {
+                        var startNode = iterator.next()[3]; //needs the A from --nAxB
+                        let startNodeObj = graphEditor.getElements()[startNode]; // this works because the first elements to be created are the nodes
+                        var destNode = iterator.next();
+                        if (destNode >= startNode) {
+                            destNode++;
+                        }
+                        let destNodeObj = graphEditor.getElements()[destNode];
+                        console.log("startNode: " + startNode + " destNode: " + destNode);
+                        this.importEdges(graphEditor, iterator, startNodeObj, destNodeObj);
+                    }
+                }
+                else { //no transition for that node and we read the privious node to reset the iterator
+                }
+            }
+            else {
+                stateCounter++;
+            }
+            count++;
         }
+        console.log("String imported");
     }
     importNode(graphEditor, behav, i, iterator) {
         var model = graphEditor.getNodeModelById("0"); //there is only one model and one set of parameters for said model

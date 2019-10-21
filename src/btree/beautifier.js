@@ -96,10 +96,10 @@ export class BTreeBeautifyTool extends GraphEditorTool{
             beautifyBTree(this.graphEditor, root);
         }
         catch (err) {
-            // pass
+            // Reselect default tool
+            this.graphEditor.setCurrentTool(undefined);
+            alert(err);
         }
-        // Reselect default tool
-        this.graphEditor.setCurrentTool(undefined);
     }
 }
 

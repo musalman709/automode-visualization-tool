@@ -5,23 +5,20 @@ import { defaultEdgeModel, defaultEdgeParam, defaultNodeModel, defaultNodeParam 
 /**
  * Create a select option for a model
  */
-export function createModelOption(model, param, graphEditor, element) {
-    var opt_tag = $('<option></option>');
-
-    opt_tag.val(model.id);
-    opt_tag.html(model.name);
-    opt_tag.click(function() {
+function createModelOption(model, param, graphEditor, element) {
+    const opt = document.createElement("option");
+    opt.value = model.id;
+    opt.textContent = model.name;
+    opt.addEventListener("click", () => {
         element.setModel(model);
         element.setParam(param);
         graphEditor.updateParamPane();
         graphEditor.callExporter();
     });
-
     if(model === element.getModel()) {
-        opt_tag.attr("selected", "selected");
+        opt.setAttribute("selected", true);
     }
-
-    return opt_tag;
+    return opt;
 }
 
 /**
@@ -45,11 +42,11 @@ export function createModelsSelectMenu(graphEditor, element) {
     }
 
     // build the combo box
-    var select_tag = $('<select></select>');
-    select_tag.addClass("paramselect");
+    const selectTag = document.createElement("select");
+    selectTag.classList.add("paramselect");
 
     // add the option for default model
-    select_tag.append(createModelOption(defaultModel, defaultParam, graphEditor,
+    selectTag.appendChild(createModelOption(defaultModel, defaultParam, graphEditor,
         element));
 
     // add one option per available model
@@ -60,53 +57,55 @@ export function createModelsSelectMenu(graphEditor, element) {
         } else {
             param = graphEditor.getEdgeParamById(model.id);
         }
-        select_tag.append(createModelOption(model, param, graphEditor, element));
+        selectTag.appendChild(createModelOption(model, param, graphEditor, element));
     });
 
-    return select_tag;
+    return selectTag;
 }
 
 /**
  * Create a select list for nodes/edge category
  */
 export function createCategorySelectMenu(params, element, catvalue, graphEditor) {
-    var catselect = $("<select></select>");
-    catselect.addClass("paramselect");
-    params.categories.forEach(function(c){
-        var opt = $("<option></option>");
-        opt.val(c.id);
-        opt.text(c.name);
+    const typeSelect = document.createElement("select");
+    typeSelect.classList.add("paramselect");
+
+    params.categories.forEach((c) => {
+        const opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = c.name;
         if(c.id == catvalue) {
-            opt.attr("selected", "selected");
+            opt.setAttribute("selected", true);
         }
-        opt.click(function(obj) {
+        opt.addEventListener("click", () => {
             element.setParamValue(params.categoryid, c.id);
             graphEditor.updateParamPane();
             graphEditor.callExporter();
         });
-        catselect.append(opt);
+        typeSelect.appendChild(opt);
     });
 
-    return catselect;
+    return typeSelect;
 }
 
 /**
  * Create an input for a node/edge parameter
  */
 export function createParameterInput(param, element, graphEditor) {
-    var paraminput = $("<input type=number></input>");
-    paraminput.addClass("paraminput");
-    paraminput.attr("name", param.id);
-    paraminput.attr("min", param.min);
-    paraminput.attr("max", param.max);
-    paraminput.attr("step", param.step);
-    paraminput.attr("value", param.min);
-    paraminput.val(element.getParamDict()[param.id]);
-    paraminput.on('change', function() {
-        element.setParamValue(param.id, paraminput.val());
+    const paramInput = document.createElement("input");
+    paramInput.classList.add("paraminput");
+    paramInput.setAttribute("type", "number");
+    paramInput.setAttribute("name", param.id);
+    paramInput.setAttribute("min", param.min);
+    paramInput.setAttribute("max", param.max);
+    paramInput.setAttribute("step", param.step);
+    paramInput.setAttribute("value", param.min);
+    paramInput.value = element.getParamDict()[param.id];
+    paramInput.addEventListener("change", () => {
+        element.setParamValue(param.id, paramInput.value);
         graphEditor.callExporter();
     });
-    return paraminput;
+    return paramInput;
 }
 
 /**
