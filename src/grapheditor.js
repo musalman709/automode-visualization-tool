@@ -183,7 +183,10 @@ export default class GraphEditor {
         this.paramcontainer.empty();
         if (this.selectedElement !== undefined) {
             // model selector
-            this.paramcontainer.append($("<p class=\"asidetitle\">Type</p>"));
+            const p = document.createElement("p");
+            p.className = "asidetitle";
+            p.appendChild(document.createTextNode("Type"));
+            this.paramcontainer.append(p);
             this.paramcontainer.append(createModelsSelectMenu(this, this.selectedElement));
             // parameter elements
             createParamPane(this.selectedElement.getParam(), this.selectedElement, this.paramcontainer, this);
@@ -194,11 +197,11 @@ export default class GraphEditor {
             this.tools.push(tool);
             tool.graphEditor = this;
             var graphEditor = this;
-            var element = jQuery("<p/>", {
-                class: "tool",
-                id: "tool_" + tool.getToolId(), text: tool.getName()
-            });
-            element.on("click", function () {
+            const element = document.createElement("p");
+            element.className = "tool";
+            element.id = `tool_${tool.getToolId()}`;
+            element.appendChild(document.createTextNode(tool.getName()));
+            element.addEventListener("click", () => {
                 graphEditor.setCurrentTool(tool);
             });
             this.toolscontainer.append(element);

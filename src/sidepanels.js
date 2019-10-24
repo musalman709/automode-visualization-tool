@@ -113,8 +113,10 @@ export function createParameterInput(param, element, graphEditor) {
  */
 export function createParamPane(params, element, container, graphEditor) {
     if(params.categories.length > 0) {
-
-        container.append($("<p class=\"asidetitle\">" + params.categoriesname + "</p>"));
+        const p = document.createElement("p");
+        p.className = "asidetitle";
+        p.appendChild(document.createTextNode(params.categoriesname));
+        container.append(p);
 
         var catvalue = element.getParamDict()[params.categoryid];
         container.append(createCategorySelectMenu(params, element, catvalue,

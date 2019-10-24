@@ -53,25 +53,3 @@ export async function execinsimulator() {
     if (! response.ok) 
         throw new Error("Network error");
 }
-
-export function cmdline_keydown(event) {
-    if(event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
-        if(event.key == "s") {
-            event.preventDefault();
-            exporttofile();
-        }
-        if(event.key == "c") {
-            event.preventDefault();
-            copytoclipboard();
-        }
-        if(event.key == "o") {
-            event.preventDefault();
-            triggeropenfile();
-        }
-        if(event.key == "e") {
-            event.preventDefault();
-            execinsimulator();
-        }
-    }
-}
-

@@ -5,7 +5,7 @@ import { BTreeImporter } from "./btree/importer";
 import { FSMExporter } from "./fsm/exporter";
 import { FSMImporter } from "./fsm/importer";
 import GraphEditor from "./grapheditor";
-import { cmdline_keydown, importfromfile, triggeropenfile, importfromcmdline, copytoclipboard, exporttofile, execinsimulator } from "./cmdlinestring";
+import * as cmdlinestring from "./cmdlinestring";
 import btreeNodeModels from "./btree/nodemodels.json";
 import btreeEdgeModels from "./btree/edgemodels.json";
 import btreeNodeParams from "./btree/nodeparams.json";
@@ -95,7 +95,26 @@ function toggleMode(graphEditor) {
 /**
  * Key pressed events
  */
-document.addEventListener("keydown", cmdline_keydown);
+document.addEventListener("keydown", (event) => {
+    if(event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
+        if(event.key == "s") {
+            event.preventDefault();
+            cmdlinestring.exporttofile();
+        }
+        if(event.key == "c") {
+            event.preventDefault();
+            cmdlinestring.copytoclipboard();
+        }
+        if(event.key == "o") {
+            event.preventDefault();
+            cmdlinestring.triggeropenfile();
+        }
+        if(event.key == "e") {
+            event.preventDefault();
+            cmdlinestring.execinsimulator();
+        }
+    }
+});
 
 
 /**
@@ -112,12 +131,12 @@ const fileExportButton = document.querySelector("#fileexportbutton");
 const executeButton = document.querySelector("#executebutton");
 const switchLink = document.querySelector("#switchlink");
 
-openFileInput.addEventListener("change", () => importfromfile(grapheditor));
-openFileButton.addEventListener("click", triggeropenfile);
-cmdline.addEventListener("change", () => importfromcmdline(grapheditor));
-copyButton.addEventListener("click", copytoclipboard);
-fileExportButton.addEventListener("click", exporttofile);
-executeButton.addEventListener("click", execinsimulator);
+openFileInput.addEventListener("change", () => cmdlinestring.importfromfile(grapheditor));
+openFileButton.addEventListener("click", cmdlinestring.triggeropenfile);
+cmdline.addEventListener("change", () => cmdlinestring.importfromcmdline(grapheditor));
+copyButton.addEventListener("click", cmdlinestring.copytoclipboard);
+fileExportButton.addEventListener("click", cmdlinestring.exporttofile);
+executeButton.addEventListener("click", cmdlinestring.execinsimulator);
 switchLink.addEventListener("click", () => toggleMode(grapheditor));
 	
 switchToFSM(grapheditor);

@@ -7,6 +7,7 @@ module.exports = {
         filename: 'main.js',
         path: path.resolve(__dirname, 'dist')
     },
+    devtool: "cheap-module-eval-source-map",
     devServer: {
         contentBase: path.join(__dirname, 'src'),
         compress: true,
