@@ -182,12 +182,7 @@ export default class GraphEditor {
     updateParamPane() {
         this.paramcontainer.empty();
         if (this.selectedElement !== undefined) {
-            // model selector
-            const p = document.createElement("p");
-            p.className = "asidetitle";
-            p.appendChild(document.createTextNode("Type"));
-            this.paramcontainer.append(p);
-            this.paramcontainer.append(createModelsSelectMenu(this, this.selectedElement));
+            createModelsSelectMenu(this, this.selectedElement);
             // parameter elements
             createParamPane(this.selectedElement.getParam(), this.selectedElement, this.paramcontainer, this);
         }
