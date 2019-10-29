@@ -12,11 +12,8 @@ export function exporttofile() {
 
     if(cmdline != "") {
         var encodedUri = encodeURI("data:text," + cmdline);
-        var link = document.createElement("a");
+        var link = document.querySelector("#downloadLink");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "cmdline-string.txt");
-        document.body.appendChild(link); // Required for FF
-
         link.click();
     }
 }
