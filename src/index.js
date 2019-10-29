@@ -17,6 +17,7 @@ import fsmEdgeParams from "./fsm/edgeparams.json";
 import OptionSelector from "./View/OptionSelector";
 import { defaultNodeModel, defaultEdgeModel, defaultNodeParam, defaultEdgeParam } from "./elementmodels_default";
 import ParamInput from "./View/ParamInput";
+import ParamPane from "./View/ParamPane";
 
 
 /**
@@ -88,6 +89,7 @@ function switchToFSM(graphEditor) {
  * Toggle between btree and FSM mode
  */
 function toggleMode(graphEditor) {
+    document.querySelector("param-pane").clear();
     if (grapheditor.getMode() === "fsm") {
         switchToBTree(graphEditor);
     } else {
@@ -125,9 +127,9 @@ document.addEventListener("keydown", (event) => {
  */
 window.customElements.define("option-selector", OptionSelector);
 window.customElements.define("param-input", ParamInput);
+window.customElements.define("param-pane", ParamPane);
 let grapheditor = new GraphEditor(
-    $("#graph-container"), $("#tools-container"),
-    $("#param-container"));
+    $("#graph-container"), $("#tools-container"));
 const openFileInput = document.querySelector("#openfileinput");
 const openFileButton = document.querySelector("#openfilebutton");
 const cmdline = document.querySelector("#cmdline");
@@ -135,6 +137,7 @@ const copyButton = document.querySelector("#copybutton");
 const fileExportButton = document.querySelector("#fileexportbutton");
 const executeButton = document.querySelector("#executebutton");
 const switchLink = document.querySelector("#switchlink");
+const paramPane = document.querySelector("param-pane");
 
 openFileInput.addEventListener("change", () => cmdlinestring.importfromfile(grapheditor));
 openFileButton.addEventListener("click", cmdlinestring.triggeropenfile);
@@ -143,20 +146,15 @@ copyButton.addEventListener("click", cmdlinestring.copytoclipboard);
 fileExportButton.addEventListener("click", cmdlinestring.exporttofile);
 executeButton.addEventListener("click", cmdlinestring.execinsimulator);
 switchLink.addEventListener("click", () => toggleMode(grapheditor));
+
+paramPane.addEventListener("modelChange", e => {
+    grapheditor.setSelectionModel(e.detail.model);
+});
+paramPane.addEventListener("categoryChange", e => {
+    grapheditor.setSelectionCategory(e.detail.category);
+});
+paramPane.addEventListener("paramChange", e => {
+    grapheditor.setSelectionParam(e.detail.id, e.detail.value);
+});
 	
 switchToFSM(grapheditor);
-
-const ts = document.querySelector("#typeSelector");
-ts.addEventListener("change", e => {
-    const element = grapheditor.getSelectedElement();
-    const modelId = e.target.value;
-    if (element.isNode()) {
-        element.setModel(grapheditor.getNodeModelById(modelId));
-        element.setParam(grapheditor.getNodeParamById(modelId));
-    } else {
-        element.setModel(grapheditor.getEdgeModelById(modelId));
-        element.setParam(grapheditor.getEdgeParamById(modelId));
-    }
-    grapheditor.updateParamPane();
-    grapheditor.callExporter();
-});
