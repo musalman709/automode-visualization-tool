@@ -55,6 +55,10 @@ export class FSMExporter extends GraphEditorExporter{
             let target;
             for (var j = 0; j < node.getOutgoingEdges().length; j++) {
                 target = this.getNodeNumber(node.getOutgoingEdges()[j].getDestNode(), elements);
+                if (target > nodeCounter)
+                    target--;
+                else if (target === nodeCounter)
+                    throw new Error("A node cannot have a transition to itself");
                 str += "--n" + nodeCounter + "x" + j + " " + target + " ";
                 str += this.expEdgeParams(node.getOutgoingEdges()[j], nodeCounter, j, target);
             }
