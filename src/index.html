@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8"></meta>
+	<title>AutoMoDe Editor</title>
+	<script src="jquery-3.3.1.js"></script>
+	<script src="array_utils.js"></script>
+	<script src="main.js" defer></script>
+	<link rel="stylesheet" type="text/css" href="style.css"></link>
+</head>
+<body>
+	<section>
+	<article>
+	  <div id="graph-container">
+		  <p>loading ...</p>
+	  </div>
+	</article>
+	<aside id="toolbar">
+	  <div id="toolbar-container">
+		  <p class="asidetitle">Toolbar</p>
+		  <div id="tools-container">
+			  <p>loading ...</p>
+		  </div>
+	  </div>
+	</aside>
+	<aside id="parambar">
+	  <div id="parambar-container">
+	    <div id="param-container">
+	      <p>loading ...</p>
+	    </div>
+	  </div>
+	</aside>
+	</section>
+	<header>
+		<div id="title-container">
+			<p id="title">Graph Editor</p>
+		  <a id="switchlink" href="#">switch</a>
+	  </div>
+	  <div id="cmdline-container">
+	    <input id="openfileinput" type="file" style="display: none;"></input>
+		  <button id="openfilebutton" class="left"><span class="underline">O</span>pen</button><input id="cmdline" type="text" placeholder="Command line string"></input><button id="copybutton" class="right"><span class="underline">C</span>opy</button><button id="fileexportbutton" class="right"><span class="underline">S</span>ave</button><button id="executebutton" class="right"><span class="underline">E</span>xec</button>
+		</div>
+	</header>
+</body>
+</html>
