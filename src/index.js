@@ -14,6 +14,10 @@ import fsmNodeModels from "./fsm/nodemodels.json";
 import fsmEdgeModels from "./fsm/edgemodels.json";
 import fsmNodeParams from "./fsm/nodeparams.json";
 import fsmEdgeParams from "./fsm/edgeparams.json";
+import OptionSelector from "./View/OptionSelector";
+import { defaultNodeModel, defaultEdgeModel, defaultNodeParam, defaultEdgeParam } from "./elementmodels_default";
+import ParamInput from "./View/ParamInput";
+import ParamPane from "./View/ParamPane";
 
 
 /**
@@ -37,10 +41,10 @@ function switchToBTree(graphEditor) {
     var importer = new BTreeImporter();
     graphEditor.setImporter(importer);
 
-    graphEditor.setNodeModels(btreeNodeModels);
-    graphEditor.setEdgeModels(btreeEdgeModels);
-    graphEditor.setNodeParams(btreeNodeParams);
-    graphEditor.setEdgeParams(btreeEdgeParams);
+    graphEditor.setNodeModels([defaultNodeModel(), ...btreeNodeModels]);
+    graphEditor.setEdgeModels([defaultEdgeModel(), ...btreeEdgeModels]);
+    graphEditor.setNodeParams([defaultNodeParam(), ...btreeNodeParams]);
+    graphEditor.setEdgeParams([defaultEdgeParam(), ...btreeEdgeParams]);
 
     graphEditor.clearTools();
     graphEditor.addTool(new GraphEditorSelectTool(), true);
@@ -68,10 +72,10 @@ function switchToFSM(graphEditor) {
     var importer = new FSMImporter();
     graphEditor.setImporter(importer);
 
-    graphEditor.setNodeModels(fsmNodeModels);
-    graphEditor.setEdgeModels(fsmEdgeModels);
-    graphEditor.setNodeParams(fsmNodeParams);
-    graphEditor.setEdgeParams(fsmEdgeParams);
+    graphEditor.setNodeModels([defaultNodeModel(), ...fsmNodeModels]);
+    graphEditor.setEdgeModels([defaultEdgeModel(), ...fsmEdgeModels]);
+    graphEditor.setNodeParams([defaultNodeParam(), ...fsmNodeParams]);
+    graphEditor.setEdgeParams([defaultEdgeParam(), ...fsmEdgeParams]);
 
     graphEditor.clearTools();
     graphEditor.addTool(new GraphEditorSelectTool(), true);
@@ -85,6 +89,7 @@ function switchToFSM(graphEditor) {
  * Toggle between btree and FSM mode
  */
 function toggleMode(graphEditor) {
+    document.querySelector("param-pane").clear();
     if (grapheditor.getMode() === "fsm") {
         switchToBTree(graphEditor);
     } else {
@@ -120,9 +125,11 @@ document.addEventListener("keydown", (event) => {
 /**
  * Initialisation when loading ends
  */
+window.customElements.define("option-selector", OptionSelector);
+window.customElements.define("param-input", ParamInput);
+window.customElements.define("param-pane", ParamPane);
 let grapheditor = new GraphEditor(
-    $("#graph-container"), $("#tools-container"),
-    $("#param-container"));
+    $("#graph-container"), $("#tools-container"));
 const openFileInput = document.querySelector("#openfileinput");
 const openFileButton = document.querySelector("#openfilebutton");
 const cmdline = document.querySelector("#cmdline");
@@ -130,6 +137,7 @@ const copyButton = document.querySelector("#copybutton");
 const fileExportButton = document.querySelector("#fileexportbutton");
 const executeButton = document.querySelector("#executebutton");
 const switchLink = document.querySelector("#switchlink");
+const paramPane = document.querySelector("param-pane");
 
 openFileInput.addEventListener("change", () => cmdlinestring.importfromfile(grapheditor));
 openFileButton.addEventListener("click", cmdlinestring.triggeropenfile);
@@ -138,5 +146,15 @@ copyButton.addEventListener("click", cmdlinestring.copytoclipboard);
 fileExportButton.addEventListener("click", cmdlinestring.exporttofile);
 executeButton.addEventListener("click", cmdlinestring.execinsimulator);
 switchLink.addEventListener("click", () => toggleMode(grapheditor));
+
+paramPane.addEventListener("modelChange", e => {
+    grapheditor.setSelectionModel(e.detail.model);
+});
+paramPane.addEventListener("categoryChange", e => {
+    grapheditor.setSelectionCategory(e.detail.category);
+});
+paramPane.addEventListener("paramChange", e => {
+    grapheditor.setSelectionParam(e.detail.id, e.detail.value);
+});
 	
 switchToFSM(grapheditor);

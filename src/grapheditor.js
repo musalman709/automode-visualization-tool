@@ -1,5 +1,4 @@
 import { createSVGElement } from "./graph_utils";
-import { createModelsSelectMenu, createParamPane } from "./sidepanels";
 import { defaultEdgeParam } from "./elementmodels_default";
 import GraphEditorTool from "./graphEditorTool";
 import GraphEditorElement from "./GraphEditorElement";
@@ -11,11 +10,10 @@ import GraphEditorImporter from "./GraphEditorImporter";
  * create the svg area and receive input from the user
  */
 export default class GraphEditor {
-    constructor(graphcontainer, toolscontainer, paramcontainer) {
+    constructor(graphcontainer, toolscontainer) {
         // html elements
         this.graphcontainer = graphcontainer;
         this.toolscontainer = toolscontainer;
-        this.paramcontainer = paramcontainer;
         // import / export
         this.exporter = undefined;
         this.importer = undefined;
@@ -47,7 +45,6 @@ export default class GraphEditor {
         // Initialisation function
         this.graphcontainer.empty();
         this.toolscontainer.empty();
-        this.paramcontainer.empty();
         this.svg = createSVGElement("svg", { id: "graph" });
         this.svg.on("selectstart", function (e) { e.preventDefault(); });
         this.graphcontainer.append(this.svg);
@@ -169,28 +166,66 @@ export default class GraphEditor {
             this.selectedElement.onDeselect();
         }
         this.selectedElement = element;
-        this.paramcontainer.empty();
         // select new element
         if (this.selectedElement !== undefined) {
             this.selectedElement.onSelect();
-            this.updateParamPane();
         }
+        this.updateParamPane();
     }
     getSelectedElement() {
         return this.selectedElement;
     }
     updateParamPane() {
-        this.paramcontainer.empty();
+        const paramPane = document.querySelector("param-pane");
         if (this.selectedElement !== undefined) {
-            // model selector
-            const p = document.createElement("p");
-            p.className = "asidetitle";
-            p.appendChild(document.createTextNode("Type"));
-            this.paramcontainer.append(p);
-            this.paramcontainer.append(createModelsSelectMenu(this, this.selectedElement));
+            //model select
+            var modelsArray = undefined;
+            // get the models
+            if(this.selectedElement.isNode()) {
+                modelsArray = this.getNodeModels();
+            } else {
+                modelsArray = this.getEdgeModels();
+            }
+            paramPane.setModels(modelsArray, this.selectedElement.getModel());
             // parameter elements
-            createParamPane(this.selectedElement.getParam(), this.selectedElement, this.paramcontainer, this);
+            const element = this.selectedElement;
+            const params = element.getParam();
+            const catvalue = element.getParamDict()[params.categoryid];
+            const category = params.categories.find(cat => cat.id === catvalue);
+            paramPane.setCategories(params.categories, params.categoriesname, category);
+            if (category) 
+                paramPane.setParams(category.param, element.getParamDict());
+            else
+                paramPane.clearParams();
+        } else {
+            paramPane.clear();
         }
+    }
+    setSelectionModel(modelId) {
+        const element = this.getSelectedElement();
+        if (element.isNode()) {
+            element.setModel(this.getNodeModelById(modelId));
+            element.setParam(this.getNodeParamById(modelId));
+        } else {
+            element.setModel(this.getEdgeModelById(modelId));
+            element.setParam(this.getEdgeParamById(modelId));
+        }
+        this.updateParamPane();
+        this.callExporter();
+    }
+    setSelectionCategory(category) {
+        const element = this.getSelectedElement();
+        const params = this.selectedElement.getParam();
+        if (params.categoryid !== undefined && category !== undefined)
+            element.setParamValue(params.categoryid, category);
+        this.updateParamPane();
+        this.callExporter();
+    }
+    setSelectionParam(paramId, value) {
+        const element = this.getSelectedElement();
+        element.setParamValue(paramId, value);
+        this.updateParamPane();
+        this.callExporter();
     }
     addTool(tool, isdefault = false) {
         if (tool instanceof GraphEditorTool) {

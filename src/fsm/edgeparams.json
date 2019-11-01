@@ -3,7 +3,7 @@
 		"edgename": "Transition",
 		"edgeid": "0",
 		"categoryid": "c",
-  		"categoriesname": "Condition",
+		"categoriesname": "Condition",
 		"categories": [
 			{
 				"name": "Black floor",
@@ -118,5 +118,5 @@
 				]
 			}
 		]
-  	}
+	}
 ]
