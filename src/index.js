@@ -18,6 +18,7 @@ import OptionSelector from "./View/OptionSelector";
 import { defaultNodeModel, defaultEdgeModel, defaultNodeParam, defaultEdgeParam } from "./elementmodels_default";
 import ParamInput from "./View/ParamInput";
 import ParamPane from "./View/ParamPane";
+import GraphCanvas from "./View/GraphCanvas";
 
 
 /**
@@ -128,6 +129,7 @@ document.addEventListener("keydown", (event) => {
 window.customElements.define("option-selector", OptionSelector);
 window.customElements.define("param-input", ParamInput);
 window.customElements.define("param-pane", ParamPane);
+window.customElements.define("graph-canvas", GraphCanvas);
 let grapheditor = new GraphEditor(
     $("#graph-container"), $("#tools-container"));
 const openFileInput = document.querySelector("#openfileinput");

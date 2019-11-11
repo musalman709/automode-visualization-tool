@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://gitlab.com/iridia-proj-h-402/automode-visualization-tool/issues"
   },
-  "homepage": "https://gitlab.com/iridia-proj-h-402/automode-visualization-tool#readme"
+  "homepage": "https://gitlab.com/iridia-proj-h-402/automode-visualization-tool#readme",
+  "dependencies": {
+    "lit-html": "^1.1.2"
+  }
 }

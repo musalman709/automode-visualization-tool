@@ -1,7 +1,6 @@
 import { createSVGElement } from "./graph_utils";
 import { defaultEdgeParam } from "./elementmodels_default";
 import GraphEditorTool from "./graphEditorTool";
-import GraphEditorElement from "./GraphEditorElement";
 import GraphEditorExporter from "./GraphEditorExporter";
 import GraphEditorImporter from "./GraphEditorImporter";
 
@@ -128,17 +127,15 @@ export default class GraphEditor {
         return this.edgeparams;
     }
     addElement(element) {
-        if (element instanceof GraphEditorElement) {
-            this.elements.push(element);
-            element.graphEditor = this;
-            var that = this;
-            element.getSVGElement().on("mousedown", function (e) {
-                that.onMouseDown(e, element);
-                e.stopPropagation();
-            });
-            this.svg.append(element.getSVGElement());
-            this.callExporter();
-        }
+        this.elements.push(element);
+        element.graphEditor = this;
+        var that = this;
+        element.getSVGElement().on("mousedown", function (e) {
+            that.onMouseDown(e, element);
+            e.stopPropagation();
+        });
+        this.svg.append(element.getSVGElement());
+        this.callExporter();
     }
     removeElement(element) {
         if (this.elements.remove(element)) {
@@ -320,6 +317,7 @@ export default class GraphEditor {
         }
     }
     callExporter() {
+        document.querySelector("graph-canvas").setElements(this.elements);
         if (this.exporter !== undefined) {
             const cmdline = document.querySelector("#cmdline");
             try {

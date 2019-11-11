@@ -1,13 +1,11 @@
-import GraphEditorElement from "./GraphEditorElement";
 import { defaultNodeModel, defaultNodeParam, defaultEdgeModel, defaultEdgeParam } from "./elementmodels_default";
 import { createSVGElement, points_sum } from "./graph_utils";
 
 /**
  * Node and edges objects
  */
-export class GraphEditorNode extends GraphEditorElement{
+export class GraphEditorNode{
     constructor(id, pos) {
-        super();
         this.id = id;
         // egdes
         this.incomingEdges = [];
@@ -100,6 +98,7 @@ export class GraphEditorNode extends GraphEditorElement{
                     c.param.forEach(function (p) {
                         pdict[p.id] = p.min;
                     });
+                    that.category = c;
                     // Update displayed label
                     if (c.hasOwnProperty("display_name")) {
                         that.text.html(c.display_name);
@@ -197,14 +196,13 @@ export class GraphEditorNode extends GraphEditorElement{
 /**
  * Bind two nodes ('src' and 'dest')
  */
-export class GraphEditorEdge extends GraphEditorElement{
+export class GraphEditorEdge{
     /**
      * @param {string} id 
      * @param {GraphEditorNode} srcElement 
      * @param {GraphEditorNode} destElement 
      */
     constructor(id, srcElement, destElement) {
-        super();
         // src and dest
         this.srcElement = undefined;
         this.destElement = undefined;
