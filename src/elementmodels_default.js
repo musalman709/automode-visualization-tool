@@ -9,6 +9,7 @@ export function defaultNodeModel() {
         "id": "-1",
         "max_incoming_edges": "-1",
         "max_outgoing_edges": "-1",
+        "shape": "roundedrect",
         "display_tag": "rect",
         "display_opts": {
             "class": "nodeFrame",

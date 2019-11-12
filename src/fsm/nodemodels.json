@@ -5,6 +5,7 @@
 		"display_text": "S",
 		"max_incoming_edges": "10",
 		"max_outgoing_edges": "10",
+		"shape": "circle",
 		"display_tag": "circle",
 		"display_opts": {
 			"class": "nodeFrame",

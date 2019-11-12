@@ -1,5 +1,5 @@
 import { defaultNodeModel, defaultNodeParam, defaultEdgeModel, defaultEdgeParam } from "./elementmodels_default";
-import { createSVGElement, points_sum } from "./graph_utils";
+import { points_sum } from "./graph_utils";
 
 /**
  * Node and edges objects
@@ -17,19 +17,7 @@ export class GraphEditorNode{
         this.paramcontainer = undefined;
         // graphics
         this.pos = { x: 0, y: 0 };
-        this.g = createSVGElement("g", { id: this.id });
-        this.frame = undefined;
-        this.text = undefined;
-        this.buildSVGElements();
         this.move(pos);
-    }
-    buildSVGElements() {
-        this.frame = createSVGElement(this.model.display_tag, this.model.display_opts);
-        this.text = createSVGElement("text", this.model.display_text_opts);
-        this.text.html(this.model.display_text);
-        this.g.append(this.frame);
-        this.g.append(this.text);
-        this.onSelect();
     }
     getName() {
         return this.id;
@@ -37,12 +25,8 @@ export class GraphEditorNode{
     isNode() {
         return true;
     }
-    getSVGElement() {
-        return this.g;
-    }
     setModel(model) {
         var pos = this.getPosition();
-        var selected = this.frame.hasClass("selected");
         this.model = model;
         if (this.model === undefined) {
             this.model = defaultNodeModel();
@@ -55,13 +39,6 @@ export class GraphEditorNode{
         while (this.model.max_outgoing_edges >= 0 &&
       this.outgoingEdges.length > this.model.max_outgoing_edges) {
             this.outgoingEdges[0].onRemoval();
-        }
-        // remake frame
-        this.frame.remove();
-        this.text.remove();
-        this.buildSVGElements();
-        if (selected) {
-            this.frame.addClass("selected");
         }
         this.move(pos);
     }
@@ -99,13 +76,6 @@ export class GraphEditorNode{
                         pdict[p.id] = p.min;
                     });
                     that.category = c;
-                    // Update displayed label
-                    if (c.hasOwnProperty("display_name")) {
-                        that.text.html(c.display_name);
-                    }
-                    else {
-                        that.text.html(that.model.display_text);
-                    }
                 }
             });
         }
@@ -115,19 +85,12 @@ export class GraphEditorNode{
     }
     move(newPos) {
         this.pos = newPos;
-        this.g.attr("transform", "translate(" + newPos.x.toString() + "," + newPos.y.toString() + ")");
         this.incomingPos = points_sum(this.model.incoming_point, newPos);
         this.outgoingPos = points_sum(this.model.outgoing_point, newPos);
         this.updateEdges();
     }
     getPosition() {
         return this.pos;
-    }
-    onSelect() {
-        this.frame.addClass("selected");
-    }
-    onDeselect() {
-        this.frame.removeClass("selected");
     }
     onRemoval() {
     // delete edges before delete node
@@ -137,7 +100,6 @@ export class GraphEditorNode{
         while (this.outgoingEdges.length > 0) {
             this.outgoingEdges[0].onRemoval();
         }
-        this.getSVGElement().remove();
         this.graphEditor.removeElement(this);
     }
     getIncomingPoint() {
@@ -216,18 +178,7 @@ export class GraphEditorEdge{
         if (srcElement.canHaveMoreOutgoingEdges() && destElement.canHaveMoreIncomingEdges()) {
             this.srcElement = srcElement;
             this.destElement = destElement;
-            this.g = createSVGElement("g", { id: this.id });
-            this.line = undefined;
-            this.buildSVGElements();
         }
-    }
-    buildSVGElements() {
-        this.line = createSVGElement("line", { class: this.model.display_opts, stroke: "black", "marker-end": "url(#arrowhead)" });
-        this.g.append(this.line);
-        this.srcElement.addOutgoingEdge(this);
-        this.destElement.addIncomingEdge(this);
-        this.onSelect();
-        this.update();
     }
     isValid() {
         return this.srcElement !== undefined && this.destElement !== undefined;
@@ -237,9 +188,6 @@ export class GraphEditorEdge{
     }
     isNode() {
         return false;
-    }
-    getSVGElement() {
-        return this.g;
     }
     setModel(model) {
         var selected = this.line.hasClass("selected");
@@ -296,26 +244,9 @@ export class GraphEditorEdge{
     move() {
         this.update();
     }
-    getPosition() {
-        return { x: this.line.attr("x1"), y: this.line.attr("y1") };
-    }
-    update() {
-    // move arrow when src or dest moved
-        this.line.attr("x1", this.srcElement.outgoingPos.x);
-        this.line.attr("y1", this.srcElement.outgoingPos.y);
-        this.line.attr("x2", this.destElement.incomingPos.x);
-        this.line.attr("y2", this.destElement.incomingPos.y);
-    }
-    onSelect() {
-        this.line.addClass("selected");
-    }
-    onDeselect() {
-        this.line.removeClass("selected");
-    }
     onRemoval() {
         this.srcElement.removeOutgoingEdge(this);
         this.destElement.removeIncomingEdge(this);
-        this.getSVGElement().remove();
         this.graphEditor.removeElement(this);
     }
     getSrcNode() {

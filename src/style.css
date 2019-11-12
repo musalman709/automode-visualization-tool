@@ -187,6 +187,10 @@ article {
 	stroke: blue;
 }
 
+.line {
+	stroke: black;
+}
+
 text {
   font: 12px sans-serif;
   dy: -6;

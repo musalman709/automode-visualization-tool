@@ -1,20 +1,25 @@
 /* eslint-disable no-undef */
-const path = require('path');
+const path = require("path");
 
 module.exports = {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-        filename: 'main.js',
-        path: path.resolve(__dirname, 'dist')
+        filename: "main.js",
+        path: path.resolve(__dirname, "dist")
     },
     devtool: "cheap-module-eval-source-map",
     devServer: {
-        contentBase: path.join(__dirname, 'src'),
+        contentBase: path.join(__dirname, "src"),
         compress: true,
         historyApiFallback: true,
         overlay: true,
-        stats: 'minimal',
+        stats: "minimal",
         port: 8080,
     
+    },
+    module: {
+        rules: [
+            { test: /\.jsx$/, exclude: /node_modules/, loader: "babel-loader" }
+        ]
     }
 };

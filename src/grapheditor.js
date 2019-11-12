@@ -3,6 +3,8 @@ import { defaultEdgeParam } from "./elementmodels_default";
 import GraphEditorTool from "./graphEditorTool";
 import GraphEditorExporter from "./GraphEditorExporter";
 import GraphEditorImporter from "./GraphEditorImporter";
+import SVGElements from "./View/SVGElements.jsx";
+import { h, render } from "preact";
 
 /**
  * Object that manages tools and graph elements,
@@ -10,6 +12,11 @@ import GraphEditorImporter from "./GraphEditorImporter";
  */
 export default class GraphEditor {
     constructor(graphcontainer, toolscontainer) {
+        // event handlers
+        this.onMouseDown = this.onMouseDown.bind(this);
+        this.onMouseUp = this.onMouseUp.bind(this);
+        this.onMouseLeave = this.onMouseLeave.bind(this);
+        this.onMouseMove = this.onMouseMove.bind(this);
         // html elements
         this.graphcontainer = graphcontainer;
         this.toolscontainer = toolscontainer;
@@ -129,18 +136,11 @@ export default class GraphEditor {
     addElement(element) {
         this.elements.push(element);
         element.graphEditor = this;
-        var that = this;
-        element.getSVGElement().on("mousedown", function (e) {
-            that.onMouseDown(e, element);
-            e.stopPropagation();
-        });
-        this.svg.append(element.getSVGElement());
         this.callExporter();
     }
     removeElement(element) {
         if (this.elements.remove(element)) {
             element.onRemoval();
-            element.getSVGElement().remove();
             if (this.selectedElement === element) {
                 this.setSelectedElement(undefined);
             }
@@ -158,15 +158,7 @@ export default class GraphEditor {
         }
     }
     setSelectedElement(element) {
-        // unselect previous element
-        if (this.selectedElement !== undefined) {
-            this.selectedElement.onDeselect();
-        }
         this.selectedElement = element;
-        // select new element
-        if (this.selectedElement !== undefined) {
-            this.selectedElement.onSelect();
-        }
         this.updateParamPane();
     }
     getSelectedElement() {
@@ -305,9 +297,6 @@ export default class GraphEditor {
             this.currentTool.onMouseMove(pos);
         }
     }
-    addSVGElement(element) {
-        this.svg.append(element);
-    }
     setExporter(exporter) {
         if (exporter instanceof GraphEditorExporter) {
             this.exporter = exporter;
@@ -317,7 +306,7 @@ export default class GraphEditor {
         }
     }
     callExporter() {
-        document.querySelector("graph-canvas").setElements(this.elements);
+        render(h(SVGElements, {elements: this.elements, handleClick: this.onMouseDown}, null), document.querySelector("svg"));
         if (this.exporter !== undefined) {
             const cmdline = document.querySelector("#cmdline");
             try {
