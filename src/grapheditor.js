@@ -63,6 +63,7 @@ export default class GraphEditor {
         arrowMarker.append(arrowMarkerShape);
         this.defs.append(arrowMarker);
         this.svg.append(this.defs);
+        this.updateGraph();
     }
     width() {
         return this.svg.width();
@@ -156,10 +157,12 @@ export default class GraphEditor {
         while (this.elements.length > 0) {
             this.removeElement(this.elements[this.elements.length - 1]);
         }
+        this.updateGraph();
     }
     setSelectedElement(element) {
         this.selectedElement = element;
         this.updateParamPane();
+        this.updateGraph();
     }
     getSelectedElement() {
         return this.selectedElement;
@@ -306,7 +309,7 @@ export default class GraphEditor {
         }
     }
     callExporter() {
-        render(h(SVGElements, {elements: this.elements, handleClick: this.onMouseDown}, null), document.querySelector("svg"));
+        this.updateGraph();
         if (this.exporter !== undefined) {
             const cmdline = document.querySelector("#cmdline");
             try {
@@ -316,6 +319,10 @@ export default class GraphEditor {
             }
         }
     }
+    updateGraph() {
+        render(h(SVGElements, { elements: this.elements, selectedElement: this.selectedElement, handleClick: this.onMouseDown }, null), document.querySelector("svg"));
+    }
+
     setImporter(importer) {
         if (importer instanceof GraphEditorImporter) {
             this.importer = importer;

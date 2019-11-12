@@ -178,6 +178,11 @@ export class GraphEditorEdge{
         if (srcElement.canHaveMoreOutgoingEdges() && destElement.canHaveMoreIncomingEdges()) {
             this.srcElement = srcElement;
             this.destElement = destElement;
+            this.srcElement.addOutgoingEdge(this);
+            this.destElement.addIncomingEdge(this);
+            // set default position
+            this.move({x: (this.srcElement.getPosition().x + this.destElement.getPosition().x)/2,
+                y: (this.srcElement.getPosition().y + this.destElement.getPosition().y)/2});
         }
     }
     isValid() {
@@ -190,17 +195,10 @@ export class GraphEditorEdge{
         return false;
     }
     setModel(model) {
-        var selected = this.line.hasClass("selected");
         this.model = model;
         if (this.model === undefined) {
             this.model = defaultEdgeModel();
         }
-        this.line.remove();
-        this.buildSVGElements();
-        if (selected) {
-            this.line.addClass("selected");
-        }
-        this.update();
     }
     getModel() {
         return this.model;
@@ -241,8 +239,8 @@ export class GraphEditorEdge{
     getParamDict() {
         return this.paramdict;
     }
-    move() {
-        this.update();
+    move(newPosition) {
+        this.position = newPosition;
     }
     onRemoval() {
         this.srcElement.removeOutgoingEdge(this);
