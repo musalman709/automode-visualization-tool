@@ -57,6 +57,8 @@ export class GraphEditorNode{
         // If it have, set default values
         if (this.param.categories.length > 0) {
             this.setParamValue(this.param.categoryid, this.param.categories[0].id);
+        } else {
+            this.category = undefined;
         }
     }
     getParam() {
