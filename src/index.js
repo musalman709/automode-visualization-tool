@@ -130,8 +130,7 @@ window.customElements.define("option-selector", OptionSelector);
 window.customElements.define("param-input", ParamInput);
 window.customElements.define("param-pane", ParamPane);
 window.customElements.define("graph-canvas", GraphCanvas);
-let grapheditor = new GraphEditor(
-    $("#graph-container"), $("#tools-container"));
+let grapheditor = new GraphEditor();
 const openFileInput = document.querySelector("#openfileinput");
 const openFileButton = document.querySelector("#openfilebutton");
 const cmdline = document.querySelector("#cmdline");

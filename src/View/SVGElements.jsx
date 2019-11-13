@@ -1,12 +1,19 @@
-import {h, Fragment} from "preact"
+import {h, Fragment} from "preact";
 import { middle } from "../graph_utils";
 
 export default ({elements, selectedElement, handleClick}) =>
-    elements.map(e => 
-        <Element element={e}
-            isSelected={e === selectedElement}
-            handleClick={handleClick} />
-    );
+    <svg id="graph">
+        <defs>
+            <marker id="arrowhead" refX="10" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 Z"></path>
+            </marker>
+        </defs>
+        {elements.map(e => 
+            <Element element={e}
+                isSelected={e === selectedElement}
+                handleClick={handleClick} />
+        )}
+    </svg>
 const Element = ({element, isSelected, handleClick}) => {
     const onClick = (event) => {event.stopPropagation(); handleClick(event, element);}
 
