@@ -1,4 +1,5 @@
 import {h, Fragment} from "preact"
+import { middle } from "../graph_utils";
 
 export default ({elements, selectedElement, handleClick}) =>
     elements.map(e => 
@@ -29,11 +30,21 @@ const Node = ({displayTag, displayOptions, position, label, isSelected, handleCl
     </g>
 
 const Edge = ({edge, isSelected, handleClick}) =>
-    <line className={`line ${isSelected ? "selected" : ""}`}
-        onMouseDown={handleClick}
-        marker-end="url(#arrowhead)"
-        x1={edge.srcElement.outgoingPos.x}
-        y1={edge.srcElement.outgoingPos.y}
-        x2={edge.destElement.incomingPos.x}
-        y2={edge.destElement.incomingPos.y}>
-    </line>
+    <>
+        <line className={`line ${isSelected ? "selected" : ""}`}
+            onMouseDown={handleClick}
+            marker-end="url(#arrowhead)"
+            x1={edge.srcElement.outgoingPos.x}
+            y1={edge.srcElement.outgoingPos.y}
+            x2={edge.destElement.incomingPos.x}
+            y2={edge.destElement.incomingPos.y}>
+        </line>
+        {edge.model.node_display_tag &&
+            <Node isSelected={isSelected}
+                displayTag={edge.model.node_display_tag}
+                displayOptions={edge.model.node_display_opts}
+                position={middle(edge.srcElement.outgoingPos, edge.destElement.incomingPos)}
+                label={edge.category ? edge.category.display_name : edge.model.display_text}
+                handleClick={handleClick} />
+        }
+    </>

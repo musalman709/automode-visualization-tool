@@ -208,6 +208,8 @@ export class GraphEditorEdge{
         // If it have, set default values
         if (this.param.categories.length > 0) {
             this.setParamValue(this.param.categoryid, this.param.categories[0].id);
+        } else {
+            this.category = undefined;
         }
     }
     getParam() {
@@ -220,11 +222,13 @@ export class GraphEditorEdge{
             this.paramdict[this.param.categoryid] = value;
             // category change, reset dict with new set of parameters
             var pdict = this.paramdict;
+            var that = this;
             this.param.categories.forEach(function (c) {
                 if (c.id == value) {
                     c.param.forEach(function (p) {
                         pdict[p.id] = p.min;
                     });
+                    that.category = c;
                 }
             });
         }
