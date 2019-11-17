@@ -1,13 +1,11 @@
-import GraphEditorElement from "./GraphEditorElement";
 import { defaultNodeModel, defaultNodeParam, defaultEdgeModel, defaultEdgeParam } from "./elementmodels_default";
-import { createSVGElement, points_sum } from "./graph_utils";
+import { points_sum } from "./graph_utils";
 
 /**
  * Node and edges objects
  */
-export class GraphEditorNode extends GraphEditorElement{
+export class GraphEditorNode{
     constructor(id, pos) {
-        super();
         this.id = id;
         // egdes
         this.incomingEdges = [];
@@ -19,19 +17,7 @@ export class GraphEditorNode extends GraphEditorElement{
         this.paramcontainer = undefined;
         // graphics
         this.pos = { x: 0, y: 0 };
-        this.g = createSVGElement("g", { id: this.id });
-        this.frame = undefined;
-        this.text = undefined;
-        this.buildSVGElements();
         this.move(pos);
-    }
-    buildSVGElements() {
-        this.frame = createSVGElement(this.model.display_tag, this.model.display_opts);
-        this.text = createSVGElement("text", this.model.display_text_opts);
-        this.text.html(this.model.display_text);
-        this.g.append(this.frame);
-        this.g.append(this.text);
-        this.onSelect();
     }
     getName() {
         return this.id;
@@ -39,12 +25,8 @@ export class GraphEditorNode extends GraphEditorElement{
     isNode() {
         return true;
     }
-    getSVGElement() {
-        return this.g;
-    }
     setModel(model) {
         var pos = this.getPosition();
-        var selected = this.frame.hasClass("selected");
         this.model = model;
         if (this.model === undefined) {
             this.model = defaultNodeModel();
@@ -57,13 +39,6 @@ export class GraphEditorNode extends GraphEditorElement{
         while (this.model.max_outgoing_edges >= 0 &&
       this.outgoingEdges.length > this.model.max_outgoing_edges) {
             this.outgoingEdges[0].onRemoval();
-        }
-        // remake frame
-        this.frame.remove();
-        this.text.remove();
-        this.buildSVGElements();
-        if (selected) {
-            this.frame.addClass("selected");
         }
         this.move(pos);
     }
@@ -82,6 +57,8 @@ export class GraphEditorNode extends GraphEditorElement{
         // If it have, set default values
         if (this.param.categories.length > 0) {
             this.setParamValue(this.param.categoryid, this.param.categories[0].id);
+        } else {
+            this.category = undefined;
         }
     }
     getParam() {
@@ -100,13 +77,7 @@ export class GraphEditorNode extends GraphEditorElement{
                     c.param.forEach(function (p) {
                         pdict[p.id] = p.min;
                     });
-                    // Update displayed label
-                    if (c.hasOwnProperty("display_name")) {
-                        that.text.html(c.display_name);
-                    }
-                    else {
-                        that.text.html(that.model.display_text);
-                    }
+                    that.category = c;
                 }
             });
         }
@@ -116,19 +87,11 @@ export class GraphEditorNode extends GraphEditorElement{
     }
     move(newPos) {
         this.pos = newPos;
-        this.g.attr("transform", "translate(" + newPos.x.toString() + "," + newPos.y.toString() + ")");
         this.incomingPos = points_sum(this.model.incoming_point, newPos);
         this.outgoingPos = points_sum(this.model.outgoing_point, newPos);
-        this.updateEdges();
     }
     getPosition() {
         return this.pos;
-    }
-    onSelect() {
-        this.frame.addClass("selected");
-    }
-    onDeselect() {
-        this.frame.removeClass("selected");
     }
     onRemoval() {
     // delete edges before delete node
@@ -138,7 +101,6 @@ export class GraphEditorNode extends GraphEditorElement{
         while (this.outgoingEdges.length > 0) {
             this.outgoingEdges[0].onRemoval();
         }
-        this.getSVGElement().remove();
         this.graphEditor.removeElement(this);
     }
     getIncomingPoint() {
@@ -181,14 +143,6 @@ export class GraphEditorNode extends GraphEditorElement{
     getOutgoingEdges() {
         return this.outgoingEdges;
     }
-    updateEdges() {
-        for (let i = 0; i < this.incomingEdges.length; ++i) {
-            this.incomingEdges[i].update();
-        }
-        for (let i = 0; i < this.outgoingEdges.length; ++i) {
-            this.outgoingEdges[i].update();
-        }
-    }
 }
 
 
@@ -197,14 +151,13 @@ export class GraphEditorNode extends GraphEditorElement{
 /**
  * Bind two nodes ('src' and 'dest')
  */
-export class GraphEditorEdge extends GraphEditorElement{
+export class GraphEditorEdge{
     /**
      * @param {string} id 
      * @param {GraphEditorNode} srcElement 
      * @param {GraphEditorNode} destElement 
      */
     constructor(id, srcElement, destElement) {
-        super();
         // src and dest
         this.srcElement = undefined;
         this.destElement = undefined;
@@ -218,18 +171,12 @@ export class GraphEditorEdge extends GraphEditorElement{
         if (srcElement.canHaveMoreOutgoingEdges() && destElement.canHaveMoreIncomingEdges()) {
             this.srcElement = srcElement;
             this.destElement = destElement;
-            this.g = createSVGElement("g", { id: this.id });
-            this.line = undefined;
-            this.buildSVGElements();
+            this.srcElement.addOutgoingEdge(this);
+            this.destElement.addIncomingEdge(this);
+            // set default position
+            this.move({x: (this.srcElement.getPosition().x + this.destElement.getPosition().x)/2,
+                y: (this.srcElement.getPosition().y + this.destElement.getPosition().y)/2});
         }
-    }
-    buildSVGElements() {
-        this.line = createSVGElement("line", { class: this.model.display_opts, stroke: "black", "marker-end": "url(#arrowhead)" });
-        this.g.append(this.line);
-        this.srcElement.addOutgoingEdge(this);
-        this.destElement.addIncomingEdge(this);
-        this.onSelect();
-        this.update();
     }
     isValid() {
         return this.srcElement !== undefined && this.destElement !== undefined;
@@ -240,21 +187,11 @@ export class GraphEditorEdge extends GraphEditorElement{
     isNode() {
         return false;
     }
-    getSVGElement() {
-        return this.g;
-    }
     setModel(model) {
-        var selected = this.line.hasClass("selected");
         this.model = model;
         if (this.model === undefined) {
             this.model = defaultEdgeModel();
         }
-        this.line.remove();
-        this.buildSVGElements();
-        if (selected) {
-            this.line.addClass("selected");
-        }
-        this.update();
     }
     getModel() {
         return this.model;
@@ -271,6 +208,8 @@ export class GraphEditorEdge extends GraphEditorElement{
         // If it have, set default values
         if (this.param.categories.length > 0) {
             this.setParamValue(this.param.categoryid, this.param.categories[0].id);
+        } else {
+            this.category = undefined;
         }
     }
     getParam() {
@@ -283,11 +222,13 @@ export class GraphEditorEdge extends GraphEditorElement{
             this.paramdict[this.param.categoryid] = value;
             // category change, reset dict with new set of parameters
             var pdict = this.paramdict;
+            var that = this;
             this.param.categories.forEach(function (c) {
                 if (c.id == value) {
                     c.param.forEach(function (p) {
                         pdict[p.id] = p.min;
                     });
+                    that.category = c;
                 }
             });
         }
@@ -295,29 +236,12 @@ export class GraphEditorEdge extends GraphEditorElement{
     getParamDict() {
         return this.paramdict;
     }
-    move() {
-        this.update();
-    }
-    getPosition() {
-        return { x: this.line.attr("x1"), y: this.line.attr("y1") };
-    }
-    update() {
-    // move arrow when src or dest moved
-        this.line.attr("x1", this.srcElement.outgoingPos.x);
-        this.line.attr("y1", this.srcElement.outgoingPos.y);
-        this.line.attr("x2", this.destElement.incomingPos.x);
-        this.line.attr("y2", this.destElement.incomingPos.y);
-    }
-    onSelect() {
-        this.line.addClass("selected");
-    }
-    onDeselect() {
-        this.line.removeClass("selected");
+    move(newPosition) {
+        this.position = newPosition;
     }
     onRemoval() {
         this.srcElement.removeOutgoingEdge(this);
         this.destElement.removeIncomingEdge(this);
-        this.getSVGElement().remove();
         this.graphEditor.removeElement(this);
     }
     getSrcNode() {

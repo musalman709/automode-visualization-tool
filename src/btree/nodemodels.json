@@ -5,6 +5,7 @@
 		"display_text": "?",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
+		"shape": "rect",
 		"display_tag": "rect",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -35,6 +36,7 @@
 		"display_text": "?*",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
+		"shape": "rect",
 		"display_tag": "rect",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -65,6 +67,7 @@
 		"display_text": "⟶",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
+		"shape": "rect",
 		"display_tag": "rect",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -95,6 +98,7 @@
 		"display_text": "⟶*",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
+		"shape": "rect",
 		"display_tag": "rect",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -125,6 +129,7 @@
 		"display_text": "δ",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
+		"shape": "rect",
 		"display_tag": "rect",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -155,6 +160,7 @@
 		"display_text": "A",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "0",
+		"shape": "circle",
 		"display_tag": "circle",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -183,6 +189,7 @@
 		"display_text": "C",
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "0",
+		"shape": "diamond",
 		"display_tag": "polygon",
 		"display_opts": {
 			"class": "nodeFrame",

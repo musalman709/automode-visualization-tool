@@ -3,7 +3,6 @@
 <head>
 	<meta charset="UTF-8"></meta>
 	<title>AutoMoDe Editor</title>
-	<script src="jquery-3.3.1.js"></script>
 	<script src="array_utils.js"></script>
 	<script src="main.js" defer></script>
 	<link rel="stylesheet" type="text/css" href="style.css"></link>
@@ -12,7 +11,14 @@
 	<section>
 	<article>
 	  <div id="graph-container">
-		  <p>loading ...</p>
+		<svg id="graph">
+			<defs>
+				<marker id="arrowhead" refX="10" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+					<path d="M 0 0 L 10 5 L 0 10 Z"></path>
+				</marker>
+			</defs>
+			<g id="elements-container"></g>
+		</svg>
 	  </div>
 	</article>
 	<aside id="toolbar">

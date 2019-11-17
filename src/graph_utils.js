@@ -3,18 +3,6 @@
  */
 
 /**
- * Create a new SVG element (in JQuery object)
- */
-export function createSVGElement(tagname, attrObject) {
-    var svgElem = document.createElementNS("http://www.w3.org/2000/svg",
-        tagname);
-    Object.keys(attrObject).forEach(function(key) {
-        svgElem.setAttribute(key, attrObject[key]);
-    });
-    return $(svgElem);
-}
-
-/**
  * Sum two points
  */
 export function points_sum(p1, p2) {
@@ -36,3 +24,9 @@ export function points_substract(p1, p2) {
     return p;
 }
 
+/**
+ * Return the middle of a segment
+ */
+export function middle(p1, p2) {
+    return {x: (p1.x+p2.x) / 2, y: (p1.y+p2.y) / 2};
+}

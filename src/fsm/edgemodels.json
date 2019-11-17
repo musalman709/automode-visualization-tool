@@ -2,9 +2,11 @@
     {
         "name": "Condition",
         "id": "0",
-		"display_text": "S",
-        "display_opts": {
-        	"class" : "arrowthick"},
-        "display_tag": "line"
+        "display_text": "S",
+        "node_display_tag": "polygon",
+		"node_display_opts": {
+			"class": "nodeFrame",
+			"points": "35,0,0,35,-35,0,0,-35"
+		}
     }
 ]

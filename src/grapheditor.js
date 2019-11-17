@@ -1,24 +1,28 @@
-import { createSVGElement } from "./graph_utils";
 import { defaultEdgeParam } from "./elementmodels_default";
 import GraphEditorTool from "./graphEditorTool";
-import GraphEditorElement from "./GraphEditorElement";
 import GraphEditorExporter from "./GraphEditorExporter";
 import GraphEditorImporter from "./GraphEditorImporter";
+import SVGElements from "./View/SVGElements.jsx";
+import { h, render } from "preact";
 
 /**
  * Object that manages tools and graph elements,
  * create the svg area and receive input from the user
  */
 export default class GraphEditor {
-    constructor(graphcontainer, toolscontainer) {
+    constructor() {
+        // event handlers
+        this.onMouseDown = this.onMouseDown.bind(this);
+        this.onMouseUp = this.onMouseUp.bind(this);
+        this.onMouseLeave = this.onMouseLeave.bind(this);
+        this.onMouseMove = this.onMouseMove.bind(this);
         // html elements
-        this.graphcontainer = graphcontainer;
-        this.toolscontainer = toolscontainer;
+        this.toolscontainer = document.querySelector("#tools-container");
         // import / export
         this.exporter = undefined;
         this.importer = undefined;
         // svg html element
-        this.svg = undefined;
+        this.svg = document.querySelector("#graph");
         // models lists
         this.nodemodels = [];
         this.nodeparams = [];
@@ -32,37 +36,25 @@ export default class GraphEditor {
         this.currentTool = undefined;
         this.selectedElement = undefined;
         this.createGraph();
-        var that = this;
         // events
-        this.svg.on("mousedown", function (e) { that.onMouseDown(e); });
-        this.svg.on("mouseup", function (e) { that.onMouseUp(e); });
-        this.svg.on("mouseleave", function (e) { that.onMouseLeave(e); });
-        this.svg.on("mousemove", function (e) { that.onMouseMove(e); });
+        this.svg.addEventListener("mousedown", e => this.onMouseDown(e));
+        this.svg.addEventListener("mouseup", e => this.onMouseUp(e));
+        this.svg.addEventListener("mouseleave", e => this.onMouseLeave(e));
+        this.svg.addEventListener("mousemove", e => this.onMouseMove(e));
+        this.svg.addEventListener("selectstart", e=> e.preventDefault());
         //mode
         this.mode = "";
     }
     createGraph() {
         // Initialisation function
-        this.graphcontainer.empty();
-        this.toolscontainer.empty();
-        this.svg = createSVGElement("svg", { id: "graph" });
-        this.svg.on("selectstart", function (e) { e.preventDefault(); });
-        this.graphcontainer.append(this.svg);
-        this.defs = createSVGElement("defs", {});
-        var arrowMarker = createSVGElement("marker", {
-            id: "arrowhead", refX: 10, refY: 5, markerWidth: 10, markerHeight: 10,
-            orient: "auto-start-reverse"
-        });
-        var arrowMarkerShape = createSVGElement("path", { d: "M 0 0 L 10 5 L 0 10 Z" });
-        arrowMarker.append(arrowMarkerShape);
-        this.defs.append(arrowMarker);
-        this.svg.append(this.defs);
+        this.clearTools();
+        this.updateGraph();
     }
     width() {
-        return this.svg.width();
+        return this.svg.getBoundingClientRect().width;
     }
     height() {
-        return this.svg.height();
+        return this.svg.getBoundingClientRect().height;
     }
     setNodeModels(data) {
         this.nodemodels = data;
@@ -128,22 +120,13 @@ export default class GraphEditor {
         return this.edgeparams;
     }
     addElement(element) {
-        if (element instanceof GraphEditorElement) {
-            this.elements.push(element);
-            element.graphEditor = this;
-            var that = this;
-            element.getSVGElement().on("mousedown", function (e) {
-                that.onMouseDown(e, element);
-                e.stopPropagation();
-            });
-            this.svg.append(element.getSVGElement());
-            this.callExporter();
-        }
+        this.elements.push(element);
+        element.graphEditor = this;
+        this.callExporter();
     }
     removeElement(element) {
         if (this.elements.remove(element)) {
             element.onRemoval();
-            element.getSVGElement().remove();
             if (this.selectedElement === element) {
                 this.setSelectedElement(undefined);
             }
@@ -159,18 +142,12 @@ export default class GraphEditor {
         while (this.elements.length > 0) {
             this.removeElement(this.elements[this.elements.length - 1]);
         }
+        this.updateGraph();
     }
     setSelectedElement(element) {
-        // unselect previous element
-        if (this.selectedElement !== undefined) {
-            this.selectedElement.onDeselect();
-        }
         this.selectedElement = element;
-        // select new element
-        if (this.selectedElement !== undefined) {
-            this.selectedElement.onSelect();
-        }
         this.updateParamPane();
+        this.updateGraph();
     }
     getSelectedElement() {
         return this.selectedElement;
@@ -181,7 +158,7 @@ export default class GraphEditor {
             //model select
             var modelsArray = undefined;
             // get the models
-            if(this.selectedElement.isNode()) {
+            if (this.selectedElement.isNode()) {
                 modelsArray = this.getNodeModels();
             } else {
                 modelsArray = this.getEdgeModels();
@@ -193,7 +170,7 @@ export default class GraphEditor {
             const catvalue = element.getParamDict()[params.categoryid];
             const category = params.categories.find(cat => cat.id === catvalue);
             paramPane.setCategories(params.categories, params.categoriesname, category);
-            if (category) 
+            if (category)
                 paramPane.setParams(category.param, element.getParamDict());
             else
                 paramPane.clearParams();
@@ -239,7 +216,7 @@ export default class GraphEditor {
             element.addEventListener("click", () => {
                 graphEditor.setCurrentTool(tool);
             });
-            this.toolscontainer.append(element);
+            this.toolscontainer.appendChild(element);
             if (isdefault) {
                 this.setDefaultTool(tool);
             }
@@ -276,13 +253,15 @@ export default class GraphEditor {
         this.setCurrentTool(undefined);
         this.setDefaultTool(undefined);
         this.tools = [];
-        this.toolscontainer.empty();
+        const tc = this.toolscontainer;
+        while (tc.firstChild)
+            tc.removeChild(tc.firstChild);
     }
     SVGCoordFromHTML(x, y) {
-        var svgPt = this.svg[0].createSVGPoint();
+        var svgPt = this.svg.createSVGPoint();
         svgPt.x = x;
         svgPt.y = y;
-        svgPt = svgPt.matrixTransform(this.svg[0].getScreenCTM().inverse());
+        svgPt = svgPt.matrixTransform(this.svg.getScreenCTM().inverse());
         return svgPt;
     }
     onMouseDown(e, element) {
@@ -308,9 +287,6 @@ export default class GraphEditor {
             this.currentTool.onMouseMove(pos);
         }
     }
-    addSVGElement(element) {
-        this.svg.append(element);
-    }
     setExporter(exporter) {
         if (exporter instanceof GraphEditorExporter) {
             this.exporter = exporter;
@@ -320,15 +296,20 @@ export default class GraphEditor {
         }
     }
     callExporter() {
+        this.updateGraph();
         if (this.exporter !== undefined) {
             const cmdline = document.querySelector("#cmdline");
             try {
                 cmdline.value = this.exporter.export(this.getElements());
-            } catch(err) {
+            } catch (err) {
                 cmdline.value = err;
             }
         }
     }
+    updateGraph() {
+        render(h(SVGElements, { elements: this.elements, selectedElement: this.selectedElement, handleClick: this.onMouseDown }, null), document.querySelector("#elements-container"));
+    }
+
     setImporter(importer) {
         if (importer instanceof GraphEditorImporter) {
             this.importer = importer;

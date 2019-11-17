@@ -138,7 +138,7 @@ export class GraphEditorDraggingTool  extends GraphEditorTool{
         // drag in progress, move element to mouse pos
         if (this.dragged !== undefined) {
             this.dragged.move(pos);
-            this.graphEditor.callExporter();
+            this.graphEditor.updateGraph();
         }
     }
 }
@@ -161,7 +161,7 @@ export class GraphEditorDeleteTool extends GraphEditorTool{
         // remove cliked element
         if (element !== undefined) {
             element.onRemoval();
-            this.graphEditor.removeElement(element);
+            //this.graphEditor.removeElement(element);
         }
     }
 }
