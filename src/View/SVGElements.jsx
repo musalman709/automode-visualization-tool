@@ -13,28 +13,28 @@ export default ({elements, selectedElement, handleClick}) =>
                 isSelected={e === selectedElement}
                 handleClick={handleClick} />
         )}
-    </svg>
+    </svg>;
 const Element = ({element, isSelected, handleClick}) => {
-    const onClick = (event) => {event.stopPropagation(); handleClick(event, element);}
+    const onClick = (event) => {event.stopPropagation(); handleClick(event, element);};
 
     return element.isNode() 
-    ? <Node isSelected={isSelected}
-        displayTag={element.model.display_tag}
-        displayOptions={element.model.display_opts}
-        position={element.pos}
-        label={element.category ? element.category.display_name : element.model.display_text}
-        handleClick={onClick} /> 
-    : <Edge isSelected={isSelected}
-        edge={element}
-        handleClick={onClick} />
-}
+        ? <Node isSelected={isSelected}
+            displayTag={element.model.display_tag}
+            displayOptions={element.model.display_opts}
+            position={element.pos}
+            label={element.category ? element.category.display_name : element.model.display_text}
+            handleClick={onClick} /> 
+        : <Edge isSelected={isSelected}
+            edge={element}
+            handleClick={onClick} />;
+};
 const Node = ({displayTag, displayOptions, position, label, isSelected, handleClick}) => 
     <g transform={`translate(${position.x},${position.y})`} onMouseDown={handleClick}>
         {h(displayTag, {...displayOptions, class: `nodeFrame ${isSelected ? "selected" : ""}`}, null)}
         <text text-anchor="middle" dominant-baseline="middle" x="0" y="0">
             {label}
         </text>
-    </g>
+    </g>;
 
 const Edge = ({edge, isSelected, handleClick}) =>
     <>
@@ -54,4 +54,4 @@ const Edge = ({edge, isSelected, handleClick}) =>
                 label={edge.category ? edge.category.display_name : edge.model.display_text}
                 handleClick={handleClick} />
         }
-    </>
+    </>;
