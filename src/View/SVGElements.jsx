@@ -52,7 +52,7 @@ const Edge = ({edge, srcPoint, destPoint, isSelected, handleClick}) =>
             <Node isSelected={isSelected}
                 displayTag={edge.model.node_display_tag}
                 displayOptions={edge.model.node_display_opts}
-                position={middle(edge.srcElement.outgoingPos, edge.destElement.incomingPos)}
+                position={middle(edge.srcElement.pos, edge.destElement.pos)}
                 label={edge.category ? edge.category.display_name : edge.model.display_text}
                 handleClick={handleClick} />
         }

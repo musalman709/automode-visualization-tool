@@ -1,4 +1,4 @@
-import { GraphEditorSelectTool, GraphEditorNewNodeTool, GraphEditorNewEdgeTool, GraphEditorDraggingTool, GraphEditorDeleteTool } from "./grapheditortools";
+import { GraphEditorNewNodeTool, GraphEditorNewEdgeTool, GraphEditorDraggingTool, GraphEditorDeleteTool } from "./grapheditortools";
 import { BTreeBeautifyTool } from "./btree/beautifier";
 import BTreeExporter from "./btree/exporter";
 import { BTreeImporter } from "./btree/importer";
@@ -48,10 +48,9 @@ function switchToBTree(graphEditor) {
     graphEditor.setEdgeParams([defaultEdgeParam(), ...btreeEdgeParams]);
 
     graphEditor.clearTools();
-    graphEditor.addTool(new GraphEditorSelectTool(), true);
+    graphEditor.addTool(new GraphEditorDraggingTool(), true);
     graphEditor.addTool(new GraphEditorNewNodeTool());
     graphEditor.addTool(new GraphEditorNewEdgeTool());
-    graphEditor.addTool(new GraphEditorDraggingTool());
     graphEditor.addTool(new GraphEditorDeleteTool());
     graphEditor.addTool(new BTreeBeautifyTool());
 }
@@ -79,10 +78,9 @@ function switchToFSM(graphEditor) {
     graphEditor.setEdgeParams([defaultEdgeParam(), ...fsmEdgeParams]);
 
     graphEditor.clearTools();
-    graphEditor.addTool(new GraphEditorSelectTool(), true);
+    graphEditor.addTool(new GraphEditorDraggingTool(), true);
     graphEditor.addTool(new GraphEditorNewNodeTool());
     graphEditor.addTool(new GraphEditorNewEdgeTool());
-    graphEditor.addTool(new GraphEditorDraggingTool());
     graphEditor.addTool(new GraphEditorDeleteTool());
 }
 

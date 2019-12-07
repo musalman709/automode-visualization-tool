@@ -4,29 +4,6 @@ import { GraphEditorEdge, GraphEditorNode } from "./grapheditorelements";
 /**
  * Shared tools between Btree and FSM
  */
-/**
- * Select the clicked element
- */
-export class GraphEditorSelectTool extends GraphEditorTool{
-    constructor() {
-        super();
-        this.graphEditor = undefined;
-    }
-    getToolId() {
-        return "select";
-    }
-    getName() {
-        return "Select";
-    }
-    onMouseDown(pos, element) {
-        if (element !== undefined) {
-            this.graphEditor.setSelectedElement(element);
-        }
-        else {
-            this.graphEditor.setSelectedElement(undefined);
-        }
-    }
-}
 
 
 /**
@@ -101,7 +78,6 @@ export class GraphEditorNewEdgeTool extends GraphEditorTool{
     }
 }
 
-
 /**
  * Drag an element
  */
@@ -119,7 +95,7 @@ export class GraphEditorDraggingTool  extends GraphEditorTool{
         return "dragging";
     }
     getName() {
-        return "Drag";
+        return "Select/Drag";
     }
     onMouseDown(pos, element) {
         // drag start
