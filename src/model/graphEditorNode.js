@@ -107,13 +107,15 @@ export class GraphEditorNode {
     }
     addIncomingEdge(edge) {
         if (edge instanceof GraphEditorEdge && this.canHaveMoreIncomingEdges()) {
-            this.incomingEdges.add(edge);
+            if (!this.incomingEdges.includes(edge)) this.incomingEdges.push(edge);
             return true;
         }
         return false;
     }
     removeIncomingEdge(edge) {
-        this.incomingEdges.remove(edge);
+        let index = this.incomingEdges.indexOf(edge);
+        if (index > -1)
+            this.incomingEdges.splice(index, 1);
     }
     getIncomingEdges() {
         return this.incomingEdges;
@@ -124,13 +126,15 @@ export class GraphEditorNode {
     }
     addOutgoingEdge(edge) {
         if (edge instanceof GraphEditorEdge && this.canHaveMoreOutgoingEdges()) {
-            this.outgoingEdges.add(edge);
+            if (!this.outgoingEdges.includes(edge)) this.outgoingEdges.push(edge);
             return true;
         }
         return false;
     }
     removeOutgoingEdge(edge) {
-        this.outgoingEdges.remove(edge);
+        let index = this.outgoingEdges.indexOf(edge);
+        if (index > -1)
+            this.outgoingEdges.splice(index, 1);
     }
     getOutgoingEdges() {
         return this.outgoingEdges;

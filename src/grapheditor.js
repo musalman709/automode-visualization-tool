@@ -123,7 +123,9 @@ export default class GraphEditor {
         this.callExporter();
     }
     removeElement(element) {
-        if (this.elements.remove(element)) {
+        let index = this.elements.indexOf(element);
+        if (index > -1) {
+            this.elements.splice(index, 1);
             element.onRemoval();
             if (this.selectedElement === element) {
                 this.setSelectedElement(undefined);
@@ -221,7 +223,7 @@ export default class GraphEditor {
         }
     }
     setDefaultTool(tool) {
-        if (this.tools.contains(tool)) {
+        if (this.tools.includes(tool)) {
             this.defaultTool = tool;
             if (this.currentTool === undefined) {
                 this.setCurrentTool(tool);
