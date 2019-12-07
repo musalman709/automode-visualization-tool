@@ -10,6 +10,8 @@ export function defaultNodeModel() {
         "max_incoming_edges": "-1",
         "max_outgoing_edges": "-1",
         "shape": "roundedrect",
+        "rx": 25,
+        "ry": 25,
         "display_tag": "rect",
         "display_opts": {
             "class": "nodeFrame",
@@ -27,14 +29,8 @@ export function defaultNodeModel() {
             "x": "0",
             "y": "0"
         },
-        "incoming_point": {
-            "x": "0",
-            "y": "-25"
-        },
-        "outgoing_point": {
-            "x": "0",
-            "y": "25"
-        }
+        "incoming_connect_type": "N",
+        "outgoing_connect_type": "S"
     };
 }
 

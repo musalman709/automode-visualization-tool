@@ -1,7 +1,5 @@
 import { defaultEdgeParam } from "./elementmodels_default";
 import GraphEditorTool from "./graphEditorTool";
-import GraphEditorExporter from "./GraphEditorExporter";
-import GraphEditorImporter from "./GraphEditorImporter";
 import SVGElements from "./View/SVGElements.jsx";
 import { h, render } from "preact";
 
@@ -288,12 +286,7 @@ export default class GraphEditor {
         }
     }
     setExporter(exporter) {
-        if (exporter instanceof GraphEditorExporter) {
-            this.exporter = exporter;
-        }
-        else {
-            this.exporter = undefined;
-        }
+        this.exporter = exporter;
     }
     callExporter() {
         this.updateGraph();
@@ -311,12 +304,7 @@ export default class GraphEditor {
     }
 
     setImporter(importer) {
-        if (importer instanceof GraphEditorImporter) {
-            this.importer = importer;
-        }
-        else {
-            this.importer = undefined;
-        }
+        this.importer = importer;
     }
     callImporter() {
         if (this.importer !== undefined) {

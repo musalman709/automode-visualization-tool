@@ -87,8 +87,6 @@ export class GraphEditorNode{
     }
     move(newPos) {
         this.pos = newPos;
-        this.incomingPos = points_sum(this.model.incoming_point, newPos);
-        this.outgoingPos = points_sum(this.model.outgoing_point, newPos);
     }
     getPosition() {
         return this.pos;
@@ -102,12 +100,6 @@ export class GraphEditorNode{
             this.outgoingEdges[0].onRemoval();
         }
         this.graphEditor.removeElement(this);
-    }
-    getIncomingPoint() {
-        return this.incomingPos;
-    }
-    getOutgoingPoint() {
-        return this.outgoingPos;
     }
     canHaveMoreIncomingEdges() {
         return this.model.max_incoming_edges < 0 ||

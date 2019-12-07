@@ -1,7 +1,6 @@
-import GraphEditorExporter from "../GraphEditorExporter";
 import { findBTreeRoot } from "./btreeutils";
 
-export default class BTreeExporter extends GraphEditorExporter{
+export default class BTreeExporter {
     export(elements) {
         var root = undefined;
         // If elements empty, set empty string

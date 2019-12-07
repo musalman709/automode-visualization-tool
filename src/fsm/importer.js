@@ -1,4 +1,3 @@
-import GraphEditorImporter from "../GraphEditorImporter";
 import { GraphEditorNode, GraphEditorEdge } from "../grapheditorelements";
 
 /**
@@ -44,7 +43,7 @@ class CmdLineIterator {
 
 
 
-export class FSMImporter extends GraphEditorImporter {
+export class FSMImporter {
     isStartArg(arg) {
         return arg === "--fsm-config";
     }

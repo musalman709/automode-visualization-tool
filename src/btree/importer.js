@@ -1,4 +1,3 @@
-import GraphEditorImporter from "../GraphEditorImporter";
 import { GraphEditorNode, GraphEditorEdge } from "../grapheditorelements";
 import { beautifyBTree } from "./beautifier";
 
@@ -30,7 +29,7 @@ class CmdLineIterator {
 
 
 
-export class BTreeImporter extends GraphEditorImporter{
+export class BTreeImporter {
     isStartArg(arg) {
         return arg == "--bt-config";
     }
