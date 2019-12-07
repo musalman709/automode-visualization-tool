@@ -1,5 +1,6 @@
 import GraphEditorTool from "./graphEditorTool";
-import { GraphEditorEdge, GraphEditorNode } from "./grapheditorelements";
+import { GraphEditorEdge } from "../model/graphEditorEdge";
+import { GraphEditorNode } from "../model/graphEditorNode";
 
 /**
  * Shared tools between Btree and FSM

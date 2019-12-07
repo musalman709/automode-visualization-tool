@@ -1,4 +1,5 @@
-import { GraphEditorNode, GraphEditorEdge } from "../grapheditorelements";
+import { GraphEditorEdge } from "../model/graphEditorEdge";
+import { GraphEditorNode } from "../model/graphEditorNode";
 
 /**
  * Iterator over the string tree, extracting one argument at a time

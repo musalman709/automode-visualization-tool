@@ -1,5 +1,5 @@
 import GraphEditorTool from "../graphEditorTool";
-import { findBTreeRoot } from "./btreeutils";
+import { findBTreeRoot } from "../../btree/btreeutils";
 
 /**
  * Beautifier algorithm

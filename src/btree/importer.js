@@ -1,5 +1,6 @@
-import { GraphEditorNode, GraphEditorEdge } from "../grapheditorelements";
-import { beautifyBTree } from "./beautifier";
+import { GraphEditorEdge } from "../model/graphEditorEdge";
+import { GraphEditorNode } from "../model/graphEditorNode";
+import { beautifyBTree } from "../tools/btree/beautifier";
 
 /**
  * Iterator over the string tree, extracting one argument at a time

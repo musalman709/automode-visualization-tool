@@ -1,5 +1,5 @@
-import { GraphEditorNewNodeTool, GraphEditorNewEdgeTool, GraphEditorDraggingTool, GraphEditorDeleteTool } from "./grapheditortools";
-import { BTreeBeautifyTool } from "./btree/beautifier";
+import { GraphEditorNewNodeTool, GraphEditorNewEdgeTool, GraphEditorDraggingTool, GraphEditorDeleteTool } from "./tools/grapheditortools";
+import { BTreeBeautifyTool } from "./tools/btree/beautifier";
 import BTreeExporter from "./btree/exporter";
 import { BTreeImporter } from "./btree/importer";
 import { FSMExporter } from "./fsm/exporter";
@@ -14,11 +14,11 @@ import fsmNodeModels from "./fsm/nodemodels.json";
 import fsmEdgeModels from "./fsm/edgemodels.json";
 import fsmNodeParams from "./fsm/nodeparams.json";
 import fsmEdgeParams from "./fsm/edgeparams.json";
-import OptionSelector from "./View/OptionSelector";
+import OptionSelector from "./view/OptionSelector";
 import { defaultNodeModel, defaultEdgeModel, defaultNodeParam, defaultEdgeParam } from "./elementmodels_default";
-import ParamInput from "./View/ParamInput";
-import ParamPane from "./View/ParamPane";
-import GraphCanvas from "./View/GraphCanvas";
+import ParamInput from "./view/ParamInput";
+import ParamPane from "./view/ParamPane";
+import GraphCanvas from "./view/GraphCanvas";
 
 
 /**

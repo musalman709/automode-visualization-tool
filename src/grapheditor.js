@@ -1,6 +1,6 @@
 import { defaultEdgeParam } from "./elementmodels_default";
-import GraphEditorTool from "./graphEditorTool";
-import SVGElements from "./View/SVGElements.jsx";
+import GraphEditorTool from "./tools/graphEditorTool";
+import SVGElements from "./view/SVGElements.jsx";
 import { h, render } from "preact";
 
 /**
