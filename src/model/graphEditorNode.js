@@ -1,18 +1,16 @@
-import { defaultNodeModel, defaultNodeParam } from "../elementmodels_default";
 import { GraphEditorEdge } from "./graphEditorEdge";
 /**
  * Node and edges objects
  */
 export class GraphEditorNode {
-    constructor(id, pos) {
+    constructor(id, pos, model, param) {
         this.id = id;
-        // egdes
+        // edges
         this.incomingEdges = [];
         this.outgoingEdges = [];
         // model and parameters
-        this.model = defaultNodeModel();
-        this.param = defaultNodeParam();
-        this.paramdict = {};
+        this.setModel(model);
+        this.setParam(param);
         this.paramcontainer = undefined;
         // graphics
         this.pos = { x: 0, y: 0 };
@@ -27,9 +25,6 @@ export class GraphEditorNode {
     setModel(model) {
         var pos = this.getPosition();
         this.model = model;
-        if (this.model === undefined) {
-            this.model = defaultNodeModel();
-        }
         // remove edges if there's too much
         while (this.model.max_incoming_edges >= 0 &&
             this.incomingEdges.length > this.model.max_incoming_edges) {
@@ -45,12 +40,7 @@ export class GraphEditorNode {
         return this.model;
     }
     setParam(param) {
-        if (param === undefined) {
-            this.param = defaultNodeParam();
-        }
-        else {
-            this.param = param;
-        }
+        this.param = param || {nodeid: "-1", categoryid: "d", categories: []};
         this.paramdict = {};
         // A node model can have no parameters
         // If it have, set default values

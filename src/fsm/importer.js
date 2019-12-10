@@ -129,9 +129,7 @@ export class FSMImporter {
     importNode(graphEditor, behav, i, iterator) {
         var model = graphEditor.getNodeModelById("0"); //there is only one model and one set of parameters for said model
         var param = graphEditor.getNodeParamById("0");
-        var node = new GraphEditorNode("imp_node", { x: 100 + (i % 2) * 200, y: 100 + Math.floor(i / 2) * 200 }); //placement is defined here
-        node.setModel(model);
-        node.setParam(param);
+        var node = new GraphEditorNode("imp_node", { x: 100 + (i % 2) * 200, y: 100 + Math.floor(i / 2) * 200 }, model, param); //placement is defined here
         this.importNodeParams(behav, node, iterator);
         graphEditor.addElement(node);
         return node;
@@ -167,7 +165,8 @@ export class FSMImporter {
     importEdges(graphEditor, iterator, startNode, destNode) {
         var condition = iterator.next(); //should be --cAxB
         var transType = iterator.next();
-        var edge = new GraphEditorEdge("imp_edge", startNode, destNode);
+        var edge = new GraphEditorEdge("imp_edge", startNode, destNode, 
+            graphEditor.getEdgeModelById("0"), graphEditor.getEdgeParamById("0"));
         edge.graphEditor = graphEditor;
         edge.setModel(graphEditor.getEdgeModelById("0")); //only one model for the edges
         edge.setParam(graphEditor.getEdgeParamById("0"));

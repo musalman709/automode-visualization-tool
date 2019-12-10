@@ -66,9 +66,7 @@ export class BTreeImporter {
         var nodeType = dict[argname];
         var model = graphEditor.getNodeModelById(nodeType);
         var param = graphEditor.getNodeParamById(nodeType);
-        var node = new GraphEditorNode("imp_node", { x: 30, y: 30 });
-        node.setModel(model);
-        node.setParam(param);
+        var node = new GraphEditorNode("imp_node", { x: 30, y: 30 }, model, param);
         graphEditor.addElement(node);
         this.importParams(graphEditor, dict, nodeID, node);
         if (model.max_outgoing_edges > 0) {
@@ -86,7 +84,8 @@ export class BTreeImporter {
         }
         for (var i = 0; i < childrenNb; ++i) {
             var node = this.importNode(graphEditor, dict, nodeID + i.toString());
-            var edge = new GraphEditorEdge("imp_edge", parentNode, node);
+            var edge = new GraphEditorEdge("imp_edge", parentNode, node, 
+                graphEditor.getEdgeModelById("0"), graphEditor.getEdgeParamById("0"));
             if (edge.isValid()) {
                 graphEditor.addElement(edge);
             }

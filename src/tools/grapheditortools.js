@@ -25,9 +25,7 @@ export class GraphEditorNewNodeTool extends GraphEditorTool{
         this.graphEditor.setSelectedElement(undefined);
         // only create node if mouse over empty space
         if (element === undefined) {
-            var node = new GraphEditorNode("rd_node", pos);
-            this.graphEditor.addElement(node);
-            this.graphEditor.setSelectedElement(node);
+            this.graphEditor.addNode(pos);
         }
     }
 }
@@ -64,13 +62,7 @@ export class GraphEditorNewEdgeTool extends GraphEditorTool{
             }
             else {
                 if (element.isNode() && selected.isNode()) {
-                    // create edge
-                    var edge = new GraphEditorEdge("rd_edge", selected, element);
-                    // if edge valid, add it
-                    if (edge.isValid()) {
-                        this.graphEditor.addElement(edge);
-                        this.graphEditor.setSelectedElement(edge);
-                    }
+                    this.graphEditor.addEdge(selected, element);
                 }
                 // deleselect
                 this.graphEditor.setSelectedElement(undefined);

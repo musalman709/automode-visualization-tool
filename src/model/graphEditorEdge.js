@@ -1,4 +1,3 @@
-import { defaultEdgeModel, defaultEdgeParam } from "../elementmodels_default";
 
 /**
  * Bind two nodes ('src' and 'dest')
@@ -9,14 +8,14 @@ export class GraphEditorEdge{
      * @param {GraphEditorNode} srcElement 
      * @param {GraphEditorNode} destElement 
      */
-    constructor(id, srcElement, destElement) {
+    constructor(id, srcElement, destElement, model, param) {
         // src and dest
         this.srcElement = undefined;
         this.destElement = undefined;
         this.id = id;
         // model and parameters
-        this.model = defaultEdgeModel();
-        this.param = defaultEdgeParam();
+        this.setModel(model);
+        this.setParam(param);
         this.paramdict = {};
         this.paramcontainer = undefined;
         // bind src and dest
@@ -41,20 +40,12 @@ export class GraphEditorEdge{
     }
     setModel(model) {
         this.model = model;
-        if (this.model === undefined) {
-            this.model = defaultEdgeModel();
-        }
     }
     getModel() {
         return this.model;
     }
     setParam(param) {
-        if (param === undefined) {
-            this.param = defaultEdgeParam();
-        }
-        else {
-            this.param = param;
-        }
+        this.param = param || {edgeid: "-1", categoryid: "d", categories: []};
         this.paramdict = {};
         // A node model can have no parameters
         // If it have, set default values

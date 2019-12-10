@@ -15,7 +15,6 @@ import fsmEdgeModels from "./fsm/edgemodels.json";
 import fsmNodeParams from "./fsm/nodeparams.json";
 import fsmEdgeParams from "./fsm/edgeparams.json";
 import OptionSelector from "./view/OptionSelector";
-import { defaultNodeModel, defaultEdgeModel, defaultNodeParam, defaultEdgeParam } from "./elementmodels_default";
 import ParamInput from "./view/ParamInput";
 import ParamPane from "./view/ParamPane";
 import GraphCanvas from "./view/GraphCanvas";
@@ -42,10 +41,10 @@ function switchToBTree(graphEditor) {
     var importer = new BTreeImporter();
     graphEditor.setImporter(importer);
 
-    graphEditor.setNodeModels([defaultNodeModel(), ...btreeNodeModels]);
-    graphEditor.setEdgeModels([defaultEdgeModel(), ...btreeEdgeModels]);
-    graphEditor.setNodeParams([defaultNodeParam(), ...btreeNodeParams]);
-    graphEditor.setEdgeParams([defaultEdgeParam(), ...btreeEdgeParams]);
+    graphEditor.setNodeModels(btreeNodeModels);
+    graphEditor.setEdgeModels(btreeEdgeModels);
+    graphEditor.setNodeParams(btreeNodeParams);
+    graphEditor.setEdgeParams(btreeEdgeParams);
 
     graphEditor.clearTools();
     graphEditor.addTool(new GraphEditorDraggingTool(), true);
@@ -72,10 +71,10 @@ function switchToFSM(graphEditor) {
     var importer = new FSMImporter();
     graphEditor.setImporter(importer);
 
-    graphEditor.setNodeModels([defaultNodeModel(), ...fsmNodeModels]);
-    graphEditor.setEdgeModels([defaultEdgeModel(), ...fsmEdgeModels]);
-    graphEditor.setNodeParams([defaultNodeParam(), ...fsmNodeParams]);
-    graphEditor.setEdgeParams([defaultEdgeParam(), ...fsmEdgeParams]);
+    graphEditor.setNodeModels(fsmNodeModels);
+    graphEditor.setEdgeModels(fsmEdgeModels);
+    graphEditor.setNodeParams(fsmNodeParams);
+    graphEditor.setEdgeParams(fsmEdgeParams);
 
     graphEditor.clearTools();
     graphEditor.addTool(new GraphEditorDraggingTool(), true);

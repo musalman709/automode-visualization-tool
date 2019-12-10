@@ -1,7 +1,8 @@
-import { defaultEdgeParam } from "./elementmodels_default";
 import GraphEditorTool from "./tools/graphEditorTool";
 import SVGElements from "./view/SVGElements.jsx";
 import { h, render } from "preact";
+import { GraphEditorNode } from "./model/graphEditorNode";
+import { GraphEditorEdge } from "./model/graphEditorEdge";
 
 /**
  * Object that manages tools and graph elements,
@@ -109,9 +110,6 @@ export default class GraphEditor {
                 param = p;
             }
         });
-        if (param === undefined) {
-            return defaultEdgeParam();
-        }
         return param;
     }
     getEdgeParams() {
@@ -121,6 +119,22 @@ export default class GraphEditor {
         this.elements.push(element);
         element.graphEditor = this;
         this.callExporter();
+    }
+    addNode(position) {
+        const node = new GraphEditorNode("rd_node", position, 
+            this.getNodeModelById("0"), this.getNodeParamById("0"));
+        this.addElement(node);
+        this.setSelectedElement(node);
+    }
+    addEdge(srcElement, destElement) {
+        // create edge
+        const edge = new GraphEditorEdge("rd_edge", srcElement, destElement, 
+            this.getEdgeModelById("0"), this.getEdgeParamById("0"));
+        // if edge valid, add it
+        if (edge.isValid()) {
+            this.addElement(edge);
+            this.setSelectedElement(edge);
+        }
     }
     removeElement(element) {
         let index = this.elements.indexOf(element);
