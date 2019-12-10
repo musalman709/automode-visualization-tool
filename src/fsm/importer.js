@@ -168,8 +168,8 @@ export class FSMImporter {
         var edge = new GraphEditorEdge("imp_edge", startNode, destNode, 
             graphEditor.getEdgeModelById("0"), graphEditor.getEdgeParamById("0"));
         edge.graphEditor = graphEditor;
-        edge.setModel(graphEditor.getEdgeModelById("0")); //only one model for the edges
-        edge.setParam(graphEditor.getEdgeParamById("0"));
+        //edge.setModel(graphEditor.getEdgeModelById("0")); //only one model for the edges
+        //edge.setParam(graphEditor.getEdgeParamById("0"));
         this.importEdgeParams(edge, iterator, transType);
         if (edge.isValid()) {
             graphEditor.addElement(edge);

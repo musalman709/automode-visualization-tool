@@ -18,6 +18,7 @@ import OptionSelector from "./view/OptionSelector";
 import ParamInput from "./view/ParamInput";
 import ParamPane from "./view/ParamPane";
 import GraphCanvas from "./view/GraphCanvas";
+import { GraphEditorRootSelectorTool } from "./tools/fsm/rootSelector";
 
 
 /**
@@ -81,6 +82,7 @@ function switchToFSM(graphEditor) {
     graphEditor.addTool(new GraphEditorNewNodeTool());
     graphEditor.addTool(new GraphEditorNewEdgeTool());
     graphEditor.addTool(new GraphEditorDeleteTool());
+    graphEditor.addTool(new GraphEditorRootSelectorTool());
 }
 
 /**

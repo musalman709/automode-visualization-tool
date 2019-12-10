@@ -16,7 +16,6 @@ export class GraphEditorEdge{
         // model and parameters
         this.setModel(model);
         this.setParam(param);
-        this.paramdict = {};
         this.paramcontainer = undefined;
         // bind src and dest
         if (srcElement.canHaveMoreOutgoingEdges() && destElement.canHaveMoreIncomingEdges()) {

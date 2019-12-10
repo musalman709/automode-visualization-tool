@@ -136,6 +136,13 @@ export default class GraphEditor {
             this.setSelectedElement(edge);
         }
     }
+    setFirstElement(newFirst) {
+        let index;
+        if (newFirst && (index = this.elements.indexOf(newFirst)) > -1) {
+            [this.elements[0], this.elements[index]] = [this.elements[index], this.elements[0]];
+            this.setSelectedElement(newFirst);
+        }
+    }
     removeElement(element) {
         let index = this.elements.indexOf(element);
         if (index > -1) {
