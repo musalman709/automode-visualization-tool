@@ -140,7 +140,7 @@ export default class GraphEditor {
         let index;
         if (newFirst && (index = this.elements.indexOf(newFirst)) > -1) {
             [this.elements[0], this.elements[index]] = [this.elements[index], this.elements[0]];
-            this.setSelectedElement(newFirst);
+            this.callExporter(newFirst);
         }
     }
     removeElement(element) {
