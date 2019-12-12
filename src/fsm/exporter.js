@@ -1,6 +1,5 @@
-import GraphEditorExporter from "../GraphEditorExporter";
 
-export class FSMExporter extends GraphEditorExporter{
+export class FSMExporter{
     export(elements) {
         // If elements empty, set empty string
         if (elements.length === 0) {

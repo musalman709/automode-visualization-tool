@@ -6,6 +6,8 @@
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"shape": "rect",
+		"rx": 25,
+		"ry": 25,
 		"display_tag": "rect",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -21,14 +23,8 @@
 			"x": "0",
 			"y": "0"
 		},
-		"incoming_point": {
-			"x": "0",
-			"y": "-25"
-		},
-		"outgoing_point": {
-			"x": "0",
-			"y": "25"
-		}
+		"incoming_connect_type": "N",
+		"outgoing_connect_type": "S"
 	},
 	{
 		"name": "Selector*",
@@ -37,6 +33,8 @@
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"shape": "rect",
+		"rx": 25,
+		"ry": 25,
 		"display_tag": "rect",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -52,14 +50,8 @@
 			"x": "0",
 			"y": "0"
 		},
-		"incoming_point": {
-			"x": "0",
-			"y": "-25"
-		},
-		"outgoing_point": {
-			"x": "0",
-			"y": "25"
-		}
+		"incoming_connect_type": "N",
+		"outgoing_connect_type": "S"
 	},
 	{
 		"name": "Sequence",
@@ -68,6 +60,8 @@
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"shape": "rect",
+		"rx": 25,
+		"ry": 25,
 		"display_tag": "rect",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -83,14 +77,8 @@
 			"x": "0",
 			"y": "0"
 		},
-		"incoming_point": {
-			"x": "0",
-			"y": "-25"
-		},
-		"outgoing_point": {
-			"x": "0",
-			"y": "25"
-		}
+		"incoming_connect_type": "N",
+		"outgoing_connect_type": "S"
 	},
 	{
 		"name": "Sequence*",
@@ -99,6 +87,8 @@
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"shape": "rect",
+		"rx": 25,
+		"ry": 25,
 		"display_tag": "rect",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -114,14 +104,8 @@
 			"x": "0",
 			"y": "0"
 		},
-		"incoming_point": {
-			"x": "0",
-			"y": "-25"
-		},
-		"outgoing_point": {
-			"x": "0",
-			"y": "25"
-		}
+		"incoming_connect_type": "N",
+		"outgoing_connect_type": "S"
 	},
 	{
 		"name": "Decorator",
@@ -130,6 +114,8 @@
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "10",
 		"shape": "rect",
+		"rx": 25,
+		"ry": 25,
 		"display_tag": "rect",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -145,14 +131,8 @@
 			"x": "0",
 			"y": "0"
 		},
-		"incoming_point": {
-			"x": "0",
-			"y": "-25"
-		},
-		"outgoing_point": {
-			"x": "0",
-			"y": "25"
-		}
+		"incoming_connect_type": "N",
+		"outgoing_connect_type": "S"
 	},
 	{
 		"name": "Action",
@@ -161,6 +141,8 @@
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "0",
 		"shape": "circle",
+		"rx": 30,
+		"ry": 30,
 		"display_tag": "circle",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -174,14 +156,8 @@
 			"x": "0",
 			"y": "0"
 		},
-		"incoming_point": {
-			"x": "0",
-			"y": "-30"
-		},
-		"outgoing_point": {
-			"x": "0",
-			"y": "30"
-		}
+		"incoming_connect_type": "N",
+		"outgoing_connect_type": "S"
 	},
 	{
 		"name": "Condition",
@@ -190,6 +166,8 @@
 		"max_incoming_edges": "1",
 		"max_outgoing_edges": "0",
 		"shape": "diamond",
+		"rx": 35,
+		"ry": 35,
 		"display_tag": "polygon",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -201,13 +179,7 @@
 			"x": "0",
 			"y": "0"
 		},
-		"incoming_point": {
-			"x": "0",
-			"y": "-35"
-		},
-		"outgoing_point": {
-			"x": "0",
-			"y": "35"
-		}
+		"incoming_connect_type": "N",
+		"outgoing_connect_type": "S"
 	}
 ]

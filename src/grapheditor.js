@@ -1,9 +1,8 @@
-import { defaultEdgeParam } from "./elementmodels_default";
-import GraphEditorTool from "./graphEditorTool";
-import GraphEditorExporter from "./GraphEditorExporter";
-import GraphEditorImporter from "./GraphEditorImporter";
-import SVGElements from "./View/SVGElements.jsx";
+import GraphEditorTool from "./tools/graphEditorTool";
+import SVGElements from "./view/SVGElements.jsx";
 import { h, render } from "preact";
+import { GraphEditorNode } from "./model/graphEditorNode";
+import { GraphEditorEdge } from "./model/graphEditorEdge";
 
 /**
  * Object that manages tools and graph elements,
@@ -111,9 +110,6 @@ export default class GraphEditor {
                 param = p;
             }
         });
-        if (param === undefined) {
-            return defaultEdgeParam();
-        }
         return param;
     }
     getEdgeParams() {
@@ -124,8 +120,33 @@ export default class GraphEditor {
         element.graphEditor = this;
         this.callExporter();
     }
+    addNode(position) {
+        const node = new GraphEditorNode("rd_node", position, 
+            this.getNodeModelById("0"), this.getNodeParamById("0"));
+        this.addElement(node);
+        this.setSelectedElement(node);
+    }
+    addEdge(srcElement, destElement) {
+        // create edge
+        const edge = new GraphEditorEdge("rd_edge", srcElement, destElement, 
+            this.getEdgeModelById("0"), this.getEdgeParamById("0"));
+        // if edge valid, add it
+        if (edge.isValid()) {
+            this.addElement(edge);
+            this.setSelectedElement(edge);
+        }
+    }
+    setFirstElement(newFirst) {
+        let index;
+        if (newFirst && (index = this.elements.indexOf(newFirst)) > -1) {
+            [this.elements[0], this.elements[index]] = [this.elements[index], this.elements[0]];
+            this.callExporter(newFirst);
+        }
+    }
     removeElement(element) {
-        if (this.elements.remove(element)) {
+        let index = this.elements.indexOf(element);
+        if (index > -1) {
+            this.elements.splice(index, 1);
             element.onRemoval();
             if (this.selectedElement === element) {
                 this.setSelectedElement(undefined);
@@ -223,7 +244,7 @@ export default class GraphEditor {
         }
     }
     setDefaultTool(tool) {
-        if (this.tools.contains(tool)) {
+        if (this.tools.includes(tool)) {
             this.defaultTool = tool;
             if (this.currentTool === undefined) {
                 this.setCurrentTool(tool);
@@ -288,12 +309,7 @@ export default class GraphEditor {
         }
     }
     setExporter(exporter) {
-        if (exporter instanceof GraphEditorExporter) {
-            this.exporter = exporter;
-        }
-        else {
-            this.exporter = undefined;
-        }
+        this.exporter = exporter;
     }
     callExporter() {
         this.updateGraph();
@@ -311,12 +327,7 @@ export default class GraphEditor {
     }
 
     setImporter(importer) {
-        if (importer instanceof GraphEditorImporter) {
-            this.importer = importer;
-        }
-        else {
-            this.importer = undefined;
-        }
+        this.importer = importer;
     }
     callImporter() {
         if (this.importer !== undefined) {

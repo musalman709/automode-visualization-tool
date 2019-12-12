@@ -1,32 +1,8 @@
 import GraphEditorTool from "./graphEditorTool";
-import { GraphEditorEdge, GraphEditorNode } from "./grapheditorelements";
 
 /**
  * Shared tools between Btree and FSM
  */
-/**
- * Select the clicked element
- */
-export class GraphEditorSelectTool extends GraphEditorTool{
-    constructor() {
-        super();
-        this.graphEditor = undefined;
-    }
-    getToolId() {
-        return "select";
-    }
-    getName() {
-        return "Select";
-    }
-    onMouseDown(pos, element) {
-        if (element !== undefined) {
-            this.graphEditor.setSelectedElement(element);
-        }
-        else {
-            this.graphEditor.setSelectedElement(undefined);
-        }
-    }
-}
 
 
 /**
@@ -47,9 +23,7 @@ export class GraphEditorNewNodeTool extends GraphEditorTool{
         this.graphEditor.setSelectedElement(undefined);
         // only create node if mouse over empty space
         if (element === undefined) {
-            var node = new GraphEditorNode("rd_node", pos);
-            this.graphEditor.addElement(node);
-            this.graphEditor.setSelectedElement(node);
+            this.graphEditor.addNode(pos);
         }
     }
 }
@@ -86,13 +60,7 @@ export class GraphEditorNewEdgeTool extends GraphEditorTool{
             }
             else {
                 if (element.isNode() && selected.isNode()) {
-                    // create edge
-                    var edge = new GraphEditorEdge("rd_edge", selected, element);
-                    // if edge valid, add it
-                    if (edge.isValid()) {
-                        this.graphEditor.addElement(edge);
-                        this.graphEditor.setSelectedElement(edge);
-                    }
+                    this.graphEditor.addEdge(selected, element);
                 }
                 // deleselect
                 this.graphEditor.setSelectedElement(undefined);
@@ -100,7 +68,6 @@ export class GraphEditorNewEdgeTool extends GraphEditorTool{
         }
     }
 }
-
 
 /**
  * Drag an element
@@ -119,7 +86,7 @@ export class GraphEditorDraggingTool  extends GraphEditorTool{
         return "dragging";
     }
     getName() {
-        return "Drag";
+        return "Select/Drag";
     }
     onMouseDown(pos, element) {
         // drag start

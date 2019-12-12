@@ -6,6 +6,8 @@
 		"max_incoming_edges": "10",
 		"max_outgoing_edges": "10",
 		"shape": "circle",
+		"rx": 30,
+		"ry": 30,
 		"display_tag": "circle",
 		"display_opts": {
 			"class": "nodeFrame",
@@ -19,13 +21,7 @@
 			"x": "0",
 			"y": "0"
 		},
-		"incoming_point": {
-			"x": "0",
-			"y": "-30"
-		},
-		"outgoing_point": {
-			"x": "0",
-			"y": "30"
-		}
+		"incoming_connect_type": "oval",
+		"outgoing_connect_type": "oval"
 	}
 ]

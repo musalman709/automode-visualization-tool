@@ -1,5 +1,5 @@
 import {h, Fragment} from "preact";
-import { middle } from "../graph_utils";
+import { middle, getConnectPoint, getDirection, points_sum } from "../graph_utils";
 
 export default ({elements, selectedElement, handleClick}) =>
     <svg id="graph">
@@ -26,7 +26,9 @@ const Element = ({element, isSelected, handleClick}) => {
             handleClick={onClick} /> 
         : <Edge isSelected={isSelected}
             edge={element}
-            handleClick={onClick} />;
+            handleClick={onClick}
+            srcPoint={getSrcPoint(element.srcElement, element.destElement)}
+            destPoint={getDestPoint(element.srcElement, element.destElement)} />;
 };
 const Node = ({displayTag, displayOptions, position, label, isSelected, handleClick}) => 
     <g transform={`translate(${position.x},${position.y})`} onMouseDown={handleClick}>
@@ -36,22 +38,36 @@ const Node = ({displayTag, displayOptions, position, label, isSelected, handleCl
         </text>
     </g>;
 
-const Edge = ({edge, isSelected, handleClick}) =>
+const Edge = ({edge, srcPoint, destPoint, isSelected, handleClick}) =>
     <>
         <line className={`line ${isSelected ? "selected" : ""}`}
             onMouseDown={handleClick}
             marker-end="url(#arrowhead)"
-            x1={edge.srcElement.outgoingPos.x}
-            y1={edge.srcElement.outgoingPos.y}
-            x2={edge.destElement.incomingPos.x}
-            y2={edge.destElement.incomingPos.y}>
+            x1={srcPoint.x}
+            y1={srcPoint.y}
+            x2={destPoint.x}
+            y2={destPoint.y}>
         </line>
         {edge.model.node_display_tag &&
             <Node isSelected={isSelected}
                 displayTag={edge.model.node_display_tag}
                 displayOptions={edge.model.node_display_opts}
-                position={middle(edge.srcElement.outgoingPos, edge.destElement.incomingPos)}
+                position={middle(edge.srcElement.pos, edge.destElement.pos)}
                 label={edge.category ? edge.category.display_name : edge.model.display_text}
                 handleClick={handleClick} />
         }
     </>;
+
+const getSrcPoint = (srcElement, destElement) => {
+    const direction = getDirection(srcElement.pos, destElement.pos);
+    const connectPoint = getConnectPoint(srcElement.model.outgoing_connect_type, 
+        srcElement.model.rx, srcElement.model.ry, direction);
+    return points_sum(srcElement.pos, connectPoint);
+};
+
+const getDestPoint = (srcElement, destElement) => {
+    const direction = getDirection(destElement.pos, srcElement.pos);
+    const connectPoint = getConnectPoint(destElement.model.incoming_connect_type, 
+        destElement.model.rx, destElement.model.ry, direction);
+    return points_sum(destElement.pos, connectPoint);
+};

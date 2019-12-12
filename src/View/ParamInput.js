@@ -12,7 +12,8 @@ export default class ParamInput extends HTMLElement {
         this.rangeSpan = document.createElement("span");
         this.rangeSpan.className = "textrange";
         this.paramInput = document.createElement("input");
-        this.paramInput.classList.add("paraminput");
+        if (!this.paramInput.classList.contains("paraminput"))
+            this.paramInput.classList.add("paraminput");
         this.paramInput.setAttribute("type", "number");
         this.paramInput.addEventListener("change", this._onChange);
         shadow.appendChild(this.titleP);
