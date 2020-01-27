@@ -1,5 +1,6 @@
 import { GraphEditorEdge } from "../model/graphEditorEdge";
 import { GraphEditorNode } from "../model/graphEditorNode";
+import { FSMParser } from "./fsmparser";
 
 /**
  * Iterator over the string tree, extracting one argument at a time
@@ -39,11 +40,6 @@ class CmdLineIterator {
         this.i = 0;
     }
 }
-
-
-
-
-
 export class FSMImporter {
     isStartArg(arg) {
         return arg === "--fsm-config";
@@ -125,6 +121,7 @@ export class FSMImporter {
             count++;
         }
         console.log("String imported");
+        console.log((new FSMParser(inputString)).parse());
     }
     importNode(graphEditor, behav, i, iterator) {
         var model = graphEditor.getNodeModelById("0"); //there is only one model and one set of parameters for said model
