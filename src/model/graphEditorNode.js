@@ -3,18 +3,16 @@ import { GraphEditorEdge } from "./graphEditorEdge";
  * Node and edges objects
  */
 export class GraphEditorNode {
-    constructor(id, pos, model, param) {
+    constructor(id, position, model, param) {
         this.id = id;
         // edges
         this.incomingEdges = [];
         this.outgoingEdges = [];
         // model and parameters
         this.setModel(model);
-        this.setParam(param);
-        this.paramcontainer = undefined;
+        this.setType(param);
         // graphics
-        this.pos = { x: 0, y: 0 };
-        this.move(pos);
+        this.move(position || { x: 0, y: 0 });
     }
     getName() {
         return this.id;
@@ -23,9 +21,8 @@ export class GraphEditorNode {
         return true;
     }
     setModel(model) {
-        var pos = this.getPosition();
         this.model = model;
-        // remove edges if there's too much
+        // remove edges if there are too many
         while (this.model.max_incoming_edges >= 0 &&
             this.incomingEdges.length > this.model.max_incoming_edges) {
             this.incomingEdges[0].onRemoval();
@@ -34,52 +31,50 @@ export class GraphEditorNode {
             this.outgoingEdges.length > this.model.max_outgoing_edges) {
             this.outgoingEdges[0].onRemoval();
         }
-        this.move(pos);
     }
     getModel() {
         return this.model;
     }
-    setParam(param) {
-        this.param = param || {nodeid: "-1", categoryid: "d", categories: []};
-        this.paramdict = {};
+    setType(type) {
+        this.type = type || {nodeid: "-1", categoryid: "d", categories: []};
+        this.params = {};
         // A node model can have no parameters
         // If it have, set default values
-        if (this.param.categories.length > 0) {
-            this.setParamValue(this.param.categoryid, this.param.categories[0].id);
+        if (this.type.categories.length > 0) {
+            this.setCategory(this.type.categories[0]);
         }
         else {
             this.category = undefined;
         }
     }
-    getParam() {
-        return this.param;
+    getType() {
+        return this.type;
     }
-    setParamValue(param, value) {
-        this.paramdict[param] = value;
-        if (param == this.param.categoryid) {
-            this.paramdict = {};
-            this.paramdict[this.param.categoryid] = value;
-            // category change, reset dict with new set of parameters
-            var pdict = this.paramdict;
-            var that = this;
-            this.param.categories.forEach(function (c) {
-                if (c.id == value) {
-                    c.param.forEach(function (p) {
-                        pdict[p.id] = p.min;
-                    });
-                    that.category = c;
-                }
-            });
+    setCategory(category) {
+        // check the category is valid for the type of the node
+        if (!category || !this.type.categories.includes(category))
+            throw new Error("Invalid category");
+        this.category = category;
+        // set default values for all params in the new category
+        this.params = {};
+        for (const p of category.param) {
+            this.params[p.id] = p.min;
         }
     }
-    getParamDict() {
-        return this.paramdict;
+    getCategory() {
+        return this.category;
     }
-    move(newPos) {
-        this.pos = newPos;
+    setParam(param, value) {
+        this.params[param] = value;
+    }
+    getParams() {
+        return this.params;
+    }
+    move(newposition) {
+        this.position = newposition;
     }
     getPosition() {
-        return this.pos;
+        return this.position;
     }
     onRemoval() {
         // delete edges before delete node

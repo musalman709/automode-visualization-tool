@@ -21,7 +21,7 @@ const Element = ({element, isSelected, handleClick}) => {
         ? <Node isSelected={isSelected}
             displayTag={element.model.display_tag}
             displayOptions={element.model.display_opts}
-            position={element.pos}
+            position={element.position}
             label={element.category ? element.category.display_name : element.model.display_text}
             handleClick={onClick} /> 
         : <Edge isSelected={isSelected}
@@ -52,22 +52,22 @@ const Edge = ({edge, srcPoint, destPoint, isSelected, handleClick}) =>
             <Node isSelected={isSelected}
                 displayTag={edge.model.node_display_tag}
                 displayOptions={edge.model.node_display_opts}
-                position={middle(edge.srcElement.pos, edge.destElement.pos)}
+                position={middle(edge.srcElement.position, edge.destElement.position)}
                 label={edge.category ? edge.category.display_name : edge.model.display_text}
                 handleClick={handleClick} />
         }
     </>;
 
 const getSrcPoint = (srcElement, destElement) => {
-    const direction = getDirection(srcElement.pos, destElement.pos);
+    const direction = getDirection(srcElement.position, destElement.position);
     const connectPoint = getConnectPoint(srcElement.model.outgoing_connect_type, 
         srcElement.model.rx, srcElement.model.ry, direction);
-    return points_sum(srcElement.pos, connectPoint);
+    return points_sum(srcElement.position, connectPoint);
 };
 
 const getDestPoint = (srcElement, destElement) => {
-    const direction = getDirection(destElement.pos, srcElement.pos);
+    const direction = getDirection(destElement.position, srcElement.position);
     const connectPoint = getConnectPoint(destElement.model.incoming_connect_type, 
         destElement.model.rx, destElement.model.ry, direction);
-    return points_sum(destElement.pos, connectPoint);
+    return points_sum(destElement.position, connectPoint);
 };

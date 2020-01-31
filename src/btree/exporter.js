@@ -35,7 +35,13 @@ export default class BTreeExporter {
             return this.expNodeChildren(node, nodeID);
         }
         else {
-            return this.expNodeParams(node, nodeID);
+            const type = node.getType();
+            const category = node.getCategory();
+            if (category) {
+                return `--${type.categoryid}${nodeID} ${category.id} ` + this.expNodeParams(node, nodeID);
+            } else {
+                return this.expNodeParams(node, nodeID);
+            }
         }
     }
     expNodeChildren(node, nodeID) {
@@ -56,7 +62,7 @@ export default class BTreeExporter {
         return str;
     }
     expNodeParams(node, nodeID) {
-        var pdict = node.getParamDict();
+        var pdict = node.getParams();
         var str = "";
         for (const key in pdict) {
             if (pdict.hasOwnProperty(key)) {

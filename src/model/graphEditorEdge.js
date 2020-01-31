@@ -15,8 +15,7 @@ export class GraphEditorEdge{
         this.id = id;
         // model and parameters
         this.setModel(model);
-        this.setParam(param);
-        this.paramcontainer = undefined;
+        this.setType(param);
         // bind src and dest
         if (srcElement.canHaveMoreOutgoingEdges() && destElement.canHaveMoreIncomingEdges()) {
             this.srcElement = srcElement;
@@ -43,40 +42,38 @@ export class GraphEditorEdge{
     getModel() {
         return this.model;
     }
-    setParam(param) {
-        this.param = param || {edgeid: "-1", categoryid: "d", categories: []};
-        this.paramdict = {};
-        // A node model can have no parameters
-        // If it have, set default values
-        if (this.param.categories.length > 0) {
-            this.setParamValue(this.param.categoryid, this.param.categories[0].id);
+    setType(type) {
+        this.type = type || {edgeid: "-1", categoryid: "d", categories: []};
+        this.params = {};
+        // if the new type has categories, assign the first one to this node
+        if (this.type.categories.length > 0) {
+            this.setCategory(this.type.categories[0]);
         } else {
             this.category = undefined;
         }
     }
-    getParam() {
-        return this.param;
+    getType() {
+        return this.type;
     }
-    setParamValue(param, value) {
-        this.paramdict[param] = value;
-        if (param == this.param.categoryid) {
-            this.paramdict = {};
-            this.paramdict[this.param.categoryid] = value;
-            // category change, reset dict with new set of parameters
-            var pdict = this.paramdict;
-            var that = this;
-            this.param.categories.forEach(function (c) {
-                if (c.id == value) {
-                    c.param.forEach(function (p) {
-                        pdict[p.id] = p.min;
-                    });
-                    that.category = c;
-                }
-            });
+    setCategory(category) {
+        // check the category is valid for the type of the edge
+        if (!category || !this.type.categories.includes(category))
+            throw new Error("Invalid category");
+        this.category = category;
+        // set default values for all params in the new category
+        this.params = {};
+        for (const p of category.param) {
+            this.params[p.id] = p.min;
         }
     }
-    getParamDict() {
-        return this.paramdict;
+    getCategory() {
+        return this.category;
+    }
+    setParam(param, value) {
+        this.params[param] = value;
+    }
+    getParams() {
+        return this.params;
     }
     move(newPosition) {
         this.position = newPosition;

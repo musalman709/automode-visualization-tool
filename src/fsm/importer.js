@@ -23,23 +23,17 @@ export class FSMImporter {
         return node;
     }
     importNodeParams(state, node) {
-        var param = node.getParam();
-        if (param.categories.length > 0) {
-            // get category
-            var category = undefined;
-            param.categories.forEach(function (c) {
-                if (c.id == state.behaviour) {
-                    category = c;
-                }
-            });
+        const type = node.getType();
+        if (type.categories.length > 0) {
+            // set node category
+            const category = type.categories.find(c => c.id === state.behaviour.toString());
             if (category === undefined)
                 throw "behaviour number not correct: " + state.behaviour;
-            // set node category
-            node.setParamValue(param.categoryid, state.behaviour.toString());
+            node.setCategory(category);
             // set params
             for (const [pname, pvalue] of state.params) {
                 //TODO: check param validity
-                node.setParamValue(pname, pvalue);
+                node.setParam(pname, pvalue);
             }
         }
     }
@@ -65,23 +59,17 @@ export class FSMImporter {
         }
     }
     importEdgeParams(edge, transition) {
-        var param = edge.getParam();
-        if (param.categories.length > 0) {
-            // get category
-            var category = undefined;
-            param.categories.forEach(function (c) {
-                if (c.id == transition.condition) {
-                    category = c;
-                }
-            });
+        const type = edge.getType();
+        if (type.categories.length > 0) {
+            // set edge category
+            const category = type.categories.find(c => c.id === transition.condition.toString());
             if (category === undefined)
                 throw "behaviour number not correct: " + transition.condition;
-            // set edge category
-            edge.setParamValue(param.categoryid, transition.condition.toString());
+            edge.setCategory(category);
             // set params
             for (const [pname, pvalue] of transition.params) {
                 //TODO: check param validity
-                edge.setParamValue(pname, pvalue);
+                edge.setParam(pname, pvalue);
             }
         }
     }

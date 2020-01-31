@@ -1,107 +1,82 @@
 
 export class FSMExporter{
     export(elements) {
-        // If elements empty, set empty string
-        if (elements.length === 0) {
+        // if there are no element, return the empty string
+        if (elements.length === 0)
             return "";
-        }
-        // Get the number of states
-        const nbS = this.findNbStates(elements);
-        // build string 
-        var str = this.expStates(nbS, elements);
-        return str;
+        this.elements = elements;
+        // calculate the number of states
+        this.nstates = this.findNbStates();
+        // export elements
+        this.result = "";
+        this.exportElements();
+        return this.result;
     }
-    findNbStates(elements) {
-        var nbS = 0;
-        for (var i = 0; i < elements.length; i++) {
-            if (elements[i].isNode()) {
-                nbS++;
-            }
-        }
-        if (nbS === 0) {
-            throw "Invalid configuration : no node found";
-        }
-        return nbS;
-    }
-    expStates(nbS, elements) {
-        var str = "--fsm-config ";
-        str += "--nstates " + nbS + " ";
-        var nodeCounter = 0;
-        for (var i = 0; i < elements.length; i++) {
-            if (elements[i].isNode()) {
-                str += this.expNodeParams(elements[i], nodeCounter);
-                str += this.expTransitions(elements, i, nodeCounter);
+    exportElements() {
+        this.result += "--fsm-config --nstates " + this.nstates + " ";
+        let nodeCounter = 0;
+        // for each node, export its behaviour, params and transitions
+        for (let i = 0; i < this.elements.length; i++) {
+            const elem = this.elements[i];
+            if (elem.isNode()) {
+                this.result += `--s${nodeCounter} ${elem.category.id} `;
+                this.exportNodeParams(elem, nodeCounter);
+                this.exportNodeTransitions(elem, nodeCounter);
                 nodeCounter++;
             }
         }
-        return str;
     }
-    expNodeParams(node, nodeCounter) {
-        var pdict = node.getParamDict();
-        var str = "";
-        for (var key in pdict) {
-            if (pdict.hasOwnProperty(key)) {
-                str += "--" + key + nodeCounter + " " + pdict[key] + " ";
-            }
+    exportNodeParams(node, nodeIndex) {
+        const params = node.getParams();
+        for (const p of Object.keys(params)) {
+            this.result += `--${p}${nodeIndex} ${params[p]} `;
         }
-        return str;
     }
-    expTransitions(elements, i, nodeCounter) {
-        var str = "";
-        const node = elements[i];
+    exportNodeTransitions(node, nodeIndex) {
         if (node.getOutgoingEdges().length > 0) {
-            str += "--n" + nodeCounter + " " + node.getOutgoingEdges().length + " ";
-            let target;
-            for (var j = 0; j < node.getOutgoingEdges().length; j++) {
-                target = this.getNodeNumber(node.getOutgoingEdges()[j].getDestNode(), elements);
-                if (target > nodeCounter)
-                    target--;
-                else if (target === nodeCounter)
+            // export transitions count
+            this.result += "--n" + nodeIndex + " " + node.getOutgoingEdges().length + " ";
+            // export transitions
+            for (let j = 0; j < node.getOutgoingEdges().length; j++) {
+                const transition = node.getOutgoingEdges()[j];
+                // find index of transition target
+                let targetIndex = this.getNodeIndex(transition.getDestNode());
+                if (targetIndex > nodeIndex)
+                    targetIndex--;
+                else if (targetIndex === nodeIndex)
                     throw new Error("A node cannot have a transition to itself");
-                str += "--n" + nodeCounter + "x" + j + " " + target + " ";
-                str += this.expEdgeParams(node.getOutgoingEdges()[j], nodeCounter, j, target);
+                // export transition target, condition and params
+                this.result += "--n" + nodeIndex + "x" + j + " " + targetIndex + " ";
+                this.result += "--c" + nodeIndex + "x" + j + " " + transition.category.id + " ";
+                this.exportEdgeParams(transition, nodeIndex, j);
             }
         }
-        return str;
     }
-    expEdgeParams(edge, startEdge, edgeNumber, /*destEdge*/) {
-        var pdict = edge.getParamDict();
-        var str = "";
-        for (var key in pdict) {
-            if (pdict.hasOwnProperty(key)) {
-                str += "--" + key + startEdge + "x" + edgeNumber + " " + pdict[key] + " ";
+    exportEdgeParams(edge, startNodeIndex, edgeIndex) {
+        const params = edge.getParams();
+        for (const p of Object.keys(params)) {
+            this.result += "--" + p + startNodeIndex + "x" + edgeIndex + " " + params[p] + " ";
+        }
+    }
+    findNbStates() {
+        let nstates = 0;
+        for (const e of this.elements) {
+            if (e.isNode()) {
+                nstates++;
             }
         }
-        return str;
+        if (nstates === 0)
+            throw "Invalid configuration : no node found";
+        return nstates;
     }
-    getIdFromElement(element, elementList) {
-        for (let i = 0; i < elementList.length; i++) {
-            if (element == elementList[i]) {
-                return i;
-            }
-        }
-        return -1;
-    }
-    getNodeNumber(element, elementList) {
-        var counter = 0;
-        for (let i = 0; i < elementList.length; i++) {
-            if (elementList[i].isNode() && element == elementList[i]) {
+    getNodeIndex(node) {
+        let counter = 0;
+        for (const n of this.elements) {
+            if (n === node)
                 return counter;
-            }
-            else {
+            if (n.isNode())
                 counter++;
-            }
         }
-        return -1;
+        throw new Error("Node not in list");
     }
 }
-
-
-
-
-
-
-
-
-
-

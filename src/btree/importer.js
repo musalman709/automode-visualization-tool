@@ -92,40 +92,27 @@ export class BTreeImporter {
         }
     }
     importParams(graphEditor, dict, nodeID, node) {
-        var param = node.getParam();
-        if (param.categories.length > 0) {
+        const type = node.getType();
+        if (type.categories.length > 0) {
             // get category id
-            var catargname = "--" + param.categoryid + nodeID;
+            var catargname = "--" + type.categoryid + nodeID;
             if (!dict.hasOwnProperty(catargname))
                 return;
             var categoryid = dict[catargname];
             // get category
-            var category = undefined;
-            param.categories.forEach(function (c) {
-                if (c.id == categoryid) {
-                    category = c;
-                }
-            });
+            const category = type.categories.find(c => c.id === categoryid);
             if (category === undefined)
                 return;
             // set node category
-            node.setParamValue(param.categoryid, categoryid);
+            node.setCategory(category);
             // get params
             category.param.forEach(function (p) {
                 var paramargname = "--" + p.id + nodeID;
                 if (dict.hasOwnProperty(paramargname)) {
                     var value = dict[paramargname];
-                    node.setParamValue(p.id, value);
+                    node.setParam(p.id, value);
                 }
             });
         }
     }
 }
-
-
-
-
-
-
-
-

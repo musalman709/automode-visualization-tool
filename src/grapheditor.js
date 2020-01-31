@@ -187,12 +187,11 @@ export default class GraphEditor {
             paramPane.setModels(modelsArray, this.selectedElement.getModel());
             // parameter elements
             const element = this.selectedElement;
-            const params = element.getParam();
-            const catvalue = element.getParamDict()[params.categoryid];
-            const category = params.categories.find(cat => cat.id === catvalue);
-            paramPane.setCategories(params.categories, params.categoriesname, category);
+            const type = element.getType();
+            const category = element.getCategory();
+            paramPane.setCategories(type.categories, type.categoriesname, category);
             if (category)
-                paramPane.setParams(category.param, element.getParamDict());
+                paramPane.setParams(category.param, element.getParams());
             else
                 paramPane.clearParams();
         } else {
@@ -203,25 +202,25 @@ export default class GraphEditor {
         const element = this.getSelectedElement();
         if (element.isNode()) {
             element.setModel(this.getNodeModelById(modelId));
-            element.setParam(this.getNodeParamById(modelId));
+            element.setType(this.getNodeParamById(modelId));
         } else {
             element.setModel(this.getEdgeModelById(modelId));
-            element.setParam(this.getEdgeParamById(modelId));
+            element.setType(this.getEdgeParamById(modelId));
         }
         this.updateParamPane();
         this.callExporter();
     }
-    setSelectionCategory(category) {
+    setSelectionCategory(categoryId) {
         const element = this.getSelectedElement();
-        const params = this.selectedElement.getParam();
-        if (params.categoryid !== undefined && category !== undefined)
-            element.setParamValue(params.categoryid, category);
+        const type = this.selectedElement.getType();
+        if (type.categoryid !== undefined && categoryId !== undefined)
+            element.setCategory(type.categories.find(c => c.id === categoryId));
         this.updateParamPane();
         this.callExporter();
     }
     setSelectionParam(paramId, value) {
         const element = this.getSelectedElement();
-        element.setParamValue(paramId, value);
+        element.setParam(paramId, value);
         this.updateParamPane();
         this.callExporter();
     }
@@ -313,6 +312,7 @@ export default class GraphEditor {
     }
     callExporter() {
         this.updateGraph();
+        console.log(this.elements);
         if (this.exporter !== undefined) {
             const cmdline = document.querySelector("#cmdline");
             try {
