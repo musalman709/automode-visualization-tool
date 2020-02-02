@@ -3,6 +3,7 @@ import SVGElements from "./view/SVGElements.jsx";
 import { h, render } from "preact";
 import { GraphEditorNode } from "./model/graphEditorNode";
 import { GraphEditorEdge } from "./model/graphEditorEdge";
+import Graph from "./model/graph";
 
 /**
  * Object that manages tools and graph elements,
@@ -27,8 +28,8 @@ export default class GraphEditor {
         this.nodeparams = [];
         this.edgemodels = [];
         this.edgeparams = [];
-        // graph elements
-        this.elements = [];
+        // graph
+        this.graph = new Graph();
         // tools
         this.tools = [];
         this.defaultTool = undefined;
@@ -115,55 +116,44 @@ export default class GraphEditor {
     getEdgeParams() {
         return this.edgeparams;
     }
-    addElement(element) {
-        this.elements.push(element);
-        element.graphEditor = this;
-        this.callExporter();
-    }
     addNode(position) {
-        const node = new GraphEditorNode("rd_node", position, 
+        const node = new GraphEditorNode(position, 
             this.getNodeModelById("0"), this.getNodeParamById("0"));
-        this.addElement(node);
+        this.graph.addNode(node);
+        this.callExporter();
         this.setSelectedElement(node);
     }
     addEdge(srcElement, destElement) {
         // create edge
-        const edge = new GraphEditorEdge("rd_edge", srcElement, destElement, 
+        const edge = new GraphEditorEdge(srcElement, destElement, 
             this.getEdgeModelById("0"), this.getEdgeParamById("0"));
         // if edge valid, add it
         if (edge.isValid()) {
-            this.addElement(edge);
+            this.graph.addEdge(edge);
+            this.callExporter();
             this.setSelectedElement(edge);
         }
     }
     setFirstElement(newFirst) {
-        let index;
-        if (newFirst && (index = this.elements.indexOf(newFirst)) > -1) {
-            [this.elements[0], this.elements[index]] = [this.elements[index], this.elements[0]];
-            this.callExporter(newFirst);
-        }
+        this.graph.setFirstNode(newFirst);
+        this.callExporter();
     }
     removeElement(element) {
-        let index = this.elements.indexOf(element);
-        if (index > -1) {
-            this.elements.splice(index, 1);
-            element.onRemoval();
-            if (this.selectedElement === element) {
-                this.setSelectedElement(undefined);
-            }
-            this.callExporter();
+        if (element instanceof GraphEditorNode) {
+            this.graph.removeNode(element);
+        } else if (element instanceof GraphEditorEdge) {
+            this.graph.removeEdge(element);
         }
+        if (this.selectedElement === element)
+            this.setSelectedElement(undefined);
+        this.callExporter();
     }
     getElements() {
-        return this.elements;
+        return [...this.graph.getNodes(), ...this.graph.getEdges()];
     }
     clearElements() {
-        // Not the most efficient but we are sur that all elements
-        // are deleted properly
-        while (this.elements.length > 0) {
-            this.removeElement(this.elements[this.elements.length - 1]);
-        }
-        this.updateGraph();
+        this.graph = new Graph();
+        this.callExporter();
     }
     setSelectedElement(element) {
         this.selectedElement = element;
@@ -312,18 +302,17 @@ export default class GraphEditor {
     }
     callExporter() {
         this.updateGraph();
-        console.log(this.elements);
         if (this.exporter !== undefined) {
             const cmdline = document.querySelector("#cmdline");
             try {
-                cmdline.value = this.exporter.export(this.getElements());
+                cmdline.value = this.exporter.export(this.graph);
             } catch (err) {
                 cmdline.value = err;
             }
         }
     }
     updateGraph() {
-        render(h(SVGElements, { elements: this.elements, selectedElement: this.selectedElement, handleClick: this.onMouseDown }, null), document.querySelector("#elements-container"));
+        render(h(SVGElements, { elements: this.getElements(), selectedElement: this.selectedElement, handleClick: this.onMouseDown }, null), document.querySelector("#elements-container"));
     }
 
     setImporter(importer) {
@@ -334,7 +323,7 @@ export default class GraphEditor {
             const cmdlineString = document.querySelector("#cmdline").value;
             this.clearElements();
             try {
-                this.importer.import(this, cmdlineString);
+                this.graph = this.importer.import(this, cmdlineString);
                 // reset cmdline to proper one
                 this.callExporter();
             } catch (err) {

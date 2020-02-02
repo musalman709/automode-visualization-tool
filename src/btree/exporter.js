@@ -1,14 +1,14 @@
 import { findBTreeRoot } from "./btreeutils";
 
 export default class BTreeExporter {
-    export(elements) {
-        var root = undefined;
+    export(graph) {
+        const nodes = graph.getNodes();
         // If elements empty, set empty string
-        if (elements.length === 0) {
+        if (nodes.length === 0) {
             return "";
         }
         // Try to find root node
-        root = findBTreeRoot(elements);
+        const root = findBTreeRoot(nodes);
         // build string
         return this.expRootNode(root);
     }
@@ -64,10 +64,8 @@ export default class BTreeExporter {
     expNodeParams(node, nodeID) {
         var pdict = node.getParams();
         var str = "";
-        for (const key in pdict) {
-            if (pdict.hasOwnProperty(key)) {
-                str += "--" + key + nodeID + " " + pdict[key] + " ";
-            }
+        for (const [key, value] of pdict) {
+            str += "--" + key + nodeID + " " + value + " ";
         }
         return str;
     }

@@ -127,8 +127,7 @@ export class GraphEditorDeleteTool extends GraphEditorTool{
     onMouseDown(pos, element) {
         // remove cliked element
         if (element !== undefined) {
-            element.onRemoval();
-            //this.graphEditor.removeElement(element);
+            this.graphEditor.removeElement(element);
         }
     }
 }

@@ -1,12 +1,13 @@
 
 export class FSMExporter{
-    export(elements) {
-        // if there are no element, return the empty string
-        if (elements.length === 0)
-            return "";
-        this.elements = elements;
+    export(graph) {
+        this.nodes = graph.getNodes();
+        this.edges = graph.getEdges();
         // calculate the number of states
-        this.nstates = this.findNbStates();
+        this.nstates = this.nodes.length;
+        // if there are no element, return the empty string
+        if (this.nstates === 0)
+            return "";
         // export elements
         this.result = "";
         this.exportElements();
@@ -14,22 +15,20 @@ export class FSMExporter{
     }
     exportElements() {
         this.result += "--fsm-config --nstates " + this.nstates + " ";
-        let nodeCounter = 0;
         // for each node, export its behaviour, params and transitions
-        for (let i = 0; i < this.elements.length; i++) {
-            const elem = this.elements[i];
+        for (let i = 0; i < this.nodes.length; i++) {
+            const elem = this.nodes[i];
             if (elem.isNode()) {
-                this.result += `--s${nodeCounter} ${elem.category.id} `;
-                this.exportNodeParams(elem, nodeCounter);
-                this.exportNodeTransitions(elem, nodeCounter);
-                nodeCounter++;
+                this.result += `--s${i} ${elem.category.id} `;
+                this.exportNodeParams(elem, i);
+                this.exportNodeTransitions(elem, i);
             }
         }
     }
     exportNodeParams(node, nodeIndex) {
         const params = node.getParams();
-        for (const p of Object.keys(params)) {
-            this.result += `--${p}${nodeIndex} ${params[p]} `;
+        for (const [p, value] of params) {
+            this.result += `--${p}${nodeIndex} ${value} `;
         }
     }
     exportNodeTransitions(node, nodeIndex) {
@@ -54,29 +53,13 @@ export class FSMExporter{
     }
     exportEdgeParams(edge, startNodeIndex, edgeIndex) {
         const params = edge.getParams();
-        for (const p of Object.keys(params)) {
-            this.result += "--" + p + startNodeIndex + "x" + edgeIndex + " " + params[p] + " ";
+        for (const [p, value] of params) {
+            this.result += "--" + p + startNodeIndex + "x" + edgeIndex + " " + value + " ";
         }
-    }
-    findNbStates() {
-        let nstates = 0;
-        for (const e of this.elements) {
-            if (e.isNode()) {
-                nstates++;
-            }
-        }
-        if (nstates === 0)
-            throw "Invalid configuration : no node found";
-        return nstates;
     }
     getNodeIndex(node) {
-        let counter = 0;
-        for (const n of this.elements) {
-            if (n === node)
-                return counter;
-            if (n.isNode())
-                counter++;
-        }
-        throw new Error("Node not in list");
+        let index = this.nodes.indexOf(node);
+        if (index === -1) throw new Error("Node not in list");
+        return index;
     }
 }

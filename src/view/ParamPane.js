@@ -59,7 +59,7 @@ export default class ParamPane extends HTMLElement {
             paramInput.setAttribute("min", param.min);
             paramInput.setAttribute("max", param.max);
             paramInput.setAttribute("step", param.step);
-            paramInput.value = values[param.id];
+            paramInput.value = values.get(param.id);
             paramInput.addEventListener("change", this._onParamChange);
             this._paramsDiv.appendChild(paramInput);
         }

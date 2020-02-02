@@ -3,19 +3,15 @@ import { GraphEditorEdge } from "./graphEditorEdge";
  * Node and edges objects
  */
 export class GraphEditorNode {
-    constructor(id, position, model, param) {
-        this.id = id;
+    constructor(position, model, type) {
         // edges
         this.incomingEdges = [];
         this.outgoingEdges = [];
         // model and parameters
         this.setModel(model);
-        this.setType(param);
+        this.setType(type);
         // graphics
         this.move(position || { x: 0, y: 0 });
-    }
-    getName() {
-        return this.id;
     }
     isNode() {
         return true;
@@ -25,11 +21,11 @@ export class GraphEditorNode {
         // remove edges if there are too many
         while (this.model.max_incoming_edges >= 0 &&
             this.incomingEdges.length > this.model.max_incoming_edges) {
-            this.incomingEdges[0].onRemoval();
+            this.incomingEdges[0].remove();
         }
         while (this.model.max_outgoing_edges >= 0 &&
             this.outgoingEdges.length > this.model.max_outgoing_edges) {
-            this.outgoingEdges[0].onRemoval();
+            this.outgoingEdges[0].remove();
         }
     }
     getModel() {
@@ -37,7 +33,7 @@ export class GraphEditorNode {
     }
     setType(type) {
         this.type = type || {nodeid: "-1", categoryid: "d", categories: []};
-        this.params = {};
+        this.params = new Map();
         // A node model can have no parameters
         // If it have, set default values
         if (this.type.categories.length > 0) {
@@ -56,19 +52,22 @@ export class GraphEditorNode {
             throw new Error("Invalid category");
         this.category = category;
         // set default values for all params in the new category
-        this.params = {};
+        this.params = new Map();
         for (const p of category.param) {
-            this.params[p.id] = p.min;
+            this.params.set(p.id, p.min);
         }
     }
     getCategory() {
         return this.category;
     }
     setParam(param, value) {
-        this.params[param] = value;
+        this.params.set(param, value);
     }
     getParams() {
         return this.params;
+    }
+    setGraph(graph) {
+        this.graph = graph;
     }
     move(newposition) {
         this.position = newposition;
@@ -76,15 +75,15 @@ export class GraphEditorNode {
     getPosition() {
         return this.position;
     }
-    onRemoval() {
-        // delete edges before delete node
+    remove() {
+        // delete edges before deleting node
         while (this.incomingEdges.length > 0) {
-            this.incomingEdges[0].onRemoval();
+            this.incomingEdges[0].remove();
         }
         while (this.outgoingEdges.length > 0) {
-            this.outgoingEdges[0].onRemoval();
+            this.outgoingEdges[0].remove();
         }
-        this.graphEditor.removeElement(this);
+        if (this.graph) this.graph.removeNode(this);
     }
     canHaveMoreIncomingEdges() {
         return this.model.max_incoming_edges < 0 ||
