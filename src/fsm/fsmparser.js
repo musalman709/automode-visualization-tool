@@ -98,8 +98,8 @@ export class FSMParser {
     }
     parseTransitionParams(stateIndex, transitionIndex) {
         let paramToken = this.scanner.peek();
-        // loop until we encounter --s$, or the end of cmdline
-        while (paramToken.type !== EOF && paramToken.value !== "s") { 
+        // loop until we encounter --n$x$, --s$, or the end of cmdline
+        while (paramToken.type !== EOF && paramToken.value !== "n" && paramToken.value !== "s") { 
             // consume the look-ahead
             this.scanner.next();
             // parse --paramName$x$ $
