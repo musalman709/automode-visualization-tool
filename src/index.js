@@ -14,11 +14,9 @@ import fsmNodeModels from "./fsm/nodemodels.json";
 import fsmEdgeModels from "./fsm/edgemodels.json";
 import fsmNodeParams from "./fsm/nodeparams.json";
 import fsmEdgeParams from "./fsm/edgeparams.json";
-import OptionSelector from "./view/OptionSelector";
-import ParamInput from "./view/ParamInput";
-import ParamPane from "./view/ParamPane";
-import GraphCanvas from "./view/GraphCanvas";
 import { GraphEditorRootSelectorTool } from "./tools/fsm/rootSelector";
+import { render, h } from "preact";
+import SVGElements from "./view/SVGElements.jsx";
 
 
 /**
@@ -125,10 +123,6 @@ document.addEventListener("keydown", (event) => {
 /**
  * Initialisation when loading ends
  */
-window.customElements.define("option-selector", OptionSelector);
-window.customElements.define("param-input", ParamInput);
-window.customElements.define("param-pane", ParamPane);
-window.customElements.define("graph-canvas", GraphCanvas);
 let grapheditor = new GraphEditor();
 const openFileInput = document.querySelector("#openfileinput");
 const openFileButton = document.querySelector("#openfilebutton");
@@ -137,7 +131,6 @@ const copyButton = document.querySelector("#copybutton");
 const fileExportButton = document.querySelector("#fileexportbutton");
 const executeButton = document.querySelector("#executebutton");
 const switchLink = document.querySelector("#switchlink");
-const paramPane = document.querySelector("param-pane");
 
 openFileInput.addEventListener("change", () => cmdlinestring.importfromfile(grapheditor));
 openFileButton.addEventListener("click", cmdlinestring.triggeropenfile);
@@ -146,15 +139,6 @@ copyButton.addEventListener("click", cmdlinestring.copytoclipboard);
 fileExportButton.addEventListener("click", cmdlinestring.exporttofile);
 executeButton.addEventListener("click", cmdlinestring.execinsimulator);
 switchLink.addEventListener("click", () => toggleMode(grapheditor));
-
-paramPane.addEventListener("modelChange", e => {
-    grapheditor.setSelectionModel(e.detail.model);
-});
-paramPane.addEventListener("categoryChange", e => {
-    grapheditor.setSelectionCategory(e.detail.category);
-});
-paramPane.addEventListener("paramChange", e => {
-    grapheditor.setSelectionParam(e.detail.id, e.detail.value);
-});
 	
 switchToFSM(grapheditor);
+render(h(SVGElements, {graphEditor: grapheditor}, null), document.querySelector("#app"));

@@ -70,6 +70,9 @@ export class GraphEditorEdge{
     getParams() {
         return this.params;
     }
+    getParamValue(paramId) {
+        return this.params.get(paramId);
+    }
     setGraph(graph) {
         this.graph = graph;
     }
