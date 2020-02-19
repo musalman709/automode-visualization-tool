@@ -41,21 +41,21 @@ const Cmdline = ({graphEditor, cmdline}) => {
     const executeCmdline = () => CmdlineUtils.execinsimulator(cmdline);
 
     return (
-        <div id="cmdline-container">
+        <div class="cmdline-container">
             <input ref={openFileInput} type="file" onChange={openFile} style="display: none;" />
-            <button id="openfilebutton" class="left" onClick={triggerOpenDialog}>
+            <button class="left" onClick={triggerOpenDialog}>
                 <span class="underline">O</span>pen
             </button>
             <input ref={cmdlineInput} type="text" value={cmdline} onChange={importCmdline}
                 onInput={e => graphEditor.setCmdline(e.target.value)}
                 placeholder="Command line string" />
-            <button id="copybutton" class="right" onClick={copyCmdline}>
+            <button class="right" onClick={copyCmdline}>
                 <span class="underline">C</span>opy
             </button>
-            <button id="fileexportbutton" class="right" onClick={saveCmdline}>
+            <button class="right" onClick={saveCmdline}>
                 <span class="underline">S</span>ave
             </button>
-            <button id="executebutton" class="right" onClick={executeCmdline}>
+            <button class="right" onClick={executeCmdline}>
                 <span class="underline">E</span>xec
             </button>
         </div>
