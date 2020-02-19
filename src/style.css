@@ -12,8 +12,8 @@ body {
 
 #app {
 	display: grid;
-	min-width: 100%;
-	min-height: 100%;
+	width: 100vw;
+	height: 100vh;
 	grid-template-areas: "header header header" "left-pane main right-pane";
 }
 
@@ -29,7 +29,6 @@ body {
 header {
 	grid-area: header;
 	display: flex;
-	vertical-align: middle;
 	box-shadow: 0 3px 2px -2px lightgray;
 	padding: 0.5rem 1rem;
 }
@@ -57,8 +56,8 @@ h1 {
 
 #cmdline-container {
   display: flex;
+  align-items: center;
   margin-right: 8px;
-  float: right;
 }
 
 #cmdline-container input {
@@ -69,7 +68,7 @@ h1 {
 }
 
 #cmdline {
-  font-size: 13px;
+  font-size: 0.9rem;
   font-family: monospace;
 }
 
@@ -158,9 +157,12 @@ aside {
 }
 
 .paraminput {
-  border: 1px solid black;
-  padding: 5px;
-  width: 94%;
+	display: block;
+	margin-top: 0;
+	margin-bottom: 1rem;
+  	border: 1px solid gray;
+  	border-radius: 2px;
+  	padding: 0.1rem 0.25rem;
 }
 
 .paramname {
@@ -219,4 +221,8 @@ line.arrow {
 .no-select {
 	user-select: none;
 	-webkit-user-select: none;
+}
+
+*, ::after, ::before {
+	box-sizing: border-box;
 }

@@ -1,17 +1,11 @@
-import GraphEditorTool from "../graphEditorTool";
+import { GraphEditorTool } from "../tool";
 
 /**
  * Delete element
  */
 export class GraphEditorRootSelectorTool extends GraphEditorTool {
-    constructor() {
-        super();
-    }
-    getToolId() {
-        return "rootselector";
-    }
     getName() {
-        return "Select root";
+        return "Select start";
     }
     onMouseDown(pos, element) {
         if (element !== undefined && element.isNode())

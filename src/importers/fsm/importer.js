@@ -1,7 +1,7 @@
-import { GraphEditorEdge } from "../model/graphEditorEdge";
-import { GraphEditorNode } from "../model/graphEditorNode";
+import { GraphEditorEdge } from "../../model/graphEditorEdge";
+import { GraphEditorNode } from "../../model/graphEditorNode";
 import { FSMParser } from "./fsmparser";
-import Graph from "../model/graph";
+import Graph from "../../model/graph";
 
 export class FSMImporter {
     import(graphEditor, input) {

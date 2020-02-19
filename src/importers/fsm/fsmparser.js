@@ -24,6 +24,8 @@ export class FSMParser {
             this.parseState(i);
             this.parseTransitions(i);
         }
+        // check we are at the end of cmdline
+        if (this.scanner.next().type !== EOF) throw "Too many states declared in nstates";
         return this.states;
     }
     parseState(stateIndex) {

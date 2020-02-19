@@ -1,4 +1,4 @@
-import { findBTreeRoot } from "./btreeutils";
+import { findBTreeRoot } from "../../btree/btreeutils";
 
 export default class BTreeExporter {
     export(graph) {

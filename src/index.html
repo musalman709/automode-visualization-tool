@@ -1,25 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<meta charset="UTF-8"></meta>
-	<title>AutoMoDe Editor</title>
-	<script src="main.js" defer></script>
-	<link rel="stylesheet" type="text/css" href="style.css"></link>
-</head>
-<body>
-	<div>
-		<header>
-			<div id="title-container">
-				<h1 id="title">Graph Editor</h1>
-			<a id="switchlink" href="#">switch</a>
-		</div>
-		<div id="cmdline-container">
-			<input id="openfileinput" type="file" style="display: none;"></input>
-			<button id="openfilebutton" class="left"><span class="underline">O</span>pen</button><input id="cmdline" type="text" placeholder="Command line string"></input><button id="copybutton" class="right"><span class="underline">C</span>opy</button><button id="fileexportbutton" class="right"><span class="underline">S</span>ave</button><button id="executebutton" class="right"><span class="underline">E</span>xec</button>
-			</div>
-		</header>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>AutoMoDe Editor</title>
+		<script src="main.js" defer></script>
+		<link rel="stylesheet" type="text/css" href="style.css"></link>
+	</head>
+	<body>
+		<div id="app"></div>
+		<!-- invisible cmdline download link -->
 		<a id="downloadLink" href="#" download="cmdline-string.txt"></a>
-		<main id="app" role="main"></main>
-	</div>
-</body>
+	</body>
 </html>

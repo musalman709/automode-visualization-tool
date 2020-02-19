@@ -1,7 +1,16 @@
-import GraphEditorTool from "./tools/graphEditorTool";
 import { GraphEditorNode } from "./model/graphEditorNode";
 import { GraphEditorEdge } from "./model/graphEditorEdge";
 import Graph from "./model/graph";
+import createExporter from "./exporters";
+import createImporter from "./importers";
+import btreeNodeModels from "./btree/nodemodels.json";
+import btreeEdgeModels from "./btree/edgemodels.json";
+import btreeNodeParams from "./btree/nodeparams.json";
+import btreeEdgeParams from "./btree/edgeparams.json";
+import fsmNodeModels from "./fsm/nodemodels.json";
+import fsmEdgeModels from "./fsm/edgemodels.json";
+import fsmNodeParams from "./fsm/nodeparams.json";
+import fsmEdgeParams from "./fsm/edgeparams.json";
 
 /**
  * Object that manages tools and graph elements,
@@ -9,9 +18,7 @@ import Graph from "./model/graph";
  */
 export default class GraphEditor {
     constructor() {
-        // import / export
-        this.exporter = undefined;
-        this.importer = undefined;
+        this.listeners = [];
         // models lists
         this.nodemodels = [];
         this.nodeparams = [];
@@ -19,47 +26,28 @@ export default class GraphEditor {
         this.edgeparams = [];
         // graph
         this.graph = new Graph();
-        // tools
-        this.tools = [];
-        this.defaultTool = undefined;
-        this.currentTool = undefined;
         this.selectedElement = undefined;
         //mode
-        this.mode = "";
-        this.listeners = [];
+        this.setMode("fsm");
         this.createGraph();
     }
-    subscribe(listener) {
+    addListener(listener) {
         this.listeners.push(listener);
-        listener({nodes: this.graph.getNodes(), edges: this.graph.getEdges(), 
-            selected: this.selectedElement, tools: this.tools, selectedTool: this.currentTool});
     }
-    unSubscribe(listener) {
+    removeListener(listener) {
         let index = this.listeners.indexOf(listener);
         if (index !== -1) this.listeners.splice(index, 1);
     }
-    notify() {
+    notify(event) {
         for (const l of this.listeners) {
-            l({nodes: this.graph.getNodes(), edges: this.graph.getEdges(), 
-                selected: this.selectedElement, tools: this.tools, selectedTool: this.currentTool});
+            const handler = l[event];
+            if (typeof(handler) === "function")
+                handler();
         }
     }
     createGraph() {
         // Initialisation function
-        this.clearTools();
         this.updateGraph();
-    }
-    setNodeModels(data) {
-        this.nodemodels = data;
-    }
-    setNodeParams(data) {
-        this.nodeparams = data;
-    }
-    setEdgeModels(data) {
-        this.edgemodels = data;
-    }
-    setEdgeParams(data) {
-        this.edgeparams = data;
     }
     getNodeModels() {
         return this.nodemodels;
@@ -142,11 +130,21 @@ export default class GraphEditor {
         this.callExporter();
     }
     getElements() {
-        return [...this.graph.getNodes(), ...this.graph.getEdges()];
+        return {nodes: this.graph.getNodes(), edges: this.graph.getEdges(), 
+            selected: this.selectedElement};
+        //return [...this.graph.getNodes(), ...this.graph.getEdges()];
+    }
+    getCmdline() {
+        return this.cmdline;
+    }
+    setCmdline(cmdline) {
+        this.cmdline = cmdline;
+        this.notify("cmdlineChange");
     }
     clearElements() {
         this.graph = new Graph();
         this.callExporter();
+        this.updateGraph();
     }
     setSelectedElement(element) {
         this.selectedElement = element;
@@ -178,95 +176,54 @@ export default class GraphEditor {
         element.setParam(paramId, value);
         this.callExporter();
     }
-    addTool(tool, isdefault = false) {
-        if (tool instanceof GraphEditorTool) {
-            this.tools.push(tool);
-            tool.graphEditor = this;
-            if (isdefault) {
-                this.setDefaultTool(tool);
-            }
-        }
-    }
-    setDefaultTool(tool) {
-        if (this.tools.includes(tool)) {
-            this.defaultTool = tool;
-            if (this.currentTool === undefined) {
-                this.setCurrentTool(tool);
-            }
-        }
-        else {
-            this.defaultTool = undefined;
-        }
-    }
-    setCurrentTool(tool) {
-        if (this.currentTool !== undefined) {
-            this.currentTool.onToolDeselect();
-        }
-        this.currentTool = tool;
-        if (this.currentTool == undefined) {
-            this.currentTool = this.defaultTool;
-        }
-        if (this.currentTool !== undefined) {
-            this.currentTool.onToolSelect();
-        }
-        this.notify();
-    }
-    clearTools() {
-        this.setCurrentTool(undefined);
-        this.setDefaultTool(undefined);
-        this.tools = [];
-    }
-    SVGCoordFromHTML(x, y) {
-        var svgPt = this.svg.createSVGPoint();
-        svgPt.x = x;
-        svgPt.y = y;
-        svgPt = svgPt.matrixTransform(this.svg.getScreenCTM().inverse());
-        return svgPt;
-    }
-    setExporter(exporter) {
-        this.exporter = exporter;
-    }
     callExporter() {
-        this.updateGraph();
-        if (this.exporter !== undefined) {
-            const cmdline = document.querySelector("#cmdline");
-            try {
-                cmdline.value = this.exporter.export(this.graph);
-            } catch (err) {
-                cmdline.value = err;
-            }
+        const exporter = createExporter(this.mode);
+        try {
+            this.setCmdline(exporter.export(this.graph));
+        } catch (err) {
+            this.setCmdline(err);
         }
     }
     updateGraph() {
-        this.notify();
+        this.notify("elementsChange");
     }
-
-    setImporter(importer) {
-        this.importer = importer;
-    }
-    callImporter() {
-        if (this.importer !== undefined) {
-            const cmdlineString = document.querySelector("#cmdline").value;
+    callImporter(cmdlineString) {
+        const importer = createImporter(this.mode);
+        try {
+            const newGraph = importer.import(this, cmdlineString);
             this.clearElements();
-            try {
-                this.graph = this.importer.import(this, cmdlineString);
-                // reset cmdline to proper one
-                this.callExporter();
-            } catch (err) {
-                document.querySelector("#cmdline").value = cmdlineString;
-                alert(err);
-            }
+            this.graph = newGraph;
+            this.updateGraph();
+            // clean cmdline
+            this.callExporter();
+        } catch (err) {
+            alert(err);
         }
     }
     getMode() {
         return this.mode;
     }
     setMode(mode) {
-        if (mode === "fsm" || mode === "btree") {
-            this.mode = mode;
-        }
-        else {
+        if (this.mode === mode) return;
+        switch (mode) {
+        case "fsm":
+            this.mode = "fsm";
+            this.nodemodels = fsmNodeModels;
+            this.edgemodels = fsmEdgeModels;
+            this.nodeparams = fsmNodeParams;
+            this.edgeparams = fsmEdgeParams;
+            break;
+        case "btree":
+            this.mode = "btree";
+            this.nodemodels = btreeNodeModels;
+            this.edgemodels = btreeEdgeModels;
+            this.nodeparams = btreeNodeParams;
+            this.edgeparams = btreeEdgeParams;
+            break;
+        default:
             throw new Error("Wrong mode selected");
         }
+        this.clearElements();
+        this.notify("modeChange");
     }
 }
