@@ -6,7 +6,7 @@ import { BTreeBeautifyTool } from "./tools/btree/beautifier";
 import GraphEditor from "./grapheditor";
 import { GraphEditorRootSelectorTool } from "./tools/fsm/rootSelector";
 import { render, h } from "preact";
-import SVGElements from "./view/SVGElements.jsx";
+import App from "./view/App.jsx";
 
 /**
  * Key pressed events
@@ -46,4 +46,4 @@ const BtreeTools = [new GraphEditorDraggingTool(grapheditor), new GraphEditorNew
     new GraphEditorNewEdgeTool(grapheditor), new GraphEditorDeleteTool(grapheditor),
     new BTreeBeautifyTool(grapheditor)];
 // render the editor using preact
-render(h(SVGElements, {graphEditor: grapheditor, tools: {fsm: FSMTools, btree: BtreeTools}}, null), document.querySelector("#app"));
+render(h(App, {graphEditor: grapheditor, tools: {fsm: FSMTools, btree: BtreeTools}}, null), document.querySelector("#app"));

@@ -10,10 +10,22 @@ export class GraphEditorDraggingTool extends GraphEditorTool {
     getName() {
         return "Select/Drag";
     }
-    onMouseDown(pos, element) {
+    onMouseDown(position, element, isCtrlPressed) {
+        const prevSelected = this.graphEditor.getSelectedElement();
         // drag start
         this.setDragged(element);
         this.graphEditor.setSelectedElement(element);
+        // if ctrl is pressed while clicking outside of an element, add a node
+        // if ctrl is pressed while clicking on an element and a node was previously
+        // selected, add an edge
+        if (isCtrlPressed) {
+            if (!element) {
+                this.graphEditor.addNode(position);
+            } else if (prevSelected && prevSelected.isNode() && element.isNode() 
+                && prevSelected !== element) {
+                this.graphEditor.addEdge(prevSelected, element);
+            }
+        }
     }
     onMouseUp() {
         // drag end

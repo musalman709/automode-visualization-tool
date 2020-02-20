@@ -1,6 +1,6 @@
 import { h, Fragment } from "preact";
 import { useRef } from "preact/hooks";
-import { middle, getConnectPoint, getDirection, points_sum } from "../graph_utils";
+import { getConnectPoint, getDirection, points_sum } from "../graph_utils";
 
 export const GraphContainer = ({ elements, tool }) => {
     const svg = useRef(null);
@@ -10,24 +10,26 @@ export const GraphContainer = ({ elements, tool }) => {
         const y = (e.clientY - ctm.f) / ctm.d;
         return { x, y };
     };
-    const handleMouseDown = e => tool.onMouseDown(pointerEventPosition(e));
-    const handleMouseDownOnElement = (event, element) => tool.onMouseDown(pointerEventPosition(event), element);
+    const handleMouseDown = e => tool.onMouseDown(pointerEventPosition(e), undefined, e.ctrlKey);
+    const handleMouseDownOnElement = (event, element, isCtrlKeyPressed) => tool.onMouseDown(pointerEventPosition(event), element, isCtrlKeyPressed);
     const handleMouseUp = e => tool.onMouseUp(pointerEventPosition(e));
     const handleMouseLeave = () => tool.onMouseLeave();
     const handleMouseMove = e => tool.onMouseMove(pointerEventPosition(e));
-    return (<svg ref={svg} id="graph" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseLeave={handleMouseLeave} onMouseMove={handleMouseMove}>
-        <defs>
-            <marker id="arrowhead" refX="10" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 Z"></path>
-            </marker>
-        </defs>
-        {elements.nodes.map(e => <Node node={e} isSelected={e === elements.selected} handleClick={handleMouseDownOnElement} />)}
-        {elements.edges.map(e => <Edge edge={e} isSelected={e === elements.selected} handleClick={handleMouseDownOnElement} />)}
-    </svg>);
+    return (
+        <svg ref={svg} id="graph" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseLeave={handleMouseLeave} onMouseMove={handleMouseMove}>
+            <defs>
+                <marker id="arrowhead" refX="10" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 Z"></path>
+                </marker>
+            </defs>
+            {elements.nodes.map(e => <Node node={e} isSelected={e === elements.selected} handleClick={handleMouseDownOnElement} />)}
+            {elements.edges.map(e => <Edge edge={e} isSelected={e === elements.selected} handleClick={handleMouseDownOnElement} />)}
+        </svg>
+    );
 };
 
 const Node = ({ node, isSelected, handleClick }) => {
-    const handleShapeClick = (e) => { e.stopPropagation(); handleClick(e, node); };
+    const handleShapeClick = (e) => { e.stopPropagation(); handleClick(e, node, e.ctrlKey); };
     return (<Shape isSelected={isSelected} displayTag={node.model.display_tag} displayOptions={node.model.display_opts} position={node.position} label={node.category ? node.category.display_name : node.model.display_text} handleClick={handleShapeClick} />);
 };
 
