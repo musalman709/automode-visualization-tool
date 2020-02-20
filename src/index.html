@@ -1,49 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<meta charset="UTF-8"></meta>
-	<title>AutoMoDe Editor</title>
-	<script src="main.js" defer></script>
-	<link rel="stylesheet" type="text/css" href="style.css"></link>
-</head>
-<body>
-	<section>
-	<article>
-	  <div id="graph-container">
-		<svg id="graph">
-			<defs>
-				<marker id="arrowhead" refX="10" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
-					<path d="M 0 0 L 10 5 L 0 10 Z"></path>
-				</marker>
-			</defs>
-			<g id="elements-container"></g>
-		</svg>
-	  </div>
-	</article>
-	<aside id="toolbar">
-	  <div id="toolbar-container">
-		  <p class="asidetitle">Toolbar</p>
-		  <div id="tools-container">
-			  <p>loading ...</p>
-		  </div>
-	  </div>
-	</aside>
-	<aside id="parambar">
-	  <div id="parambar-container">
-		<param-pane></param-pane>
-	  </div>
-	</aside>
-	</section>
-	<header>
-		<div id="title-container">
-			<p id="title">Graph Editor</p>
-		  <a id="switchlink" href="#">switch</a>
-	  </div>
-	  <div id="cmdline-container">
-	    <input id="openfileinput" type="file" style="display: none;"></input>
-		  <button id="openfilebutton" class="left"><span class="underline">O</span>pen</button><input id="cmdline" type="text" placeholder="Command line string"></input><button id="copybutton" class="right"><span class="underline">C</span>opy</button><button id="fileexportbutton" class="right"><span class="underline">S</span>ave</button><button id="executebutton" class="right"><span class="underline">E</span>xec</button>
-		</div>
-	</header>
-	<a id="downloadLink" href="#" download="cmdline-string.txt"></a>
-</body>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>AutoMoDe Editor</title>
+		<script src="main.js" defer></script>
+		<link rel="stylesheet" type="text/css" href="style.css"></link>
+	</head>
+	<body>
+		<div id="app"></div>
+		<!-- invisible cmdline download link -->
+		<a id="downloadLink" href="#" download="cmdline-string.txt"></a>
+	</body>
 </html>

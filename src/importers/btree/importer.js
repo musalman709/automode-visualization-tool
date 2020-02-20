@@ -1,6 +1,7 @@
-import { GraphEditorEdge } from "../model/graphEditorEdge";
-import { GraphEditorNode } from "../model/graphEditorNode";
-import { beautifyBTree } from "../tools/btree/beautifier";
+import { GraphEditorEdge } from "../../model/graphEditorEdge";
+import { GraphEditorNode } from "../../model/graphEditorNode";
+import { beautifyBTree } from "../../tools/btree/beautifier";
+import Graph from "../../model/graph";
 
 /**
  * Iterator over the string tree, extracting one argument at a time
@@ -41,6 +42,7 @@ export class BTreeImporter {
         return !isNaN(arg);
     }
     import(graphEditor, inputString) {
+        this.graph = new Graph();
         // build parameters dict
         var iterator = new CmdLineIterator(inputString);
         var dict = {};
@@ -58,6 +60,7 @@ export class BTreeImporter {
             var node = this.importNode(graphEditor, dict, "root");
             beautifyBTree(graphEditor, node);
         }
+        return this.graph;
     }
     importNode(graphEditor, dict, nodeID) {
         var argname = "--n" + nodeID;
@@ -66,8 +69,8 @@ export class BTreeImporter {
         var nodeType = dict[argname];
         var model = graphEditor.getNodeModelById(nodeType);
         var param = graphEditor.getNodeParamById(nodeType);
-        var node = new GraphEditorNode("imp_node", { x: 30, y: 30 }, model, param);
-        graphEditor.addElement(node);
+        var node = new GraphEditorNode({ x: 30, y: 30 }, model, param);
+        this.graph.addNode(node);
         this.importParams(graphEditor, dict, nodeID, node);
         if (model.max_outgoing_edges > 0) {
             this.importChildren(graphEditor, dict, nodeID, node);
@@ -84,48 +87,35 @@ export class BTreeImporter {
         }
         for (var i = 0; i < childrenNb; ++i) {
             var node = this.importNode(graphEditor, dict, nodeID + i.toString());
-            var edge = new GraphEditorEdge("imp_edge", parentNode, node, 
+            var edge = new GraphEditorEdge(parentNode, node, 
                 graphEditor.getEdgeModelById("0"), graphEditor.getEdgeParamById("0"));
             if (edge.isValid()) {
-                graphEditor.addElement(edge);
+                this.graph.addEdge(edge);
             }
         }
     }
     importParams(graphEditor, dict, nodeID, node) {
-        var param = node.getParam();
-        if (param.categories.length > 0) {
+        const type = node.getType();
+        if (type.categories.length > 0) {
             // get category id
-            var catargname = "--" + param.categoryid + nodeID;
+            var catargname = "--" + type.categoryid + nodeID;
             if (!dict.hasOwnProperty(catargname))
                 return;
             var categoryid = dict[catargname];
             // get category
-            var category = undefined;
-            param.categories.forEach(function (c) {
-                if (c.id == categoryid) {
-                    category = c;
-                }
-            });
+            const category = type.categories.find(c => c.id === categoryid);
             if (category === undefined)
                 return;
             // set node category
-            node.setParamValue(param.categoryid, categoryid);
+            node.setCategory(category);
             // get params
             category.param.forEach(function (p) {
                 var paramargname = "--" + p.id + nodeID;
                 if (dict.hasOwnProperty(paramargname)) {
                     var value = dict[paramargname];
-                    node.setParamValue(p.id, value);
+                    node.setParam(p.id, value);
                 }
             });
         }
     }
 }
-
-
-
-
-
-
-
-

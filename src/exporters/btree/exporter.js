@@ -1,14 +1,14 @@
-import { findBTreeRoot } from "./btreeutils";
+import { findBTreeRoot } from "../../btree/btreeutils";
 
 export default class BTreeExporter {
-    export(elements) {
-        var root = undefined;
+    export(graph) {
+        const nodes = graph.getNodes();
         // If elements empty, set empty string
-        if (elements.length === 0) {
+        if (nodes.length === 0) {
             return "";
         }
         // Try to find root node
-        root = findBTreeRoot(elements);
+        const root = findBTreeRoot(nodes);
         // build string
         return this.expRootNode(root);
     }
@@ -35,7 +35,13 @@ export default class BTreeExporter {
             return this.expNodeChildren(node, nodeID);
         }
         else {
-            return this.expNodeParams(node, nodeID);
+            const type = node.getType();
+            const category = node.getCategory();
+            if (category) {
+                return `--${type.categoryid}${nodeID} ${category.id} ` + this.expNodeParams(node, nodeID);
+            } else {
+                return this.expNodeParams(node, nodeID);
+            }
         }
     }
     expNodeChildren(node, nodeID) {
@@ -56,12 +62,10 @@ export default class BTreeExporter {
         return str;
     }
     expNodeParams(node, nodeID) {
-        var pdict = node.getParamDict();
+        var pdict = node.getParams();
         var str = "";
-        for (const key in pdict) {
-            if (pdict.hasOwnProperty(key)) {
-                str += "--" + key + nodeID + " " + pdict[key] + " ";
-            }
+        for (const [key, value] of pdict) {
+            str += "--" + key + nodeID + " " + value + " ";
         }
         return str;
     }

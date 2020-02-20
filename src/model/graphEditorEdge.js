@@ -4,19 +4,16 @@
  */
 export class GraphEditorEdge{
     /**
-     * @param {string} id 
      * @param {GraphEditorNode} srcElement 
      * @param {GraphEditorNode} destElement 
      */
-    constructor(id, srcElement, destElement, model, param) {
+    constructor(srcElement, destElement, model, type) {
         // src and dest
         this.srcElement = undefined;
         this.destElement = undefined;
-        this.id = id;
         // model and parameters
         this.setModel(model);
-        this.setParam(param);
-        this.paramcontainer = undefined;
+        this.setType(type);
         // bind src and dest
         if (srcElement.canHaveMoreOutgoingEdges() && destElement.canHaveMoreIncomingEdges()) {
             this.srcElement = srcElement;
@@ -31,9 +28,6 @@ export class GraphEditorEdge{
     isValid() {
         return this.srcElement !== undefined && this.destElement !== undefined;
     }
-    getName() {
-        return this.id;
-    }
     isNode() {
         return false;
     }
@@ -43,48 +37,59 @@ export class GraphEditorEdge{
     getModel() {
         return this.model;
     }
-    setParam(param) {
-        this.param = param || {edgeid: "-1", categoryid: "d", categories: []};
-        this.paramdict = {};
-        // A node model can have no parameters
-        // If it have, set default values
-        if (this.param.categories.length > 0) {
-            this.setParamValue(this.param.categoryid, this.param.categories[0].id);
+    setType(type) {
+        this.type = type || {edgeid: "-1", categoryid: "d", categories: []};
+        this.params = new Map();
+        // if the new type has categories, assign the first one to this node
+        if (this.type.categories.length > 0) {
+            this.setCategory(this.type.categories[0]);
         } else {
             this.category = undefined;
         }
     }
-    getParam() {
-        return this.param;
+    getType() {
+        return this.type;
     }
-    setParamValue(param, value) {
-        this.paramdict[param] = value;
-        if (param == this.param.categoryid) {
-            this.paramdict = {};
-            this.paramdict[this.param.categoryid] = value;
-            // category change, reset dict with new set of parameters
-            var pdict = this.paramdict;
-            var that = this;
-            this.param.categories.forEach(function (c) {
-                if (c.id == value) {
-                    c.param.forEach(function (p) {
-                        pdict[p.id] = p.min;
-                    });
-                    that.category = c;
-                }
-            });
+    setCategory(category) {
+        // check the category is valid for the type of the edge
+        if (!category || !this.type.categories.includes(category))
+            throw new Error("Invalid category");
+        this.category = category;
+        // set default values for all params in the new category
+        this.params = new Map();
+        for (const p of category.param) {
+            this.params.set(p.id, p.min);
         }
     }
-    getParamDict() {
-        return this.paramdict;
+    getCategory() {
+        return this.category;
+    }
+    setParam(id, value) {
+        // check the param name is valid
+        if (!this.params.has(id))
+            throw new Error(`${id} is not a valid parameter name for the current type`);
+        // check the value is in [min;max]
+        const {min, max} = this.category.param.find(p => p.id === id);
+        if (Number(value) < min || Number(value) > max)
+            throw new Error(`Value ${value} for ${id} is out of range`);
+        this.params.set(id, value);
+    }
+    getParams() {
+        return this.params;
+    }
+    getParamValue(paramId) {
+        return this.params.get(paramId);
+    }
+    setGraph(graph) {
+        this.graph = graph;
     }
     move(newPosition) {
         this.position = newPosition;
     }
-    onRemoval() {
+    remove() {
         this.srcElement.removeOutgoingEdge(this);
         this.destElement.removeIncomingEdge(this);
-        this.graphEditor.removeElement(this);
+        if (this.graph) this.graph.removeEdge(this);
     }
     getSrcNode() {
         return this.srcElement;
