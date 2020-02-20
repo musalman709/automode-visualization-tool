@@ -144,7 +144,7 @@ export default class GraphEditor {
     clearElements() {
         this.graph = new Graph();
         this.callExporter();
-        this.updateGraph();
+        this.setSelectedElement();
     }
     setSelectedElement(element) {
         this.selectedElement = element;

@@ -2,7 +2,7 @@ import {h, Fragment} from "preact";
 
 export const ParamPane = ({ element, graphEditor }) => {
     if (!element)
-        return null;
+        return <aside class="right-pane" />;
     //model select
     const models = element.isNode()
         ? graphEditor.getNodeModels()
@@ -15,17 +15,19 @@ export const ParamPane = ({ element, graphEditor }) => {
     const setElementModel = (modelId) => graphEditor.setSelectionModel(modelId);
     const setElementCategory = (categoryId) => graphEditor.setSelectionCategory(categoryId);
     const setElementParam = (paramId, value) => graphEditor.setSelectionParam(paramId, value);
-    return (<aside class="right-pane">
-        <Select options={models} selectedOption={model} onOptionChange={setElementModel} />
-        {category && <>
-            {type.categoriesname}
-            <Select options={type.categories} selectedOption={category} onOptionChange={setElementCategory} />
-            {category.param.map(p => (<label>
-                {p.name}
-                <ParamInput param={p} value={element.getParamValue(p.id)} onParamChange={setElementParam} />
-            </label>))}
-        </>}
-    </aside>);
+    return (
+        <aside class="right-pane">
+            <Select options={models} selectedOption={model} onOptionChange={setElementModel} />
+            {category && <>
+                {type.categoriesname}
+                <Select options={type.categories} selectedOption={category} onOptionChange={setElementCategory} />
+                {category.param.map(p => (<label>
+                    {p.name}
+                    <ParamInput param={p} value={element.getParamValue(p.id)} onParamChange={setElementParam} />
+                </label>))}
+            </>}
+        </aside>
+    );
 };
 
 const Select = ({ options, selectedOption, onOptionChange }) => {
