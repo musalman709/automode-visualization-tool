@@ -70,7 +70,7 @@ export class GraphEditorEdge{
             throw new Error(`${id} is not a valid parameter name for the current type`);
         // check the value is in [min;max]
         const {min, max} = this.category.param.find(p => p.id === id);
-        if (value < min || value > max)
+        if (Number(value) < min || Number(value) > max)
             throw new Error(`Value ${value} for ${id} is out of range`);
         this.params.set(id, value);
     }
