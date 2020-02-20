@@ -154,9 +154,7 @@ h1 {
 	stroke-width: 1px;
 	stroke: black;
 }
-.selected {
-	fill: white;
-	stroke-width: 2px;
+.nodeFrame.selected, .line.selected{
 	stroke: #0070ff;
 }
 

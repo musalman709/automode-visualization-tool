@@ -33,14 +33,32 @@ const Node = ({ node, isSelected, handleClick }) => {
 
 const Edge = ({ edge, isSelected, handleClick }) => {
     const handleShapeClick = (e) => { e.stopPropagation(); handleClick(e, edge); };
-    const srcPoint = getSrcPoint(edge.srcElement, edge.destElement);
-    const destPoint = getDestPoint(edge.srcElement, edge.destElement);
-    return (<>
-        <line className={`line ${isSelected ? "selected" : ""}`} onMouseDown={handleClick} marker-end="url(#arrowhead)" x1={srcPoint.x} y1={srcPoint.y} x2={destPoint.x} y2={destPoint.y}>
-        </line>
-        {edge.model.node_display_tag &&
-            <Shape isSelected={isSelected} displayTag={edge.model.node_display_tag} displayOptions={edge.model.node_display_opts} position={middle(edge.srcElement.position, edge.destElement.position)} label={edge.category ? edge.category.display_name : edge.model.display_text} handleClick={handleShapeClick} />}
-    </>);
+
+    // check whether we need to display a shape on the edge
+    if (edge.model.node_display_tag) {
+        const srcPoint = getSrcPoint(edge.srcElement, edge);
+        const destPoint = getDestPoint(edge, edge.destElement);
+        return (<>
+            <line className={`line ${isSelected ? "selected" : ""}`} onMouseDown={handleClick}
+                x1={srcPoint.x} y1={srcPoint.y} 
+                x2={edge.position.x} y2={edge.position.y} />
+            <line className={`line ${isSelected ? "selected" : ""}`} onMouseDown={handleClick}
+                marker-end="url(#arrowhead)" x1={edge.position.x} y1={edge.position.y} 
+                x2={destPoint.x} y2={destPoint.y} />
+            <Shape isSelected={isSelected} displayTag={edge.model.node_display_tag}
+                displayOptions={edge.model.node_display_opts} position={edge.position}
+                label={edge.category ? edge.category.display_name : edge.model.display_text}
+                handleClick={handleShapeClick} />
+        </>);
+    } else {
+        const srcPoint = getSrcPoint(edge.srcElement, edge.destElement);
+        const destPoint = getDestPoint(edge.srcElement, edge.destElement);
+        return (<>
+            <line className={`line ${isSelected ? "selected" : ""}`} onMouseDown={handleClick}
+                marker-end="url(#arrowhead)" x1={srcPoint.x} y1={srcPoint.y} 
+                x2={destPoint.x} y2={destPoint.y} />
+        </>);
+    }
 };
 
 const Shape = ({ displayTag, displayOptions, position, label, isSelected, handleClick }) => <g transform={`translate(${position.x},${position.y})`} onMouseDown={handleClick}>

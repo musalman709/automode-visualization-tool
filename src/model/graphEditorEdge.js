@@ -64,8 +64,15 @@ export class GraphEditorEdge{
     getCategory() {
         return this.category;
     }
-    setParam(param, value) {
-        this.params.set(param, value);
+    setParam(id, value) {
+        // check the param name is valid
+        if (!this.params.has(id))
+            throw new Error(`${id} is not a valid parameter name for the current type`);
+        // check the value is in [min;max]
+        const {min, max} = this.category.param.find(p => p.id = id);
+        if (value < min || value > max)
+            throw new Error(`Value ${value} for ${id} is out of range`);
+        this.params.set(id, value);
     }
     getParams() {
         return this.params;
