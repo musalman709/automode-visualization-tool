@@ -86,6 +86,9 @@ export class GraphEditorEdge{
     move(newPosition) {
         this.position = newPosition;
     }
+    getPosition() {
+        return this.position;
+    }
     remove() {
         this.srcElement.removeOutgoingEdge(this);
         this.destElement.removeIncomingEdge(this);

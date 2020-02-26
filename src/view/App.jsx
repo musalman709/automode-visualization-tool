@@ -44,7 +44,8 @@ export default ({graphEditor, tools}) => {
                 <GraphContainer elements={elements} tool={selectedTool} />
             </article>
 
-            <ToolPane tools={tools[mode]}
+            <ToolPane graphEditor={graphEditor}
+                tools={tools[mode]}
                 selectedTool={selectedTool}
                 setSelectedTool={changeTool} />
             <ParamPane element={elements.selected} graphEditor={graphEditor} />

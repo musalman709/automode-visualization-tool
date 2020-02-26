@@ -1,6 +1,6 @@
 import { GraphEditorEdge } from "../../model/graphEditorEdge";
 import { GraphEditorNode } from "../../model/graphEditorNode";
-import { beautifyBTree } from "../../tools/btree/beautifier";
+import { beautifyBTree } from "../../model/beautifiers/btree/beautifier";
 import Graph from "../../model/graph";
 
 /**

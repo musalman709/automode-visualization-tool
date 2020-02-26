@@ -11,6 +11,7 @@ import fsmNodeModels from "./fsm/nodemodels.json";
 import fsmEdgeModels from "./fsm/edgemodels.json";
 import fsmNodeParams from "./fsm/nodeparams.json";
 import fsmEdgeParams from "./fsm/edgeparams.json";
+import createBeautifier from "./model/beautifiers";
 
 /**
  * Object that manages tools and graph elements,
@@ -132,7 +133,6 @@ export default class GraphEditor {
     getElements() {
         return {nodes: this.graph.getNodes(), edges: this.graph.getEdges(), 
             selected: this.selectedElement};
-        //return [...this.graph.getNodes(), ...this.graph.getEdges()];
     }
     getCmdline() {
         return this.cmdline;
@@ -183,6 +183,11 @@ export default class GraphEditor {
         } catch (err) {
             this.setCmdline(err);
         }
+    }
+    beautifyGraph() {
+        const beautifier = createBeautifier(this.mode, this.graph);
+        beautifier.beautify();
+        this.updateGraph();
     }
     updateGraph() {
         this.notify("elementsChange");
