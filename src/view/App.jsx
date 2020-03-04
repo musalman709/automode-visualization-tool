@@ -1,5 +1,5 @@
 import {h, Fragment} from "preact";
-import {useState, useEffect} from "preact/hooks";
+import {useState, useEffect, useRef} from "preact/hooks";
 import { ToolPane } from "./ToolPane.jsx";
 import { Header } from "./Header.jsx";
 import { ParamPane } from "./ParamPane.jsx";
@@ -11,6 +11,8 @@ export default ({graphEditor, tools}) => {
     const [mode, setMode] = useState(graphEditor.getMode());
     const [selectedTool, setSelectedTool] = useState(tools[mode][0]);
     const [cmdline, setCmdline] = useState(graphEditor.getCmdline());
+    // reference to the graph svg
+    const svgRef = useRef(null);
 
     const changeMode = (newMode) => {
         setMode(newMode);
@@ -39,9 +41,11 @@ export default ({graphEditor, tools}) => {
 
     return (
         <>
-            <Header graphEditor={graphEditor} cmdline={cmdline} />
+            <Header graphEditor={graphEditor} cmdline={cmdline}
+                svgRef={svgRef} />
             <article class="graph-container">
-                <GraphContainer elements={elements} tool={selectedTool} />
+                <GraphContainer elements={elements} tool={selectedTool}
+                    svgRef={svgRef} />
             </article>
 
             <ToolPane graphEditor={graphEditor}

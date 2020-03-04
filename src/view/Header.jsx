@@ -4,7 +4,7 @@ import * as CmdlineUtils from "../cmdlineUtils";
 const names = { fsm: "finite states machines", btree: "behavior trees" };
 const titles = { fsm: "AutoMoDe Finite States Machines Editor", btree: "AutoMoDe Behavior Trees Editor" };
 
-export const Header = ({graphEditor, cmdline}) => {
+export const Header = ({graphEditor, cmdline, svgRef}) => {
     const mode = graphEditor.getMode();
     const toggleMode = e => {
         e.preventDefault();
@@ -18,12 +18,12 @@ export const Header = ({graphEditor, cmdline}) => {
                     switch to {names[mode === "fsm" ? "btree" : "fsm"]}
                 </a>
             </div>
-            <Cmdline graphEditor={graphEditor} cmdline={cmdline} />
+            <Cmdline graphEditor={graphEditor} cmdline={cmdline} svgRef={svgRef} />
         </header>
     );
 };
 
-const Cmdline = ({graphEditor, cmdline}) => {
+const Cmdline = ({graphEditor, cmdline, svgRef}) => {
     const cmdlineInput = createRef();
     const openFileInput = createRef();
 
@@ -37,7 +37,13 @@ const Cmdline = ({graphEditor, cmdline}) => {
         cmdlineInput.current.select();
         document.execCommand("copy");
     };
-    const saveCmdline = () => CmdlineUtils.exporttofile(cmdline);
+    const saveCmdline = () => CmdlineUtils.exporttofile(cmdline, "text/plain", "cmdline.txt");
+    const exportSvg = () => {
+        const bbox = svgRef.current.getBBox();
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${bbox.x-10} ${bbox.y-10} ${bbox.width+20} ${bbox.height+20}">` 
+            + svgRef.current.innerHTML + "</svg>";
+        CmdlineUtils.exporttofile(svg, "image/svg+xml", "export.svg");
+    };
     const executeCmdline = () => CmdlineUtils.execinsimulator(cmdline);
 
     return (
@@ -55,8 +61,11 @@ const Cmdline = ({graphEditor, cmdline}) => {
             <button class="right" onClick={saveCmdline}>
                 <span class="underline">S</span>ave
             </button>
+            <button class="right" onClick={exportSvg}>
+                <span class="underline">E</span>xport
+            </button>
             <button class="right" onClick={executeCmdline}>
-                <span class="underline">E</span>xec
+                E<span class="underline">x</span>ec
             </button>
         </div>
     );

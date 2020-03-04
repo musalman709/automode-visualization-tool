@@ -1,11 +1,9 @@
 import { h, Fragment } from "preact";
-import { useRef } from "preact/hooks";
 import { getConnectPoint, getDirection, points_sum } from "../graph_utils";
 
-export const GraphContainer = ({ elements, tool }) => {
-    const svg = useRef(null);
+export const GraphContainer = ({ elements, tool, svgRef }) => {
     const pointerEventPosition = e => {
-        const ctm = svg.current.getScreenCTM();
+        const ctm = svgRef.current.getScreenCTM();
         const x = (e.clientX - ctm.e) / ctm.a;
         const y = (e.clientY - ctm.f) / ctm.d;
         return { x, y };
@@ -16,7 +14,10 @@ export const GraphContainer = ({ elements, tool }) => {
     const handleMouseLeave = () => tool.onMouseLeave();
     const handleMouseMove = e => tool.onMouseMove(pointerEventPosition(e));
     return (
-        <svg ref={svg} id="graph" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseLeave={handleMouseLeave} onMouseMove={handleMouseMove}>
+        <svg xmlns="http://www.w3.org/2000/svg" ref={svgRef} id="graph" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseLeave={handleMouseLeave} onMouseMove={handleMouseMove}>
+            <style>
+                {style}
+            </style>
             <defs>
                 <marker id="arrowhead" refX="10" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
                     <path d="M 0 0 L 10 5 L 0 10 Z"></path>
@@ -27,6 +28,34 @@ export const GraphContainer = ({ elements, tool }) => {
         </svg>
     );
 };
+
+const style = `
+    svg {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+	    font-size: 0.9rem;
+    }
+    .nodeFrame {
+        fill: white;
+        stroke-width: 1px;
+        stroke: black;
+    }
+    .nodeFrame.selected, .line.selected{
+        stroke: #0070ff;
+    }
+
+    .line {
+        stroke: black;
+    }
+
+    line.arrow {
+        stroke-width: 1px;
+        stroke: black;
+    }
+    .arrowthick {
+        stroke-width: 2px;
+        stroke: black;
+    }
+`;
 
 const Node = ({ node, isSelected, handleClick }) => {
     const handleShapeClick = (e) => { e.stopPropagation(); handleClick(e, node, e.ctrlKey); };

@@ -167,28 +167,6 @@ h1 {
 	margin: 16px;
 }
 
-.nodeFrame {
-	fill: white;
-	stroke-width: 1px;
-	stroke: black;
-}
-.nodeFrame.selected, .line.selected{
-	stroke: #0070ff;
-}
-
-.line {
-	stroke: black;
-}
-
-line.arrow {
-	stroke-width: 1px;
-	stroke: black;
-}
-.arrowthick {
-	stroke-width: 2px;
-	stroke: black;
-}
-
 .d-block {
 	display: block;
 }
