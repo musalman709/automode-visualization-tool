@@ -59,7 +59,12 @@ const style = `
 
 const Node = ({ node, isSelected, handleClick }) => {
     const handleShapeClick = (e) => { e.stopPropagation(); handleClick(e, node, e.ctrlKey); };
-    return (<Shape isSelected={isSelected} displayTag={node.model.display_tag} displayOptions={node.model.display_opts} position={node.position} label={node.category ? node.category.display_name : node.model.display_text} handleClick={handleShapeClick} />);
+    return (
+        <Shape isSelected={isSelected} displayTag={node.model.display_tag}
+            displayOptions={node.model.display_opts} position={node.position}
+            label={node.category ? node.category.display_name : node.model.display_text}
+            handleClick={handleShapeClick} />
+    );
 };
 
 const Edge = ({ edge, isSelected, handleClick }) => {
