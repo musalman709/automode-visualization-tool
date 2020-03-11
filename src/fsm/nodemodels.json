@@ -21,6 +21,7 @@
 			"x": "0",
 			"y": "0"
 		},
+		"first_decoration": "boldFrame",
 		"incoming_connect_type": "oval",
 		"outgoing_connect_type": "oval"
 	}
