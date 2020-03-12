@@ -22,14 +22,36 @@ export default class FSMBeautifier {
         }
     }
     beautify() {
+        const R = 150;
+        const cx = 500;
+        const cy = 300;
+        const nodes = this.graph.getNodes();
+        const angle = 2*Math.PI/nodes.length;
+        for (let i = 0; i < nodes.length; i++) {
+            nodes[i].move({x: cx - R*Math.cos(i*angle), y: cy - R*Math.sin(i*angle)});
+        }
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i+1; j < nodes.length; j++) {
+                let edges = [...nodes[i].getOutgoingEdges(), ...nodes[i].getIncomingEdges()];
+                edges = edges.filter(e => (e.getSrcNode() === nodes[j])|| (e.getDestNode() === nodes[j]));
+                const srcNodePosition = nodes[i].getPosition();
+                const destNodePosition = nodes[j].getPosition();
+                const middle = {x: (srcNodePosition.x + destNodePosition.x) / 2, y: (srcNodePosition.y + destNodePosition.y) / 2};
+                const middleRadius = Math.sqrt((middle.x-cx)**2 + (middle.y-cy)**2);
+                for (let k = 0; k < edges.length; k++) {
+                    const coeff = (k-(edges.length-1)/2)*75/middleRadius;
+                    edges[k].move({x: middle.x * (1+coeff) - coeff*cx, y: middle.y * (1+coeff) - coeff*cy});
+                }
+            }
+        }
+        /*
         for (let i = 0; i < this.nit; i++) {
             this.updateSpeeds();
             this.updatePositions();
         }
-        const edges = this.graph.getEdges();
         for (let i = 0; i < this.edgesCount; i++) {
             edges[i].move({x: this.positionx[i], y: this.positiony[i]});
-        }
+        }*/
     }
     updateSpeeds() {
         this.speedx.fill(0);

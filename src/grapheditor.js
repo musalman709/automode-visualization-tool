@@ -198,11 +198,11 @@ export default class GraphEditor {
             const newGraph = importer.import(this, cmdlineString);
             this.clearElements();
             this.graph = newGraph;
-            this.updateGraph();
+            this.beautifyGraph();
             // clean cmdline
             this.callExporter();
         } catch (err) {
-            alert(err);
+            console.log(err);
         }
     }
     getMode() {
