@@ -39,7 +39,7 @@ export default class FSMBeautifier {
                 const middle = {x: (srcNodePosition.x + destNodePosition.x) / 2, y: (srcNodePosition.y + destNodePosition.y) / 2};
                 const middleRadius = Math.sqrt((middle.x-cx)**2 + (middle.y-cy)**2);
                 for (let k = 0; k < edges.length; k++) {
-                    const coeff = (k-(edges.length-1)/2)*75/middleRadius;
+                    const coeff = (middleRadius !== 0) ? (k-(edges.length-1)/2)*75/middleRadius : 0;
                     edges[k].move({x: middle.x * (1+coeff) - coeff*cx, y: middle.y * (1+coeff) - coeff*cy});
                 }
             }
