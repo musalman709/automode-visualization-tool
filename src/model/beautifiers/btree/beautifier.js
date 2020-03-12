@@ -1,5 +1,4 @@
-import { findBTreeRoot } from "../../btree/btreeutils";
-import { GraphEditorTool } from "../tool";
+import { findBTreeRoot } from "../../../btree/btreeutils";
 
 /**
  * Beautifier algorithm
@@ -8,7 +7,7 @@ import { GraphEditorTool } from "../tool";
 /**
  * Move nodes to make the tree looks better
  */
-export function beautifyBTree(graphEditor, rootNode) {
+export function beautifyBTree(rootNode) {
 
     var area = {x:0, y:0, w:1000, h:500, relh:0, relw:0};
 
@@ -79,23 +78,17 @@ function setBTreeNodePosition(node, info, area) {
 /**
  * Beautify tool
  */
-export class BTreeBeautifyTool extends GraphEditorTool {
-    getToolId() {
-        return "btree_beautify";
+export class BTreeBeautifyTool {
+    constructor(graph) {
+        this.graph = graph;
     }
-    getName() {
-        return "Beautify";
-    }
-    onToolSelect() {
+    beautify() {
     // call beautifier algo
         try {
-            this.graphEditor.setSelectedElement(undefined);
-            var root = findBTreeRoot(this.graphEditor.getElements().nodes);
-            beautifyBTree(this.graphEditor, root);
+            var root = findBTreeRoot(this.graph.getNodes());
+            beautifyBTree(root);
         }
         catch (err) {
-            // Reselect default tool
-            this.graphEditor.setCurrentTool(undefined);
             alert(err);
         }
     }

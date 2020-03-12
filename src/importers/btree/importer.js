@@ -1,6 +1,5 @@
 import { GraphEditorEdge } from "../../model/graphEditorEdge";
 import { GraphEditorNode } from "../../model/graphEditorNode";
-import { beautifyBTree } from "../../tools/btree/beautifier";
 import Graph from "../../model/graph";
 
 /**
@@ -57,8 +56,7 @@ export class BTreeImporter {
                 throw "Argument " + key + " is invalid";
         }
         if (inputString !== "") {
-            var node = this.importNode(graphEditor, dict, "root");
-            beautifyBTree(graphEditor, node);
+            this.importNode(graphEditor, dict, "root");
         }
         return this.graph;
     }

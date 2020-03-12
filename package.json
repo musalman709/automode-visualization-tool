@@ -5,18 +5,16 @@
   "main": "src/index.js",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "node devServer.js",
     "build": "webpack --env.production --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.2",
-    "@babel/plugin-transform-react-jsx": "^7.7.0",
+    "@babel/core": "^7.8.7",
+    "@babel/plugin-transform-react-jsx": "^7.8.3",
     "babel-loader": "^8.0.6",
-    "eslint": "^6.6.0",
-    "webpack": "^4.39.2",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0"
+    "webpack": "^4.42.0",
+    "webpack-dev-middleware": "^3.7.2"
   },
   "repository": {
     "type": "git",
@@ -29,6 +27,7 @@
   },
   "homepage": "https://gitlab.com/iridia-proj-h-402/automode-visualization-tool#readme",
   "dependencies": {
-    "preact": "^10.0.5"
+    "express": "^4.17.1",
+    "preact": "^10.3.3"
   }
 }

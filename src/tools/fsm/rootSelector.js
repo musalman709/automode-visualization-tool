@@ -5,7 +5,7 @@ import { GraphEditorTool } from "../tool";
  */
 export class GraphEditorRootSelectorTool extends GraphEditorTool {
     getName() {
-        return "Select start";
+        return "Set initial state";
     }
     onMouseDown(pos, element) {
         if (element !== undefined && element.isNode())

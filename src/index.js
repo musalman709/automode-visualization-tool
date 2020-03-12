@@ -2,7 +2,6 @@ import { GraphEditorDeleteTool } from "./tools/shared/deleteTool";
 import { GraphEditorDraggingTool } from "./tools/shared/dragTool";
 import { GraphEditorNewEdgeTool } from "./tools/shared/newEdgeTool";
 import { GraphEditorNewNodeTool } from "./tools/shared/newNodeTool";
-import { BTreeBeautifyTool } from "./tools/btree/beautifier";
 import GraphEditor from "./grapheditor";
 import { GraphEditorRootSelectorTool } from "./tools/fsm/rootSelector";
 import { render, h } from "preact";
@@ -43,7 +42,6 @@ const FSMTools = [new GraphEditorDraggingTool(grapheditor), new GraphEditorNewNo
     new GraphEditorRootSelectorTool(grapheditor)];
 
 const BtreeTools = [new GraphEditorDraggingTool(grapheditor), new GraphEditorNewNodeTool(grapheditor),
-    new GraphEditorNewEdgeTool(grapheditor), new GraphEditorDeleteTool(grapheditor),
-    new BTreeBeautifyTool(grapheditor)];
+    new GraphEditorNewEdgeTool(grapheditor), new GraphEditorDeleteTool(grapheditor)];
 // render the editor using preact
 render(h(App, {graphEditor: grapheditor, tools: {fsm: FSMTools, btree: BtreeTools}}, null), document.querySelector("#app"));

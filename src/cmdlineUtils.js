@@ -3,11 +3,12 @@
  */
 
 
-export function exporttofile(cmdline) {
-    if(cmdline != "") {
-        const encodedUri = encodeURI("data:text," + cmdline);
+export function exporttofile(content, type, filename) {
+    if(content != "") {
+        const encodedUri = encodeURI(`data:${type},` + content).replace(/#/g, "%23");
         const link = document.querySelector("#downloadLink");
         link.setAttribute("href", encodedUri);
+        link.setAttribute("download", filename);
         link.click();
     }
 }
