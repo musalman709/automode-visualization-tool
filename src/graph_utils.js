@@ -1,11 +1,12 @@
 /**
  * Utility functions for graphs
  */
+const OVERLAP_DISTANCE = 50;
 
 /**
  * Sum two points
  */
-export function points_sum(p1, p2) {
+export function sumPoints(p1, p2) {
     const p = {
         x:(parseInt(p1.x) + parseInt(p2.x)),
         y:(parseInt(p1.y) + parseInt(p2.y))
@@ -16,7 +17,7 @@ export function points_sum(p1, p2) {
 /**
  * Subtract two points
  */
-export function points_substract(p1, p2) {
+export function subtractPoints(p1, p2) {
     const p = {
         x:(parseInt(p1.x) - parseInt(p2.x)),
         y:(parseInt(p1.y) - parseInt(p2.y))
@@ -55,4 +56,12 @@ export function getConnectPoint(connectType, rx, ry, direction) {
     default:
         return {x: 0, y: 0};
     }
+}
+/**
+ * Check whether shapes are overlapping
+ * @param {position of the first shape} p1 
+ * @param {position of the second shape} p2 
+ */
+export function areShapesOverlapping(p1, p2) {
+    return ((p1.x - p2.x)**2 + (p1.y - p2.y)**2) < OVERLAP_DISTANCE**2
 }
