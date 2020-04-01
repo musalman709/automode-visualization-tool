@@ -21,9 +21,14 @@ export async function importfromfile(file) {
 
 export async function execinsimulator(cmdline) {
     const execUrl = "/run";
+    const firstSpaceIndex = cmdline.indexOf(" ");
+    const request = {
+        name: cmdline.substring(0, firstSpaceIndex),
+        value: cmdline.substring(firstSpaceIndex+1)
+    };
     const response = await fetch(execUrl, {
         method: "POST",
-        body: JSON.stringify({cmdline}),
+        body: JSON.stringify(request),
         headers: {
             "Content-Type": "application/json"
         }

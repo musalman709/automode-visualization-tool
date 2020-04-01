@@ -22,13 +22,14 @@ app.post("/run", (req, res) => {
         res.sendStatus(500);
         return;
     }
-    const cmdline = req.body.cmdline;
-    if (!cmdline || typeof cmdline !== "string") {
+    const {name, value} = req.body;
+    if (!name || typeof name !== "string"
+        || !value || typeof value !== "string") {
         res.sendStatus(400);
         return;
     }
     execFile(process.env.AUTOMODE_PATH, 
-        ["--config-file", process.env.EXPERIMENT_PATH, cmdline],
+        ["--config-file", process.env.EXPERIMENT_PATH, name, value],
         (error, stdout, stderr) => {
         if (error) {
             console.error("Could not start AutoMoDe: " + error.message);
