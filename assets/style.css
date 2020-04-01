@@ -20,7 +20,6 @@ body {
 
 .graph-container {
 	grid-area: main;
-	background-color: #E8E8E8;
 	min-width: 100%;
 	min-height: 100%;
 	text-align: center;
@@ -31,7 +30,8 @@ header {
 	grid-area: header;
 	display: flex;
 	z-index: 100;
-	box-shadow: 0 3px 2px -2px lightgray;
+	border-bottom: solid 1px lightgray;
+	background-color: #f8f9fa;
 	padding: 0.5rem 1rem;
 }
 
@@ -41,6 +41,11 @@ h1 {
 	font-weight: 400;
 	line-height: 1.2;
   	font-size: 1.2rem;
+}
+
+hr {
+	border-top: solid 1px lightgray;
+	border-bottom: none;
 }
 
 #title-container {
@@ -79,6 +84,7 @@ h1 {
   height: 1.5rem;
   align-items: center;
   border: 1px solid gray;
+  background: none;
 }
 
 .cmdline-container button.right {
@@ -96,13 +102,13 @@ h1 {
 
 .left-pane {
 	grid-area: left-pane;
-	box-shadow: 3px 0 2px -2px lightgray;
+	border-right: solid 1px lightgray;
 	padding: 2rem 1rem;
 }
 
 .right-pane {
 	grid-area: right-pane;
-	box-shadow: -3px 0 2px -2px lightgray;
+	border-left: solid 1px lightgray;
 	padding: 2rem 1rem;
 	min-width: 250px;
 }
@@ -163,8 +169,7 @@ h1 {
 	display: inline-block;
 	width: 1200px;
 	height: 675px;
-	background-color: #FFFFFF;
-	margin: 16px;
+	background-color: white;
 }
 
 .d-block {

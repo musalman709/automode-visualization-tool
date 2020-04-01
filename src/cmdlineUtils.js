@@ -20,10 +20,10 @@ export async function importfromfile(file) {
 }
 
 export async function execinsimulator(cmdline) {
-    const execUrl = "/exec";
+    const execUrl = "/run";
     const response = await fetch(execUrl, {
         method: "POST",
-        body: JSON.stringify(cmdline),
+        body: JSON.stringify({cmdline}),
         headers: {
             "Content-Type": "application/json"
         }
