@@ -22,23 +22,21 @@ app.post("/run", (req, res) => {
         res.sendStatus(500);
         return;
     }
-    const {name, value} = req.body;
-    if (!name || typeof name !== "string"
-        || !value || typeof value !== "string") {
+    const cmdline = req.body.cmdline;
+    if (!cmdline || typeof cmdline !== "string") {
         res.sendStatus(400);
         return;
     }
     execFile(process.env.AUTOMODE_PATH, 
-        ["--config-file", process.env.EXPERIMENT_PATH, name, value],
+        ["--config-file", process.env.EXPERIMENT_PATH].concat(cmdline.split(" ")),
         (error, stdout, stderr) => {
         if (error) {
             console.error("Could not start AutoMoDe: " + error.message);
-        } else {
-            console.log("-----AutoMoDe output-----");
-            console.error(stderr);
-            console.log(stdout);
-            console.log("-------------------------");
         }
+        console.log("-----AutoMoDe output-----");
+        console.error(stderr);
+        console.log(stdout);
+        console.log("-------------------------");
       });
     res.sendStatus(200);
 });
