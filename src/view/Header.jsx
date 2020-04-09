@@ -6,17 +6,17 @@ const titles = { fsm: "AutoMoDe Finite States Machines Editor", btree: "AutoMoDe
 
 export const Header = ({graphEditor, cmdline, svgRef}) => {
     const mode = graphEditor.getMode();
-    const toggleMode = e => {
+    const changeMode = e => {
         e.preventDefault();
-        graphEditor.setMode(mode === "fsm" ? "btree" : "fsm");
+        graphEditor.setMode(e.target.value);
     };
     return (
         <header>
             <div id="title-container">
-                <h1 id="title">{titles[mode]}</h1>
-                <a id="switchlink" href={mode} onClick={toggleMode}>
-                    switch to {names[mode === "fsm" ? "btree" : "fsm"]}
-                </a>
+                <select onChange={changeMode}>
+                    <option value="fsm">Finite State Machine Editor</option>
+                    <option value="btree">Behavior Tree Editor</option>
+                </select>
             </div>
             <Cmdline graphEditor={graphEditor} cmdline={cmdline} svgRef={svgRef} />
         </header>

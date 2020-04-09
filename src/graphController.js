@@ -1,36 +1,20 @@
-import { GraphEditorNode } from "./model/graphEditorNode";
-import { GraphEditorEdge } from "./model/graphEditorEdge";
+import { GraphNode } from "./model/graphNode";
+import { GraphEdge } from "./model/graphEdge";
 import Graph from "./model/graph";
 import createExporter from "./exporters";
 import createImporter from "./importers";
-import btreeNodeModels from "./btree/nodemodels.json";
-import btreeEdgeModels from "./btree/edgemodels.json";
-import btreeNodeParams from "./btree/nodeparams.json";
-import btreeEdgeParams from "./btree/edgeparams.json";
-import fsmNodeModels from "./fsm/nodemodels.json";
-import fsmEdgeModels from "./fsm/edgemodels.json";
-import fsmNodeParams from "./fsm/nodeparams.json";
-import fsmEdgeParams from "./fsm/edgeparams.json";
 import createBeautifier from "./model/beautifiers";
+import {getNodeTypes, getEdgeTypes} from "./model/types"
 
-/**
- * Object that manages tools and graph elements,
- * create the svg area and receive input from the user
- */
-export default class GraphEditor {
+export default class GraphController {
     constructor() {
         this.listeners = [];
-        // models lists
-        this.nodemodels = [];
-        this.nodeparams = [];
-        this.edgemodels = [];
-        this.edgeparams = [];
         // graph
         this.graph = new Graph();
         this.selectedElement = undefined;
         //mode
         this.setMode("fsm");
-        this.createGraph();
+        this.updateGraph();
     }
     addListener(listener) {
         this.listeners.push(listener);
@@ -46,69 +30,23 @@ export default class GraphEditor {
                 handler();
         }
     }
-    createGraph() {
-        // Initialisation function
-        this.updateGraph();
+    getNodeTypes() {
+        return getNodeTypes(this.mode);
     }
-    getNodeModels() {
-        return this.nodemodels;
-    }
-    getNodeModelById(id) {
-        var model = undefined;
-        this.nodemodels.forEach(function (m) {
-            if (m.id == id) {
-                model = m;
-            }
-        });
-        return model;
-    }
-    getNodeParams() {
-        return this.nodeparams;
-    }
-    getNodeParamById(id) {
-        var param = undefined;
-        this.nodeparams.forEach(function (p) {
-            if (p.nodeid == id) {
-                param = p;
-            }
-        });
-        return param;
-    }
-    getEdgeModelById(id) {
-        var model = undefined;
-        this.edgemodels.forEach(function (m) {
-            if (m.id == id) {
-                model = m;
-            }
-        });
-        return model;
-    }
-    getEdgeModels() {
-        return this.edgemodels;
-    }
-    getEdgeParamById(id) {
-        var param = undefined;
-        this.edgeparams.forEach(function (p) {
-            if (p.edgeid == id) {
-                param = p;
-            }
-        });
-        return param;
-    }
-    getEdgeParams() {
-        return this.edgeparams;
+    getEdgeTypes() {
+        return getEdgeTypes(this.mode);
     }
     addNode(position) {
-        const node = new GraphEditorNode(position, 
-            this.getNodeModelById("0"), this.getNodeParamById("0"));
+        const node = new GraphNode(position, 
+            getNodeTypes(this.mode)[0]);
         this.graph.addNode(node);
         this.callExporter();
         this.setSelectedElement(node);
     }
     addEdge(srcElement, destElement) {
         // create edge
-        const edge = new GraphEditorEdge(srcElement, destElement, 
-            this.getEdgeModelById("0"), this.getEdgeParamById("0"));
+        const edge = new GraphEdge(srcElement, destElement, 
+            getEdgeTypes(this.mode)[0]);
         // if edge valid, add it
         if (edge.isValid()) {
             this.graph.addEdge(edge);
@@ -121,9 +59,9 @@ export default class GraphEditor {
         this.callExporter();
     }
     removeElement(element) {
-        if (element instanceof GraphEditorNode) {
+        if (element instanceof GraphNode) {
             this.graph.removeNode(element);
-        } else if (element instanceof GraphEditorEdge) {
+        } else if (element instanceof GraphEdge) {
             this.graph.removeEdge(element);
         }
         if (this.selectedElement === element)
@@ -137,8 +75,12 @@ export default class GraphEditor {
     getCmdline() {
         return this.cmdline;
     }
-    setCmdline(cmdline) {
+    getErrorMessage() {
+        return this.errorMessage;
+    }
+    setCmdline(cmdline, errorMessage) {
         this.cmdline = cmdline;
+        this.errorMessage = errorMessage;
         this.notify("cmdlineChange");
     }
     clearElements() {
@@ -153,16 +95,15 @@ export default class GraphEditor {
     getSelectedElement() {
         return this.selectedElement;
     }
-    setSelectionModel(modelId) {
+    setSelectionType(typeId) {
         const element = this.getSelectedElement();
         if (element.isNode()) {
-            element.setModel(this.getNodeModelById(modelId));
-            element.setType(this.getNodeParamById(modelId));
+            element.setType(this.getNodeTypes().find(t => t.id === typeId));
         } else {
-            element.setModel(this.getEdgeModelById(modelId));
-            element.setType(this.getEdgeParamById(modelId));
+            element.setType(this.getEdgeTypes().find(t => t.id === typeId));
         }
         this.callExporter();
+        this.updateGraph();
     }
     setSelectionCategory(categoryId) {
         const element = this.getSelectedElement();
@@ -181,7 +122,7 @@ export default class GraphEditor {
         try {
             this.setCmdline(exporter.export(this.graph));
         } catch (err) {
-            this.setCmdline(err);
+            this.setCmdline("", err);
         }
     }
     beautifyGraph() {
@@ -195,14 +136,14 @@ export default class GraphEditor {
     callImporter(cmdlineString) {
         const importer = createImporter(this.mode);
         try {
-            const newGraph = importer.import(this, cmdlineString);
+            const newGraph = importer.import(cmdlineString);
             this.clearElements();
             this.graph = newGraph;
             this.beautifyGraph();
             // clean cmdline
             this.callExporter();
         } catch (err) {
-            console.log(err);
+            this.setCmdline(cmdlineString, err);
         }
     }
     getMode() {
@@ -213,17 +154,9 @@ export default class GraphEditor {
         switch (mode) {
         case "fsm":
             this.mode = "fsm";
-            this.nodemodels = fsmNodeModels;
-            this.edgemodels = fsmEdgeModels;
-            this.nodeparams = fsmNodeParams;
-            this.edgeparams = fsmEdgeParams;
             break;
         case "btree":
             this.mode = "btree";
-            this.nodemodels = btreeNodeModels;
-            this.edgemodels = btreeEdgeModels;
-            this.nodeparams = btreeNodeParams;
-            this.edgeparams = btreeEdgeParams;
             break;
         default:
             throw new Error("Wrong mode selected");

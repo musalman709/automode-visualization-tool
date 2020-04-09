@@ -1,4 +1,4 @@
-import { findBTreeRoot } from "../../btree/btreeutils";
+import { findBTreeRoot } from "../../btreeutils";
 
 export default class BTreeExporter {
     export(graph) {
@@ -15,7 +15,7 @@ export default class BTreeExporter {
     expRootNode(rootNode) {
         var str = "--bt-config ";
         // add root type
-        var type = rootNode.getModel().id;
+        var type = rootNode.getType().id;
         if (type < 0)
             throw "Invalid configuration : root node type is not selected";
         str += "--nroot " + type + " ";
@@ -23,7 +23,7 @@ export default class BTreeExporter {
         return str;
     }
     expNode(node, nodeID) {
-        var type = node.getModel().id;
+        var type = node.getType().id;
         if (type < 0)
             throw "Invalid configuration : nodes types are not selected";
         var str = "--n" + nodeID + " " + type + " ";

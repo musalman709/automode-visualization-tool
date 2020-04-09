@@ -99,6 +99,18 @@ hr {
   text-decoration: underline;
 }
 
+.error-bar {
+	border: 1px solid red;
+	background-color: white;
+	color: darkred;
+	font-size: 1rem;
+	grid-area: main;
+	height: max-content;
+	width: max-content;
+	padding: 0.25rem 0.5rem;
+	z-index: 10;
+}
+
 
 .left-pane {
 	grid-area: left-pane;

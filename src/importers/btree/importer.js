@@ -1,6 +1,7 @@
-import { GraphEditorEdge } from "../../model/graphEditorEdge";
-import { GraphEditorNode } from "../../model/graphEditorNode";
+import { GraphEdge } from "../../model/graphEdge";
+import { GraphNode } from "../../model/graphNode";
 import Graph from "../../model/graph";
+import { getNodeTypes } from "../../model/types";
 
 /**
  * Iterator over the string tree, extracting one argument at a time
@@ -40,7 +41,7 @@ export class BTreeImporter {
     isValue(arg) {
         return !isNaN(arg);
     }
-    import(graphEditor, inputString) {
+    import(inputString) {
         this.graph = new Graph();
         // build parameters dict
         var iterator = new CmdLineIterator(inputString);
@@ -56,26 +57,25 @@ export class BTreeImporter {
                 throw "Argument " + key + " is invalid";
         }
         if (inputString !== "") {
-            this.importNode(graphEditor, dict, "root");
+            this.importNode(dict, "root");
         }
         return this.graph;
     }
-    importNode(graphEditor, dict, nodeID) {
+    importNode(dict, nodeID) {
         var argname = "--n" + nodeID;
         if (!dict.hasOwnProperty(argname))
             throw "Cannot find argument " + argname;
         var nodeType = dict[argname];
-        var model = graphEditor.getNodeModelById(nodeType);
-        var param = graphEditor.getNodeParamById(nodeType);
-        var node = new GraphEditorNode({ x: 30, y: 30 }, model, param);
+        var type = getNodeTypes("btree")[Number(nodeType)];
+        var node = new GraphNode({ x: 30, y: 30 }, type);
         this.graph.addNode(node);
-        this.importParams(graphEditor, dict, nodeID, node);
-        if (model.max_outgoing_edges > 0) {
-            this.importChildren(graphEditor, dict, nodeID, node);
+        this.importParams(dict, nodeID, node);
+        if (type.max_outgoing_edges > 0) {
+            this.importChildren(dict, nodeID, node);
         }
         return node;
     }
-    importChildren(graphEditor, dict, nodeID, parentNode) {
+    importChildren(dict, nodeID, parentNode) {
         var argname = "--nchild" + nodeID;
         if (!dict.hasOwnProperty(argname))
             return;
@@ -84,15 +84,14 @@ export class BTreeImporter {
             nodeID = "";
         }
         for (var i = 0; i < childrenNb; ++i) {
-            var node = this.importNode(graphEditor, dict, nodeID + i.toString());
-            var edge = new GraphEditorEdge(parentNode, node, 
-                graphEditor.getEdgeModelById("0"), graphEditor.getEdgeParamById("0"));
+            var node = this.importNode(dict, nodeID + i.toString());
+            var edge = new GraphEdge(parentNode, node, getEdgeTypes("btree")[0]);
             if (edge.isValid()) {
                 this.graph.addEdge(edge);
             }
         }
     }
-    importParams(graphEditor, dict, nodeID, node) {
+    importParams(dict, nodeID, node) {
         const type = node.getType();
         if (type.categories.length > 0) {
             // get category id
@@ -101,13 +100,13 @@ export class BTreeImporter {
                 return;
             var categoryid = dict[catargname];
             // get category
-            const category = type.categories.find(c => c.id === categoryid);
+            const category = type.categories.find(c => c.id === Number(categoryid));
             if (category === undefined)
                 return;
             // set node category
             node.setCategory(category);
             // get params
-            category.param.forEach(function (p) {
+            category.params.forEach(function (p) {
                 var paramargname = "--" + p.id + nodeID;
                 if (dict.hasOwnProperty(paramargname)) {
                     var value = dict[paramargname];

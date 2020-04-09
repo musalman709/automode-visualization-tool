@@ -4,6 +4,7 @@ import { ToolPane } from "./ToolPane.jsx";
 import { Header } from "./Header.jsx";
 import { ParamPane } from "./ParamPane.jsx";
 import { GraphContainer } from "./GraphContainer.jsx";
+import { ErrorBar } from "./ErrorBar.jsx";
 
 export default ({graphEditor, tools}) => {
     // UI state
@@ -11,6 +12,7 @@ export default ({graphEditor, tools}) => {
     const [mode, setMode] = useState(graphEditor.getMode());
     const [selectedTool, setSelectedTool] = useState(tools[mode][0]);
     const [cmdline, setCmdline] = useState(graphEditor.getCmdline());
+    const [errorMessage, setErrorMessage] = useState(graphEditor.getErrorMessage());
     // reference to the graph svg
     const svgRef = useRef(null);
 
@@ -19,6 +21,10 @@ export default ({graphEditor, tools}) => {
         // reset the UI
         setElements(graphEditor.getElements());
         setSelectedTool(tools[newMode][0]);
+    };
+    const changeCmdline = (newCmdline, newErrorMessage) => {
+        setCmdline(newCmdline);
+        setErrorMessage(newErrorMessage);
     };
     const changeTool = (newTool) => {
         if (selectedTool !== newTool) {
@@ -31,7 +37,7 @@ export default ({graphEditor, tools}) => {
         const listener = {
             elementsChange: () => setElements(graphEditor.getElements()),
             modeChange: () => changeMode(graphEditor.getMode()),
-            cmdlineChange: () => setCmdline(graphEditor.getCmdline())
+            cmdlineChange: () => changeCmdline(graphEditor.getCmdline(), graphEditor.getErrorMessage())
         };
         graphEditor.addListener(listener);
         return () => {
@@ -43,6 +49,7 @@ export default ({graphEditor, tools}) => {
         <>
             <Header graphEditor={graphEditor} cmdline={cmdline}
                 svgRef={svgRef} />
+            <ErrorBar message={errorMessage} />
             <article class="graph-container">
                 <GraphContainer elements={elements} tool={selectedTool}
                     svgRef={svgRef} />

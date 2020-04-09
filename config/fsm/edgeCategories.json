@@ -1,119 +1,118 @@
 [
 	{
-		"edgename": "Transition",
-		"edgeid": "0",
+		"typeid": 0,
 		"categoryid": "c",
-		"categoriesname": "Condition",
+		"categories_name": "Condition",
 		"categories": [
 			{
 				"name": "Black floor",
-				"id": "0",
+				"id": 0,
 				"display_name": "Bflr",
-				"param": [
+				"params": [
 					{
 						"name": "Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					}
 				]
 			},
 			{
 				"name": "Gray floor",
-				"id": "1",
+				"id": 1,
 				"display_name": "Gflr",
-				"param": [
+				"params": [
 					{
 						"name": "Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					}
 				]
 			},
 			{
 				"name": "White floor",
-				"id": "2",
+				"id": 2,
 				"display_name": "Wflr",
-				"param": [
+				"params": [
 					{
 						"name": "Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					}
 				]
 			},
 			{
 				"name": "Neighbors count",
-				"id": "3",
+				"id": 3,
 				"display_name": "Ngb",
-				"param": [
+				"params": [
 					{
 						"name": "ƞ",
 						"id": "p",
-						"min": "1",
-						"max": "10",
-						"step": "0.01"
+						"min": 1,
+						"max": 10,
+						"step": 0.01
 					},
 					{
 						"name": "ξ",
 						"id": "w",
-						"min": "0",
-						"max": "20",
-						"step": "0.01"
+						"min": 0,
+						"max": 20,
+						"step": 0.01
 					}
 				]
 			},
 			{
 				"name": "Inverted neighbors count",
-				"id": "4",
+				"id": 4,
 				"display_name": "INgb",
-				"param": [
+				"params": [
 					{
 						"name": "ƞ",
 						"id": "p",
-						"min": "1",
-						"max": "10",
-						"step": "0.01"
+						"min": 1,
+						"max": 10,
+						"step": 0.01
 					},
 					{
 						"name": "ξ",
 						"id": "w",
-						"min": "0",
-						"max": "20",
-						"step": "0.01"
+						"min": 0,
+						"max": 20,
+						"step": 0.01
 					}
 				]
 			},
 			{
 				"name": "Fixed Probability",
-				"id": "5",
+				"id": 5,
 				"display_name": "FPrb",
-				"param": [
+				"params": [
 					{
 						"name": "Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					}
 				]
 			},
 			{
 				"name": "Light",
-				"id": "6",
+				"id": 6,
 				"display_name": "Lght",
-				"param": [
+				"params": [
 					{
 						"name": "Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					}
 				]
 			}

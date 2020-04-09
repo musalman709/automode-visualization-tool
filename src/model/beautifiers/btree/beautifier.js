@@ -1,4 +1,4 @@
-import { findBTreeRoot } from "../../../btree/btreeutils";
+import { findBTreeRoot } from "../../../btreeutils";
 
 /**
  * Beautifier algorithm
