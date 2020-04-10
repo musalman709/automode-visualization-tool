@@ -1,7 +1,7 @@
 export function findBTreeRoot(elements) {
-    var root = undefined;
-    for (var i = 0; i < elements.length; ++i) {
-        var current = elements[i];
+    let root = undefined;
+    for (let i = 0; i < elements.length; ++i) {
+        let current = elements[i];
         // root candidate
         if (current.isNode() && current.getIncomingEdges().length === 0) {
             // two or more roots, error

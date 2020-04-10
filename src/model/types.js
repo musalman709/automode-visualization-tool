@@ -16,16 +16,16 @@ const lBtreeEdgeTypes = loadTypes(btreeEdgeTypes, btreeEdgeCategories, btreeShap
 
 export function getNodeTypes(mode) {
     switch(mode) {
-        case "fsm": return lFsmNodeTypes;
-        case "btree": return lBtreeNodeTypes;
-        default: throw new Error("Invalid mode");
+    case "fsm": return lFsmNodeTypes;
+    case "btree": return lBtreeNodeTypes;
+    default: throw new Error("Invalid mode");
     }
 }
 export function getEdgeTypes(mode) {
     switch(mode) {
-        case "fsm": return lFsmEdgeTypes;
-        case "btree": return lBtreeEdgeTypes;
-        default: throw new Error("Invalid mode");
+    case "fsm": return lFsmEdgeTypes;
+    case "btree": return lBtreeEdgeTypes;
+    default: throw new Error("Invalid mode");
     }
 }
 

@@ -101,12 +101,13 @@ hr {
 
 .error-bar {
 	border: 1px solid red;
-	background-color: white;
 	color: darkred;
+	background-color: white;
 	font-size: 1rem;
 	grid-area: main;
 	height: max-content;
 	width: max-content;
+	margin: 0.5rem auto;
 	padding: 0.25rem 0.5rem;
 	z-index: 10;
 }

@@ -63,5 +63,5 @@ export function getConnectPoint(connectType, rx, ry, direction) {
  * @param {position of the second shape} p2 
  */
 export function areShapesOverlapping(p1, p2) {
-    return ((p1.x - p2.x)**2 + (p1.y - p2.y)**2) < OVERLAP_DISTANCE**2
+    return ((p1.x - p2.x)**2 + (p1.y - p2.y)**2) < OVERLAP_DISTANCE**2;
 }

@@ -1,4 +1,4 @@
-const { execFile } = require('child_process');
+const { execFile } = require("child_process");
 const webpack = require("webpack");
 const middleware = require("webpack-dev-middleware");
 const config = require("./webpack.config.js")();
@@ -30,14 +30,14 @@ app.post("/run", (req, res) => {
     execFile(process.env.AUTOMODE_PATH, 
         ["--config-file", process.env.EXPERIMENT_PATH].concat(cmdline.split(" ")),
         (error, stdout, stderr) => {
-        if (error) {
-            console.error("Could not start AutoMoDe: " + error.message);
-        }
-        console.log("-----AutoMoDe output-----");
-        console.error(stderr);
-        console.log(stdout);
-        console.log("-------------------------");
-      });
+            if (error) {
+                console.error("Could not start AutoMoDe: " + error.message);
+            }
+            console.log("-----AutoMoDe output-----");
+            console.error(stderr);
+            console.log(stdout);
+            console.log("-------------------------");
+    });
     res.sendStatus(200);
 });
  

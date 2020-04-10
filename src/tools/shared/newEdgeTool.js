@@ -21,7 +21,7 @@ export class GraphEditorNewEdgeTool extends GraphEditorTool {
         }
         // on second element clicked, create edge between them
         else {
-            var selected = this.graphEditor.getSelectedElement();
+            let selected = this.graphEditor.getSelectedElement();
             if (selected === undefined) {
                 this.graphEditor.setSelectedElement(element);
             }

@@ -9,9 +9,9 @@ import { findBTreeRoot } from "../../../btreeutils";
  */
 export function beautifyBTree(rootNode) {
 
-    var area = {x:0, y:0, w:1000, h:500, relh:0, relw:0};
+    let area = {x:0, y:0, w:1000, h:500, relh:0, relw:0};
 
-    var rootInfo = getBTreeNodeInfo(rootNode);
+    let rootInfo = getBTreeNodeInfo(rootNode);
 
     setBTreeNodePosition(rootNode, rootInfo, area);
 }
@@ -21,15 +21,15 @@ export function beautifyBTree(rootNode) {
  */
 function getBTreeNodeInfo(node) {
 
-    var info = {depth:1, cumulativeChildrenNb:0, childrenInfo:[]};
-    var edges = node.getOutgoingEdges();
+    let info = {depth:1, cumulativeChildrenNb:0, childrenInfo:[]};
+    let edges = node.getOutgoingEdges();
 
-    if(edges.length == 0) {
+    if(edges.length === 0) {
         info.cumulativeChildrenNb = 1;
     }
 
     edges.forEach(function(e) {
-        var i = getBTreeNodeInfo(e.getDestNode());
+        let i = getBTreeNodeInfo(e.getDestNode());
         if(info.depth < i.depth + 1) {
             info.depth = i.depth + 1;
         }
@@ -45,23 +45,23 @@ function getBTreeNodeInfo(node) {
  */
 function setBTreeNodePosition(node, info, area) {
 
-    if(area.relh == 0)
+    if(area.relh === 0)
         area.relh = area.h / info.depth;
-    if(area.relw == 0)
+    if(area.relw === 0)
         area.relw = area.w / info.cumulativeChildrenNb;
 
     node.move({x:(area.x + area.w/2), y:(area.y + area.relh/2)});
 
-    var edges = node.getOutgoingEdges();
-    var widthAccumulator = 0;
+    let edges = node.getOutgoingEdges();
+    let widthAccumulator = 0;
 
-    for(var i = 0; i < edges.length; ++i) {
-        var n = edges[i].getDestNode();
-        var ci = info.childrenInfo[i];
+    for(let i = 0; i < edges.length; ++i) {
+        let n = edges[i].getDestNode();
+        let ci = info.childrenInfo[i];
 
-        var relwidth = area.relw * ci.cumulativeChildrenNb;
+        let relwidth = area.relw * ci.cumulativeChildrenNb;
 
-        var a = {x:area.x + widthAccumulator,
+        let a = {x:area.x + widthAccumulator,
             y:area.y + area.relh,
             w:relwidth,
             h:area.h - area.relh,
@@ -85,7 +85,7 @@ export class BTreeBeautifyTool {
     beautify() {
     // call beautifier algo
         try {
-            var root = findBTreeRoot(this.graph.getNodes());
+            let root = findBTreeRoot(this.graph.getNodes());
             beautifyBTree(root);
         }
         catch (err) {

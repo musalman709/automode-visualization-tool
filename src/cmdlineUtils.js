@@ -4,7 +4,7 @@
 
 
 export function exporttofile(content, type, filename) {
-    if(content != "") {
+    if(content !== "") {
         const encodedUri = encodeURI(`data:${type},` + content).replace(/#/g, "%23");
         const link = document.querySelector("#downloadLink");
         link.setAttribute("href", encodedUri);

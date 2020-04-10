@@ -4,7 +4,7 @@ import Graph from "./model/graph";
 import createExporter from "./exporters";
 import createImporter from "./importers";
 import createBeautifier from "./model/beautifiers";
-import {getNodeTypes, getEdgeTypes} from "./model/types"
+import {getNodeTypes, getEdgeTypes} from "./model/types";
 
 export default class GraphController {
     constructor() {
@@ -122,7 +122,10 @@ export default class GraphController {
         try {
             this.setCmdline(exporter.export(this.graph));
         } catch (err) {
-            this.setCmdline("", err);
+            if (typeof err === "string")
+                this.setCmdline("", err);
+            else
+                console.log(err);
         }
     }
     beautifyGraph() {
@@ -143,7 +146,10 @@ export default class GraphController {
             // clean cmdline
             this.callExporter();
         } catch (err) {
-            this.setCmdline(cmdlineString, err);
+            if (typeof err === "string")
+                this.setCmdline(cmdlineString, err);
+            else 
+                console.log(err);
         }
     }
     getMode() {
