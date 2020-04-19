@@ -1,22 +1,17 @@
 import {h, Fragment, createRef} from "preact";
 import * as CmdlineUtils from "../cmdlineUtils";
 
-const names = { fsm: "finite states machines", btree: "behavior trees" };
-const titles = { fsm: "AutoMoDe Finite States Machines Editor", btree: "AutoMoDe Behavior Trees Editor" };
-
 export const Header = ({graphEditor, cmdline, svgRef}) => {
     const mode = graphEditor.getMode();
-    const changeMode = e => {
-        e.preventDefault();
-        graphEditor.setMode(e.target.value);
-    };
+    const setMode = mode => graphEditor.setMode(mode);
+
     return (
         <header>
             <div id="title-container">
-                <select onChange={changeMode}>
-                    <option value="fsm">Finite State Machine Editor</option>
-                    <option value="btree">Behavior Tree Editor</option>
-                </select>
+                <button className={mode === "fsm" ? "selected" : ""}
+                    onClick={() => setMode("fsm")}>FSM</button>
+                <button className={mode === "btree" ? "selected" : ""}
+                    onClick={() => setMode("btree")}>BTree</button>
             </div>
             <Cmdline graphEditor={graphEditor} cmdline={cmdline} svgRef={svgRef} />
         </header>

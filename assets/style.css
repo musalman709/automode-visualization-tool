@@ -29,6 +29,7 @@ body {
 header {
 	grid-area: header;
 	display: flex;
+	align-items: center;
 	z-index: 100;
 	border-bottom: solid 1px lightgray;
 	background-color: #f8f9fa;
@@ -46,19 +47,35 @@ h1 {
 hr {
 	border-top: solid 1px lightgray;
 	border-bottom: none;
+	border-left: none;
+	border-right: none;
 }
 
 #title-container {
 	margin-right: 2rem;
 }
 
-#switchlink {
-  margin: 0px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  font-size: 14px;
-  text-decoration: inherit;
-  color: black;
+#title-container button {
+	height: 1.5rem;
+	border: solid 1px gray;
+	border-left: none;
+	background-color: transparent;
+	font-family: inherit;
+}
+
+#title-container button:first-child {
+	border-left: solid 1px gray;
+	border-top-left-radius: 2px;
+	border-bottom-left-radius: 2px;
+}
+
+#title-container button:last-child {
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+}
+
+#title-container button.selected {
+	background-color: lightgray;
 }
 
 .cmdline-container {
@@ -68,11 +85,15 @@ hr {
   margin-right: 1rem;
 }
 
+.cmdline-container button:last-child {
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+}
+
 .cmdline-container input {
   border: 1px solid gray;
   padding: 0 0.5rem;
   height: 1.5rem;
-  font-size: 0.9rem;
   font-family: monospace;
   min-width: 200px;
   flex: auto;
@@ -80,11 +101,12 @@ hr {
 
 .cmdline-container button {
   margin: 0px;
-  padding: 0.25rem;
+  padding: 0 0.25rem;
   height: 1.5rem;
   align-items: center;
   border: 1px solid gray;
   background: none;
+  font-family: inherit;
 }
 
 .cmdline-container button.right {
@@ -92,7 +114,9 @@ hr {
 }
 
 .cmdline-container button.left {
-  border-right: 0px;
+	border-right: 0px;
+	border-top-left-radius: 2px;
+	border-bottom-left-radius: 2px;
 }
 
 .underline {
