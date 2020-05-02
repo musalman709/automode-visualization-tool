@@ -31,11 +31,15 @@ export class FSMImporter {
             // set node category
             const category = type.categories.find(c => c.id === state.behaviour);
             if (category === undefined)
-                throw "behaviour number not correct: " + state.behaviour;
+                throw "Invalid behaviour number: " + state.behaviour;
             node.setCategory(category);
             // set params
             for (const [pname, pvalue] of state.params) {
-                node.setParam(pname, pvalue);
+                try {
+                    node.setParam(pname, pvalue);
+                } catch (error) {
+                    throw "Invalid parameter: " + error.message;
+                }
             }
         }
     }
@@ -65,11 +69,15 @@ export class FSMImporter {
             // set edge category
             const category = type.categories.find(c => c.id === transition.condition);
             if (category === undefined)
-                throw "behaviour number not correct: " + transition.condition;
+                throw "Invalid behaviour number: " + transition.condition;
             edge.setCategory(category);
             // set params
             for (const [pname, pvalue] of transition.params) {
-                edge.setParam(pname, pvalue);
+                try {
+                    edge.setParam(pname, pvalue);
+                } catch (error) {
+                    throw "Invalid parameter: " + error.message;
+                }
             }
         }
     }

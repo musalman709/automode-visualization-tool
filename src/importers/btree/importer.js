@@ -110,7 +110,11 @@ export class BTreeImporter {
                 let paramargname = "--" + p.id + nodeID;
                 if (dict.hasOwnProperty(paramargname)) {
                     let value = dict[paramargname];
-                    node.setParam(p.id, value);
+                    try {
+                        node.setParam(p.id, value);
+                    } catch (error) {
+                        throw "Invalid parameter: " + error.message;
+                    }
                 }
             });
         }

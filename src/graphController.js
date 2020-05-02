@@ -57,6 +57,7 @@ export default class GraphController {
     setFirstElement(newFirst) {
         this.graph.setFirstNode(newFirst);
         this.callExporter();
+        this.updateGraph();
     }
     removeElement(element) {
         if (element instanceof GraphNode) {
