@@ -1,7 +1,7 @@
 import {h, Fragment, createRef} from "preact";
-import * as CmdlineUtils from "../cmdlineUtils";
+import * as CmdlineUtils from "../utils/cmdlineUtils";
 
-export const Header = ({graphEditor, cmdline, svgRef}) => {
+export const Header = ({graphEditor, cmdline}) => {
     const mode = graphEditor.getMode();
     const setMode = mode => graphEditor.setMode(mode);
 
@@ -13,12 +13,12 @@ export const Header = ({graphEditor, cmdline, svgRef}) => {
                 <button className={mode === "btree" ? "selected" : ""}
                     onClick={() => setMode("btree")}>BTree</button>
             </div>
-            <Cmdline graphEditor={graphEditor} cmdline={cmdline} svgRef={svgRef} />
+            <Cmdline graphEditor={graphEditor} cmdline={cmdline} />
         </header>
     );
 };
 
-const Cmdline = ({graphEditor, cmdline, svgRef}) => {
+const Cmdline = ({graphEditor, cmdline}) => {
     const cmdlineInput = createRef();
     const openFileInput = createRef();
 
@@ -33,12 +33,6 @@ const Cmdline = ({graphEditor, cmdline, svgRef}) => {
         document.execCommand("copy");
     };
     const saveCmdline = () => CmdlineUtils.exporttofile(cmdline, "text/plain", "cmdline.txt");
-    const exportSvg = () => {
-        const bbox = svgRef.current.getBBox();
-        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${bbox.x-10} ${bbox.y-10} ${bbox.width+20} ${bbox.height+20}">` 
-            + svgRef.current.innerHTML + "</svg>";
-        CmdlineUtils.exporttofile(svg, "image/svg+xml", "export.svg");
-    };
     const executeCmdline = () => CmdlineUtils.execinsimulator(cmdline);
 
     return (
@@ -55,9 +49,6 @@ const Cmdline = ({graphEditor, cmdline, svgRef}) => {
             </button>
             <button class="right" onClick={saveCmdline}>
                 <span class="underline">S</span>ave
-            </button>
-            <button class="right" onClick={exportSvg}>
-                <span class="underline">E</span>xport
             </button>
             <button class="right" onClick={executeCmdline}>
                 E<span class="underline">x</span>ec

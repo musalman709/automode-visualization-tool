@@ -5,10 +5,12 @@ import createExporter from "./exporters";
 import createImporter from "./importers";
 import createBeautifier from "./model/beautifiers";
 import {getNodeTypes, getEdgeTypes} from "./model/types";
+import TikzExporter from "./exporters/tikz";
+import { exporttofile } from "./utils/cmdlineUtils";
 
 export default class GraphController {
     constructor() {
-        this.listeners = [];
+        this.observers = [];
         // graph
         this.graph = new Graph();
         this.selectedElement = undefined;
@@ -16,15 +18,15 @@ export default class GraphController {
         this.setMode("fsm");
         this.updateGraph();
     }
-    addListener(listener) {
-        this.listeners.push(listener);
+    addObserver(observer) {
+        this.observers.push(observer);
     }
-    removeListener(listener) {
-        let index = this.listeners.indexOf(listener);
-        if (index !== -1) this.listeners.splice(index, 1);
+    removeObserver(observer) {
+        let index = this.observers.indexOf(observer);
+        if (index !== -1) this.observers.splice(index, 1);
     }
     notify(event) {
-        for (const l of this.listeners) {
+        for (const l of this.observers) {
             const handler = l[event];
             if (typeof(handler) === "function")
                 handler();
@@ -128,6 +130,11 @@ export default class GraphController {
             else
                 console.log(err);
         }
+    }
+    exportToTikz() {
+        const exporter = new TikzExporter();
+        const result = exporter.export(this.graph);
+        exporttofile(result, "text", "export.tikz");
     }
     beautifyGraph() {
         const beautifier = createBeautifier(this.mode, this.graph);

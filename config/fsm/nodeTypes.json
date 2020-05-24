@@ -5,5 +5,5 @@
     "max_incoming_edges": 10,
     "max_outgoing_edges": 10,
     "shape": "circle",
-    "first_decoration": "boldFrame"
+    "first_decoration": "double"
 }]

@@ -41,6 +41,7 @@ function loadTypes(types, categories, shapes) {
         } else {
             type.categories = [];
         }
+        type.shapeName = type.shape;
         type.shape = shapes[type.shape];
     }
     return lTypes;

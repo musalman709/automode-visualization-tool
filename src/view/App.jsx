@@ -34,21 +34,20 @@ export default ({graphEditor, tools}) => {
     };
     // listen to changes to the model
     useEffect(() => {
-        const listener = {
+        const observer = {
             elementsChange: () => setElements(graphEditor.getElements()),
             modeChange: () => changeMode(graphEditor.getMode()),
             cmdlineChange: () => changeCmdline(graphEditor.getCmdline(), graphEditor.getErrorMessage())
         };
-        graphEditor.addListener(listener);
+        graphEditor.addObserver(observer);
         return () => {
-            graphEditor.removeListener(listener);
+            graphEditor.removeObserver(observer);
         };
     }, [graphEditor]);
 
     return (
         <>
-            <Header graphEditor={graphEditor} cmdline={cmdline}
-                svgRef={svgRef} />
+            <Header graphEditor={graphEditor} cmdline={cmdline} />
             <ErrorBar message={errorMessage} />
             <article class="graph-container">
                 <GraphContainer elements={elements} tool={selectedTool}
@@ -58,7 +57,8 @@ export default ({graphEditor, tools}) => {
             <ToolPane graphEditor={graphEditor}
                 tools={tools[mode]}
                 selectedTool={selectedTool}
-                setSelectedTool={changeTool} />
+                setSelectedTool={changeTool}
+                svgRef={svgRef} />
             <ParamPane element={elements.selected} graphEditor={graphEditor} />
         </>
     );  

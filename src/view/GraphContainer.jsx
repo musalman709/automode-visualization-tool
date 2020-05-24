@@ -1,5 +1,5 @@
 import { h, Fragment } from "preact";
-import { getConnectPoint, getDirection, sumPoints, areShapesOverlapping } from "../graph_utils";
+import { getConnectPoint, getDirection, sumPoints, areShapesOverlapping } from "../utils/graphUtils";
 
 export const GraphContainer = ({ elements, tool, svgRef }) => {
     const pointerEventPosition = e => {
@@ -52,7 +52,7 @@ const style = `
     .nodeFrame.selected, .line.selected{
         stroke: #0070ff !important;
     }
-    .boldFrame {
+    .double {
         stroke-width: 3px;
     }
     .warning {

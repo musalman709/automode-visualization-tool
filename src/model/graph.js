@@ -9,6 +9,11 @@ export default class Graph {
     getEdges() {
         return this.edges;
     }
+    getNodeIndex(node) {
+        let index = this.nodes.indexOf(node);
+        if (index === -1) throw new Error("Node not in list");
+        return index;
+    }
     addNode(node) {
         node.setGraph(this);
         this.nodes.push(node);
