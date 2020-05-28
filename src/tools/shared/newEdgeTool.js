@@ -6,7 +6,7 @@ import { GraphEditorTool } from "../tool";
 export class GraphEditorNewEdgeTool extends GraphEditorTool {
     onToolSelect() {
         // deselect previous element
-        this.graphEditor.setSelectedElement(undefined);
+        this.graphController.setSelectedElement(undefined);
     }
     getToolId() {
         return "addedge";
@@ -17,20 +17,20 @@ export class GraphEditorNewEdgeTool extends GraphEditorTool {
     onMouseDown(pos, element) {
         // select first element
         if (element === undefined) {
-            this.graphEditor.setSelectedElement(undefined);
+            this.graphController.setSelectedElement(undefined);
         }
         // on second element clicked, create edge between them
         else {
-            let selected = this.graphEditor.getSelectedElement();
+            let selected = this.graphController.getSelectedElement();
             if (selected === undefined) {
-                this.graphEditor.setSelectedElement(element);
+                this.graphController.setSelectedElement(element);
             }
             else {
                 if (element.isNode() && selected.isNode()) {
-                    this.graphEditor.addEdge(selected, element);
+                    this.graphController.addEdge(selected, element);
                 }
                 // deleselect
-                this.graphEditor.setSelectedElement(undefined);
+                this.graphController.setSelectedElement(undefined);
             }
         }
     }

@@ -9,6 +9,6 @@ export class GraphEditorRootSelectorTool extends GraphEditorTool {
     }
     onMouseDown(pos, element) {
         if (element !== undefined && element.isNode())
-            this.graphEditor.setFirstElement(element);
+            this.graphController.setFirstElement(element);
     }
 }

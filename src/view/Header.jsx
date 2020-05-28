@@ -1,9 +1,9 @@
 import {h, Fragment, createRef} from "preact";
 import * as CmdlineUtils from "../utils/cmdlineUtils";
 
-export const Header = ({graphEditor, cmdline}) => {
-    const mode = graphEditor.getMode();
-    const setMode = mode => graphEditor.setMode(mode);
+export const Header = ({graphController, cmdline}) => {
+    const mode = graphController.getMode();
+    const setMode = mode => graphController.setMode(mode);
 
     return (
         <header>
@@ -13,21 +13,21 @@ export const Header = ({graphEditor, cmdline}) => {
                 <button className={mode === "btree" ? "selected" : ""}
                     onClick={() => setMode("btree")}>BTree</button>
             </div>
-            <Cmdline graphEditor={graphEditor} cmdline={cmdline} />
+            <Cmdline graphController={graphController} cmdline={cmdline} />
         </header>
     );
 };
 
-const Cmdline = ({graphEditor, cmdline}) => {
+const Cmdline = ({graphController, cmdline}) => {
     const cmdlineInput = createRef();
     const openFileInput = createRef();
 
     const openFile = async e => {
         const cmdline = await CmdlineUtils.importfromfile(e.target.files[0]);
-        graphEditor.callImporter(cmdline);
+        graphController.callImporter(cmdline);
     };
     const triggerOpenDialog = () => openFileInput.current.click();
-    const importCmdline = () => graphEditor.callImporter(cmdline);
+    const importCmdline = () => graphController.callImporter(cmdline);
     const copyCmdline = () => {
         cmdlineInput.current.select();
         document.execCommand("copy");
@@ -42,7 +42,7 @@ const Cmdline = ({graphEditor, cmdline}) => {
                 <span class="underline">O</span>pen
             </button>
             <input ref={cmdlineInput} type="text" value={cmdline} onChange={importCmdline}
-                onInput={e => graphEditor.setCmdline(e.target.value)}
+                onInput={e => graphController.setCmdline(e.target.value)}
                 placeholder="Command line string" />
             <button class="right" onClick={copyCmdline}>
                 <span class="underline">C</span>opy

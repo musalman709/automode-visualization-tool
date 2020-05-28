@@ -11,7 +11,8 @@ The editor is built using npm, which runs on the Node.js Javascript runtime (htt
 - Type `npm start` to start the editor.
 - Load `localhost:8080` in your web browser.
 
-For more information on how to use the editor, refer to [the manual](manual.md).
+The `npm run build` command can be used to get a production minified code, and the `npm run server` to launch a server without automatic code compilation.
+For more information on how to use the editor, refer to the manual.
 
 ## Running simulations
 

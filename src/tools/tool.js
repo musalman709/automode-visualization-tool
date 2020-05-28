@@ -2,8 +2,8 @@
  * Base class for tools
  */
 export class GraphEditorTool {
-    constructor(graphEditor) {
-        this.graphEditor = graphEditor;
+    constructor(graphController) {
+        this.graphController = graphController;
     }
     getName() {
     }

@@ -1,7 +1,7 @@
 import {h, Fragment} from "preact";
 import { exporttofile } from "../utils/cmdlineUtils";
 
-export const ToolPane = ({ graphEditor, tools, selectedTool, setSelectedTool, svgRef }) => {
+export const ToolPane = ({ graphController, tools, selectedTool, setSelectedTool, svgRef }) => {
     const exportSvg = () => {
         const bbox = svgRef.current.getBBox();
         const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${bbox.x-10} ${bbox.y-10} ${bbox.width+20} ${bbox.height+20}">` 
@@ -18,14 +18,14 @@ export const ToolPane = ({ graphEditor, tools, selectedTool, setSelectedTool, sv
                 )}
             </div>
             <hr />
-            <button className="button" onClick={() => graphEditor.beautifyGraph()}>
+            <button className="button" onClick={() => graphController.beautifyGraph()}>
                 Beautify
             </button>
             <hr />
             <button className="button" onClick={exportSvg}>
                 SVG Export
             </button>
-            <button className="button" onClick={() => graphEditor.exportToTikz()}>
+            <button className="button" onClick={() => graphController.exportToTikz()}>
                 Tikz Export
             </button>
         </div>

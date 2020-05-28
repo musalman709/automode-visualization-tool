@@ -35,13 +35,13 @@ import App from "./view/App.jsx";
 /**
  * Initialisation when loading ends
  */
-let grapheditor = new GraphController();
+let graphController = new GraphController();
 
-const FSMTools = [new GraphEditorDraggingTool(grapheditor), new GraphEditorNewNodeTool(grapheditor),
-    new GraphEditorNewEdgeTool(grapheditor), new GraphEditorDeleteTool(grapheditor),
-    new GraphEditorRootSelectorTool(grapheditor)];
+const FSMTools = [new GraphEditorDraggingTool(graphController), new GraphEditorNewNodeTool(graphController),
+    new GraphEditorNewEdgeTool(graphController), new GraphEditorDeleteTool(graphController),
+    new GraphEditorRootSelectorTool(graphController)];
 
-const BtreeTools = [new GraphEditorDraggingTool(grapheditor), new GraphEditorNewNodeTool(grapheditor),
-    new GraphEditorNewEdgeTool(grapheditor), new GraphEditorDeleteTool(grapheditor)];
+const BtreeTools = [new GraphEditorDraggingTool(graphController), new GraphEditorNewNodeTool(graphController),
+    new GraphEditorNewEdgeTool(graphController), new GraphEditorDeleteTool(graphController)];
 // render the editor using preact
-render(h(App, {graphEditor: grapheditor, tools: {fsm: FSMTools, btree: BtreeTools}}, null), document.querySelector("#app"));
+render(h(App, {graphController: graphController, tools: {fsm: FSMTools, btree: BtreeTools}}, null), document.querySelector("#app"));

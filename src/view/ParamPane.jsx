@@ -1,19 +1,19 @@
 import {h, Fragment} from "preact";
 
-export const ParamPane = ({ element, graphEditor }) => {
+export const ParamPane = ({ element, graphController }) => {
     if (!element)
         return <aside class="right-pane" />;
     //model select
     const types = element.isNode()
-        ? graphEditor.getNodeTypes()
-        : graphEditor.getEdgeTypes();
+        ? graphController.getNodeTypes()
+        : graphController.getEdgeTypes();
     // parameter elements
     const type = element.getType();
     const category = element.getCategory();
     // event handlers
-    const setElementType = (typeId) => graphEditor.setSelectionType(typeId);
-    const setElementCategory = (categoryId) => graphEditor.setSelectionCategory(categoryId);
-    const setElementParam = (paramId, value) => graphEditor.setSelectionParam(paramId, value);
+    const setElementType = (typeId) => graphController.setSelectionType(typeId);
+    const setElementCategory = (categoryId) => graphController.setSelectionCategory(categoryId);
+    const setElementParam = (paramId, value) => graphController.setSelectionParam(paramId, value);
     return (
         <aside class="right-pane">
             {types.length > 1 &&

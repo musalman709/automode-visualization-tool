@@ -6,7 +6,7 @@ ${content}
 `);
 
 const nodeTemplate = (name, shape, decoration, text, position) => (
-    `\\node[draw, ${shape}${decoration ? ", " + decoration : ""}, align=center] (${name}) at (${position.x*PX_PER_CM}cm, -${position.y*PX_PER_CM}cm)
+    `\\node[draw, ${shape}${decoration ? ", " + decoration : ""}, align=center] (${name}) at (${position.x*PX_PER_CM}, -${position.y*PX_PER_CM})
     {${text}};
 `);
 const lineTemplate = (shape1, shape2) => (
