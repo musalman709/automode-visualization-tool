@@ -4,7 +4,7 @@
 
 
 export function exporttofile(content, type, filename) {
-    if(content != "") {
+    if(content !== "") {
         const encodedUri = encodeURI(`data:${type},` + content).replace(/#/g, "%23");
         const link = document.querySelector("#downloadLink");
         link.setAttribute("href", encodedUri);
@@ -20,10 +20,10 @@ export async function importfromfile(file) {
 }
 
 export async function execinsimulator(cmdline) {
-    const execUrl = "/exec";
+    const execUrl = "/run";
     const response = await fetch(execUrl, {
         method: "POST",
-        body: JSON.stringify(cmdline),
+        body: JSON.stringify({cmdline}),
         headers: {
             "Content-Type": "application/json"
         }

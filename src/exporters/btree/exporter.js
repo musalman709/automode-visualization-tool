@@ -1,4 +1,4 @@
-import { findBTreeRoot } from "../../btree/btreeutils";
+import { findBTreeRoot } from "../../utils/btreeutils";
 
 export default class BTreeExporter {
     export(graph) {
@@ -13,9 +13,9 @@ export default class BTreeExporter {
         return this.expRootNode(root);
     }
     expRootNode(rootNode) {
-        var str = "--bt-config ";
+        let str = "--bt-config ";
         // add root type
-        var type = rootNode.getModel().id;
+        let type = rootNode.getType().id;
         if (type < 0)
             throw "Invalid configuration : root node type is not selected";
         str += "--nroot " + type + " ";
@@ -23,10 +23,10 @@ export default class BTreeExporter {
         return str;
     }
     expNode(node, nodeID) {
-        var type = node.getModel().id;
+        let type = node.getType().id;
         if (type < 0)
             throw "Invalid configuration : nodes types are not selected";
-        var str = "--n" + nodeID + " " + type + " ";
+        let str = "--n" + nodeID + " " + type + " ";
         str += this.expNodeContent(node, nodeID);
         return str;
     }
@@ -45,25 +45,25 @@ export default class BTreeExporter {
         }
     }
     expNodeChildren(node, nodeID) {
-        var edges = node.getOutgoingEdges();
-        var childrenNumber = edges.length;
-        var str = "--nchild" + nodeID + " " + childrenNumber + " ";
+        let edges = node.getOutgoingEdges();
+        let childrenNumber = edges.length;
+        let str = "--nchild" + nodeID + " " + childrenNumber + " ";
         // sort child by x position
         edges.sort(function (e1, e2) {
             return e1.getDestNode().getPosition().x > e2.getDestNode().getPosition().x;
         });
         // fix nodeID if root
-        if (nodeID == "root")
+        if (nodeID === "root")
             nodeID = "";
         // print childs
-        for (var i = 0; i < childrenNumber; ++i) {
+        for (let i = 0; i < childrenNumber; ++i) {
             str += this.expNode(edges[i].getDestNode(), nodeID + i);
         }
         return str;
     }
     expNodeParams(node, nodeID) {
-        var pdict = node.getParams();
-        var str = "";
+        let pdict = node.getParams();
+        let str = "";
         for (const [key, value] of pdict) {
             str += "--" + key + nodeID + " " + value + " ";
         }

@@ -1,37 +1,26 @@
 # AutoMoDe Visualization Tool
 
-This software is a web editor that allows to visualize and edit AutoMoDe behaviors trees and finite state machines. It also provides a local server that allows to launch a simulation through the editor using the ARGoS simulator.
+This software is a web editor that allows to visualize and edit AutoMoDe behavior trees and finite state machines. These can be used directly in a simulation, and exported in command line or SVG format.
 
-The web editor should run on any modern web browser that supports HTML5, SVG images and JavaScript. The editor has been tested on Firefox 70 and Chrome 78. Internet Explorer is not supported.
+The editor has been tested on Firefox 74 and Chrome 80. Internet Explorer and Edge are not supported.
 
-## Installation
+## Installing and running the editor
 
-The editor is built using npm. 
-- Type `npm install` in a terminal to install all required Javascript dependencies, including the dev server. 
+The editor is built using npm, which runs on the Node.js Javascript runtime (https://nodejs.org). 
+- Type `npm install` in a terminal to install all required dependencies locally. 
 - Type `npm start` to start the editor.
+- Load `localhost:8080` in your web browser.
+
+The `npm run build` command can be used to get a production minified code, and the `npm run server` to launch a server without automatic code compilation.
+For more information on how to use the editor, refer to the manual.
 
 ## Running simulations
 
-The server used to run simulations requires Python3 and the Flask library. On Debian-based systems, they can be installed using
-```
-$ sudo apt install python3-flask
-```
-or using `pip` tool
-```
-$ sudo pip3 install Flask
-```
-The server also needs an installation of the ARGoS3 simulator with the required plugins.
+In order to run a simulation from the editor, you must have an installation of AutoMoDe and the ARGoS3 simulator with the required plugins.
 
-### Starting the server
-
-The server can be launched using :
+- Create a configuration file named `.env` in this directory with the following content: 
 ```
-$ python3 run.py <config>
+AUTOMODE_PATH=path_to_automode_executable
+EXPERIMENT_PATH=path_to_argos_experiment_file
 ```
-where `<config>` is the path of a `.ini` file that contains the
-required parameters to launch the simulation, especially the path to 
-the ARGoS executable and the path to the scenario file. 
-The file `config.ini` serves as a template.
-
-Once the server is started, the editor should open by itself. If not,
-open the address `localhost:5000` in your web browser.
+- The run button in the editor works without additional configuration when it is launched with `npm start`, the output of AutoMoDe can be found in the terminal at the end of the simulation.

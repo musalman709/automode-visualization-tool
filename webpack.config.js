@@ -6,6 +6,9 @@ module.exports = env => {
     return {
         mode: isProduction ? "production" : "development",
         entry: "./src/index.js",
+        resolve: {
+            alias: {Config: path.resolve(__dirname, "config")}
+        },
         output: {
             filename: "main.js",
             path: path.resolve(__dirname, "dist"),

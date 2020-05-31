@@ -1,235 +1,233 @@
 [
-  	{
-  		"nodename": "Action",
-  		"nodeid": "5",
-  		"categoryid": "a",
-  		"categoriesname": "Behavior",
-  		"categories": [
-  			{
+	{
+		"typeid": 5,
+		"categoryid": "a",
+		"categories_name": "Behavior",
+		"categories": [
+			{
 				"name": "Exploration",
-				"id": "0",
+				"id": 0,
 				"display_name": "Exp",
-				"param": [
+				"params": [
 					{
 						"name": "Success Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					},
 					{
 						"name": "Steps Range",
 						"id": "rwm",
-						"min": "0",
-						"max": "100",
-						"step": "1"
+						"min": 0,
+						"max": 100,
+						"step": 1
 					}
 				]
 			},
 			{
 				"name": "Stop",
-				"id": "1",
+				"id": 1,
 				"display_name": "Stop",
-				"param": [
+				"params": [
 					{
 						"name": "Success Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					}
 				]
 			},
 			{
 				"name": "Phototaxis",
-				"id": "2",
+				"id": 2,
 				"display_name": "Pha",
-				"param": [
+				"params": [
 					{
 						"name": "Success Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					}
 				]
 			},
 			{
 				"name": "Anti-phototaxis",
-				"id": "3",
+				"id": 3,
 				"display_name": "APha",
-				"param": [
+				"params": [
 					{
 						"name": "Success Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					}
 				]
 			},
 			{
 				"name": "Attraction",
-				"id": "4",
+				"id": 4,
 				"display_name": "Attr",
-				"param": [
+				"params": [
 					{
 						"name": "Success Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					},
 					{
 						"name": "Attraction",
 						"id": "att",
-						"min": "1",
-						"max": "5",
-						"step": "1"
+						"min": 1,
+						"max": 5,
+						"step": 1
 					}
 				]
 			},
 			{
 				"name": "Repulsion",
-				"id": "5",
+				"id": 5,
 				"display_name": "Rep",
-				"param": [
+				"params": [
 					{
 						"name": "Success Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					},
 					{
 						"name": "Repulsion",
 						"id": "rep",
-						"min": "1",
-						"max": "5",
-						"step": "1"
+						"min": 1,
+						"max": 5,
+						"step": 1
 					}
 				]
 			}
-  		]
-  	},
+		]
+	},
 	{
-		"nodename": "Condition",
-		"nodeid": "6",
+		"typeid": 6,
 		"categoryid": "c",
-  		"categoriesname": "Condition",
+		"categories_name": "Condition",
 		"categories": [
 			{
 				"name": "Black floor",
-				"id": "0",
+				"id": 0,
 				"display_name": "Bflr",
-				"param": [
+				"params": [
 					{
 						"name": "Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					}
 				]
 			},
 			{
 				"name": "Gray floor",
-				"id": "1",
+				"id": 1,
 				"display_name": "Gflr",
-				"param": [
+				"params": [
 					{
 						"name": "Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					}
 				]
 			},
 			{
 				"name": "White floor",
-				"id": "2",
+				"id": 2,
 				"display_name": "Wflr",
-				"param": [
+				"params": [
 					{
 						"name": "Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					}
 				]
 			},
 			{
 				"name": "Neighbors count",
-				"id": "3",
+				"id": 3,
 				"display_name": "Ngb",
-				"param": [
+				"params": [
 					{
 						"name": "ƞ",
 						"id": "p",
-						"min": "0",
-						"max": "20",
-						"step": "1"
+						"min": 0,
+						"max": 20,
+						"step": 1
 					},
 					{
 						"name": "ξ",
 						"id": "w",
-						"min": "1",
-						"max": "10",
-						"step": "1"
+						"min": 1,
+						"max": 10,
+						"step": 1
 					}
 				]
 			},
 			{
 				"name": "Inverted neighbors count",
-				"id": "4",
+				"id": 4,
 				"display_name": "INgb",
-				"param": [
+				"params": [
 					{
 						"name": "ƞ",
 						"id": "p",
-						"min": "0",
-						"max": "20",
-						"step": "1"
+						"min": 0,
+						"max": 20,
+						"step": 1
 					},
 					{
 						"name": "ξ",
 						"id": "w",
-						"min": "1",
-						"max": "10",
-						"step": "1"
+						"min": 1,
+						"max": 10,
+						"step": 1
 					}
 				]
 			},
 			{
 				"name": "Fixed Probability",
-				"id": "5",
+				"id": 5,
 				"display_name": "FPrb",
-				"param": [
+				"params": [
 					{
 						"name": "Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					}
 				]
 			},
 			{
 				"name": "Light",
-				"id": "6",
+				"id": 6,
 				"display_name": "Lght",
-				"param": [
+				"params": [
 					{
 						"name": "Probability",
 						"id": "p",
-						"min": "0",
-						"max": "1",
-						"step": "0.01"
+						"min": 0,
+						"max": 1,
+						"step": 0.01
 					}
 				]
 			}
 		]
-  	}
+	}
 ]

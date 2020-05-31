@@ -2,7 +2,7 @@ import { GraphEditorDeleteTool } from "./tools/shared/deleteTool";
 import { GraphEditorDraggingTool } from "./tools/shared/dragTool";
 import { GraphEditorNewEdgeTool } from "./tools/shared/newEdgeTool";
 import { GraphEditorNewNodeTool } from "./tools/shared/newNodeTool";
-import GraphEditor from "./grapheditor";
+import GraphController from "./graphController";
 import { GraphEditorRootSelectorTool } from "./tools/fsm/rootSelector";
 import { render, h } from "preact";
 import App from "./view/App.jsx";
@@ -35,13 +35,13 @@ import App from "./view/App.jsx";
 /**
  * Initialisation when loading ends
  */
-let grapheditor = new GraphEditor();
+let graphController = new GraphController();
 
-const FSMTools = [new GraphEditorDraggingTool(grapheditor), new GraphEditorNewNodeTool(grapheditor),
-    new GraphEditorNewEdgeTool(grapheditor), new GraphEditorDeleteTool(grapheditor),
-    new GraphEditorRootSelectorTool(grapheditor)];
+const FSMTools = [new GraphEditorDraggingTool(graphController), new GraphEditorNewNodeTool(graphController),
+    new GraphEditorNewEdgeTool(graphController), new GraphEditorDeleteTool(graphController),
+    new GraphEditorRootSelectorTool(graphController)];
 
-const BtreeTools = [new GraphEditorDraggingTool(grapheditor), new GraphEditorNewNodeTool(grapheditor),
-    new GraphEditorNewEdgeTool(grapheditor), new GraphEditorDeleteTool(grapheditor)];
+const BtreeTools = [new GraphEditorDraggingTool(graphController), new GraphEditorNewNodeTool(graphController),
+    new GraphEditorNewEdgeTool(graphController), new GraphEditorDeleteTool(graphController)];
 // render the editor using preact
-render(h(App, {graphEditor: grapheditor, tools: {fsm: FSMTools, btree: BtreeTools}}, null), document.querySelector("#app"));
+render(h(App, {graphController: graphController, tools: {fsm: FSMTools, btree: BtreeTools}}, null), document.querySelector("#app"));

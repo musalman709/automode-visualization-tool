@@ -4,3 +4,4 @@ package-lock.json
 jsconfig.json
 dist
 .vscode/launch.json
+.env

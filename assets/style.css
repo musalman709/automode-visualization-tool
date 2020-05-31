@@ -20,7 +20,6 @@ body {
 
 .graph-container {
 	grid-area: main;
-	background-color: #E8E8E8;
 	min-width: 100%;
 	min-height: 100%;
 	text-align: center;
@@ -30,8 +29,10 @@ body {
 header {
 	grid-area: header;
 	display: flex;
+	align-items: center;
 	z-index: 100;
-	box-shadow: 0 3px 2px -2px lightgray;
+	border-bottom: solid 1px lightgray;
+	background-color: #f8f9fa;
 	padding: 0.5rem 1rem;
 }
 
@@ -43,17 +44,38 @@ h1 {
   	font-size: 1.2rem;
 }
 
+hr {
+	border-top: solid 1px lightgray;
+	border-bottom: none;
+	border-left: none;
+	border-right: none;
+}
+
 #title-container {
 	margin-right: 2rem;
 }
 
-#switchlink {
-  margin: 0px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  font-size: 14px;
-  text-decoration: inherit;
-  color: black;
+#title-container button {
+	height: 1.5rem;
+	border: solid 1px gray;
+	border-left: none;
+	background-color: transparent;
+	font-family: inherit;
+}
+
+#title-container button:first-child {
+	border-left: solid 1px gray;
+	border-top-left-radius: 2px;
+	border-bottom-left-radius: 2px;
+}
+
+#title-container button:last-child {
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+}
+
+#title-container button.selected {
+	background-color: lightgray;
 }
 
 .cmdline-container {
@@ -63,11 +85,15 @@ h1 {
   margin-right: 1rem;
 }
 
+.cmdline-container button:last-child {
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+}
+
 .cmdline-container input {
   border: 1px solid gray;
   padding: 0 0.5rem;
   height: 1.5rem;
-  font-size: 0.9rem;
   font-family: monospace;
   min-width: 200px;
   flex: auto;
@@ -75,10 +101,12 @@ h1 {
 
 .cmdline-container button {
   margin: 0px;
-  padding: 0.25rem;
+  padding: 0 0.25rem;
   height: 1.5rem;
   align-items: center;
   border: 1px solid gray;
+  background: none;
+  font-family: inherit;
 }
 
 .cmdline-container button.right {
@@ -86,23 +114,38 @@ h1 {
 }
 
 .cmdline-container button.left {
-  border-right: 0px;
+	border-right: 0px;
+	border-top-left-radius: 2px;
+	border-bottom-left-radius: 2px;
 }
 
 .underline {
   text-decoration: underline;
 }
 
+.error-bar {
+	border: 1px solid red;
+	color: darkred;
+	background-color: white;
+	font-size: 1rem;
+	grid-area: main;
+	height: max-content;
+	width: max-content;
+	margin: 0.5rem auto;
+	padding: 0.25rem 0.5rem;
+	z-index: 10;
+}
+
 
 .left-pane {
 	grid-area: left-pane;
-	box-shadow: 3px 0 2px -2px lightgray;
+	border-right: solid 1px lightgray;
 	padding: 2rem 1rem;
 }
 
 .right-pane {
 	grid-area: right-pane;
-	box-shadow: -3px 0 2px -2px lightgray;
+	border-left: solid 1px lightgray;
 	padding: 2rem 1rem;
 	min-width: 250px;
 }
@@ -163,8 +206,7 @@ h1 {
 	display: inline-block;
 	width: 1200px;
 	height: 675px;
-	background-color: #FFFFFF;
-	margin: 16px;
+	background-color: white;
 }
 
 .d-block {

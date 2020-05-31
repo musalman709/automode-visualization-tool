@@ -1,5 +1,5 @@
 import { h, Fragment } from "preact";
-import { getConnectPoint, getDirection, points_sum } from "../graph_utils";
+import { getConnectPoint, getDirection, sumPoints, areShapesOverlapping } from "../utils/graphUtils";
 
 export const GraphContainer = ({ elements, tool, svgRef }) => {
     const pointerEventPosition = e => {
@@ -7,6 +7,15 @@ export const GraphContainer = ({ elements, tool, svgRef }) => {
         const x = (e.clientX - ctm.e) / ctm.a;
         const y = (e.clientY - ctm.f) / ctm.d;
         return { x, y };
+    };
+    const isElementOverlapping = (element) => {
+        for (let other of elements.nodes) 
+            if ((element !== other) && areShapesOverlapping(element.position, other.position))
+                return true;
+        for (let other of elements.edges) 
+            if ((element !== other) && areShapesOverlapping(element.position, other.position))
+                return true;
+        return false;
     };
     const handleMouseDown = e => tool.onMouseDown(pointerEventPosition(e), undefined, e.ctrlKey);
     const handleMouseDownOnElement = (event, element, isCtrlKeyPressed) => tool.onMouseDown(pointerEventPosition(event), element, isCtrlKeyPressed);
@@ -23,8 +32,8 @@ export const GraphContainer = ({ elements, tool, svgRef }) => {
                     <path d="M 0 0 L 10 5 L 0 10 Z"></path>
                 </marker>
             </defs>
-            {elements.nodes.map((e, index) => <Node node={e} isSelected={e === elements.selected} isFirst={index === 0} handleClick={handleMouseDownOnElement} />)}
-            {elements.edges.map(e => <Edge edge={e} isSelected={e === elements.selected} handleClick={handleMouseDownOnElement} />)}
+            {elements.nodes.map((e, index) => <Node node={e} isSelected={e === elements.selected} isFirst={index === 0} isOverlapping={isElementOverlapping(e)} handleClick={handleMouseDownOnElement} />)}
+            {elements.edges.map(e => <Edge edge={e} isSelected={e === elements.selected} isOverlapping={isElementOverlapping(e)} handleClick={handleMouseDownOnElement} />)}
         </svg>
     );
 };
@@ -38,19 +47,25 @@ const style = `
         fill: white;
         stroke-width: 1px;
         stroke: black;
+        z-index: 10;
     }
     .nodeFrame.selected, .line.selected{
-        stroke: #0070ff;
+        stroke: #0070ff !important;
     }
-    .boldFrame {
+    .double {
         stroke-width: 3px;
+    }
+    .warning {
+        stroke: red !important;
     }
     .line {
         stroke: black;
+        z-index: 1;
     }
     line.arrow {
         stroke-width: 1px;
         stroke: black;
+        z-index: 1;
     }
     .arrowthick {
         stroke-width: 2px;
@@ -58,23 +73,25 @@ const style = `
     }
 `;
 
-const Node = ({ node, isSelected, isFirst, handleClick }) => {
+const Node = ({ node, isSelected, isFirst, isOverlapping, handleClick }) => {
     const handleShapeClick = (e) => { e.stopPropagation(); handleClick(e, node, e.ctrlKey); };
-    const decoration = isFirst ? (node.model.first_decoration || "") : "";
+    const shape = node.type.shape;
+    const decoration = isFirst ? (node.type.first_decoration || "") : "";
     return (
-        <Shape className={`${isSelected ? "selected " : ""} ${decoration}`}
-            displayTag={node.model.display_tag}
-            displayOptions={node.model.display_opts} position={node.position}
-            label={node.category ? node.category.display_name : node.model.display_text}
+        <Shape className={`${isSelected ? "selected" : ""} ${isOverlapping ? "warning" : ""} ${decoration}`}
+            displayTag={shape.display_tag}
+            displayOptions={shape.display_opts} position={node.position}
+            label={node.category ? node.category.display_name : node.type.display_text}
             handleClick={handleShapeClick} />
     );
 };
 
-const Edge = ({ edge, isSelected, handleClick }) => {
+const Edge = ({ edge, isSelected, isOverlapping, handleClick }) => {
     const handleShapeClick = (e) => { e.stopPropagation(); handleClick(e, edge); };
 
     // check whether we need to display a shape on the edge
-    if (edge.model.node_display_tag) {
+    const shape = edge.type.shape;
+    if (shape) {
         const srcPoint = getSrcPoint(edge.srcElement, edge);
         const destPoint = getDestPoint(edge, edge.destElement);
         return (<>
@@ -84,9 +101,9 @@ const Edge = ({ edge, isSelected, handleClick }) => {
             <line className={`line ${isSelected ? "selected" : ""}`} onMouseDown={handleClick}
                 marker-end="url(#arrowhead)" x1={edge.position.x} y1={edge.position.y} 
                 x2={destPoint.x} y2={destPoint.y} />
-            <Shape className={isSelected ? "selected" : ""} displayTag={edge.model.node_display_tag}
-                displayOptions={edge.model.node_display_opts} position={edge.position}
-                label={edge.category ? edge.category.display_name : edge.model.display_text}
+            <Shape className={`${isSelected ? "selected" : ""}  ${isOverlapping ? "warning" : ""}`} displayTag={shape.display_tag}
+                displayOptions={shape.display_opts} position={edge.position}
+                label={edge.category ? edge.category.display_name : edge.type.display_text}
                 handleClick={handleShapeClick} />
         </>);
     } else {
@@ -110,12 +127,14 @@ const Shape = ({ displayTag, displayOptions, position, label, className, handleC
 );
 
 const getSrcPoint = (srcElement, destElement) => {
+    const srcShape = srcElement.type.shape;
     const direction = getDirection(srcElement.position, destElement.position);
-    const connectPoint = getConnectPoint(srcElement.model.outgoing_connect_type, srcElement.model.rx, srcElement.model.ry, direction);
-    return points_sum(srcElement.position, connectPoint);
+    const connectPoint = getConnectPoint(srcShape.outgoing_connect_type, srcShape.rx, srcShape.ry, direction);
+    return sumPoints(srcElement.position, connectPoint);
 };
 const getDestPoint = (srcElement, destElement) => {
+    const destShape = destElement.type.shape;
     const direction = getDirection(destElement.position, srcElement.position);
-    const connectPoint = getConnectPoint(destElement.model.incoming_connect_type, destElement.model.rx, destElement.model.ry, direction);
-    return points_sum(destElement.position, connectPoint);
+    const connectPoint = getConnectPoint(destShape.incoming_connect_type, destShape.rx, destShape.ry, direction);
+    return sumPoints(destElement.position, connectPoint);
 };
