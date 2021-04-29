@@ -7,7 +7,7 @@
 			{
 				"name": "Black floor",
 				"id": 0,
-				"display_name": "Bflr",
+				"display_name": "BFlr",
 				"params": [
 					{
 						"name": "Probability",
@@ -21,7 +21,7 @@
 			{
 				"name": "Gray floor",
 				"id": 1,
-				"display_name": "Gflr",
+				"display_name": "GFlr",
 				"params": [
 					{
 						"name": "Probability",
@@ -35,7 +35,7 @@
 			{
 				"name": "White floor",
 				"id": 2,
-				"display_name": "Wflr",
+				"display_name": "WFlr",
 				"params": [
 					{
 						"name": "Probability",
@@ -47,50 +47,8 @@
 				]
 			},
 			{
-				"name": "Neighbors count",
-				"id": 3,
-				"display_name": "Ngb",
-				"params": [
-					{
-						"name": "ƞ",
-						"id": "p",
-						"min": 1,
-						"max": 10,
-						"step": 0.01
-					},
-					{
-						"name": "ξ",
-						"id": "w",
-						"min": 0,
-						"max": 20,
-						"step": 0.01
-					}
-				]
-			},
-			{
-				"name": "Inverted neighbors count",
-				"id": 4,
-				"display_name": "INgb",
-				"params": [
-					{
-						"name": "ƞ",
-						"id": "p",
-						"min": 1,
-						"max": 10,
-						"step": 0.01
-					},
-					{
-						"name": "ξ",
-						"id": "w",
-						"min": 0,
-						"max": 20,
-						"step": 0.01
-					}
-				]
-			},
-			{
 				"name": "Fixed Probability",
-				"id": 5,
+				"id": 4,
 				"display_name": "FPrb",
 				"params": [
 					{
@@ -103,9 +61,9 @@
 				]
 			},
 			{
-				"name": "Light",
-				"id": 6,
-				"display_name": "Lght",
+				"name": "Probability Color",
+				"id": 5,
+				"display_name": "PClr",
 				"params": [
 					{
 						"name": "Probability",
@@ -113,6 +71,41 @@
 						"min": 0,
 						"max": 1,
 						"step": 0.01
+					},
+					{
+						"name": "Color",
+						"id": "l",
+						"min": 0,
+						"max": 6,
+						"step": 1
+					},
+					{
+						"name": "Camera field of view",
+						"id": "f",
+						"min": 0,
+						"max": 1,
+						"step": 1
+					}
+				]
+			},
+			{
+				"name": "Pheromone Detected",
+				"id": 6,
+				"display_name": "PPhe",
+				"params": [
+					{
+						"name": "Probability",
+						"id": "p",
+						"min": 0,
+						"max": 1,
+						"step": 0.01
+					},
+					{
+						"name": "Camera field of view",
+						"id": "f",
+						"min": 0,
+						"max": 1,
+						"step": 1
 					}
 				]
 			}

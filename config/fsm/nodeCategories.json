@@ -15,6 +15,13 @@
                       "min": 0,
                       "max": 100,
                       "step": 1
+                  },
+                  {
+                      "name": "Pheromone",
+                      "id": "phe",
+                      "min": 0,
+                      "max": 2,
+                      "step": 1
                   }
               ]
           },
@@ -22,46 +29,154 @@
               "name": "Stop",
               "id": 1,
               "display_name": "Stop",
-              "params": []
-          },
-          {
-              "name": "Phototaxis",
-              "id": 2,
-              "display_name": "Pha",
-              "params": []
-          },
-          {
-              "name": "Anti-phototaxis",
-              "id": 3,
-              "display_name": "APha",
-              "params": []
-          },
-          {
-              "name": "Attraction",
-              "id": 4,
-              "display_name": "Attr",
               "params": [
-                  {
-                      "name": "Attraction",
-                      "id": "att",
-                      "min": 1,
-                      "max": 5,
-                      "step": 1
-                  }
+                {
+                    "name": "Pheromone",
+                    "id": "phe",
+                    "min": 0,
+                    "max": 2,
+                    "step": 1
+                }
               ]
           },
           {
-              "name": "Repulsion",
-              "id": 5,
-              "display_name": "Rep",
+              "name": "Go to Color",
+              "id": 2,
+              "display_name": "GoToColor",
               "params": [
-                  {
-                      "name": "Repulsion",
-                      "id": "rep",
-                      "min": 1,
-                      "max": 5,
-                      "step": 1
-                  }
+                {
+                    "name": "Velocity",
+                    "id": "vel",
+                    "min": 1,
+                    "max": 1,
+                    "step": 0
+                },
+                {
+                    "name": "Pheromone",
+                    "id": "phe",
+                    "min": 0,
+                    "max": 2,
+                    "step": 1
+                },
+                {
+      						"name": "Color",
+      						"id": "clr",
+      						"min": 0,
+      						"max": 6,
+      						"step": 1
+      					},
+                {
+      						"name": "Camera field of view",
+      						"id": "fov",
+      						"min": 0,
+      						"max": 1,
+      						"step": 1
+      					}
+              ]
+          },
+          {
+              "name": "Go Away Color",
+              "id": 3,
+              "display_name": "GoAwayColor",
+              "params": [
+                {
+                  "name": "Velocity",
+                  "id": "vel",
+                  "min": 1,
+                  "max": 1,
+                  "step": 0
+                },
+                {
+                    "name": "Pheromone",
+                    "id": "phe",
+                    "min": 0,
+                    "max": 2,
+                    "step": 1
+                },
+                {
+      						"name": "Color",
+      						"id": "clr",
+      						"min": 0,
+      						"max": 6,
+      						"step": 1
+      					},
+                {
+      						"name": "Camera field of view",
+      						"id": "fov",
+      						"min": 0,
+      						"max": 1,
+      						"step": 1
+      					}
+              ]
+          },
+          {
+              "name": "Waggle",
+              "id": 4,
+              "display_name": "Waggle",
+              "params": [
+                {
+                    "name": "Pheromone",
+                    "id": "phe",
+                    "min": 0,
+                    "max": 2,
+                    "step": 1
+                }
+              ]
+          },
+          {
+              "name": "Go to Pheromone",
+              "id": 5,
+              "display_name": "GoToPheromone",
+              "params": [
+                {
+                  "name": "Velocity",
+                  "id": "vel",
+                  "min": 1,
+                  "max": 1,
+                  "step": 0
+                },
+                {
+                    "name": "Pheromone",
+                    "id": "phe",
+                    "min": 0,
+                    "max": 2,
+                    "step": 1
+                },
+                {
+                  "name": "Camera field of view",
+                  "id": "fov",
+                  "min": 0,
+                  "max": 1,
+                  "step": 1
+                }
+              ]
+          },
+          {
+              "name": "Go Away Pheromone",
+              "id": 6,
+              "display_name": "GoAwayPheromone",
+              "params": [
+                {
+                  "name": "Velocity",
+                  "id": "vel",
+                  "min": 1,
+                  "max": 1,
+                  "step": 0
+                },
+                {
+                    "name": "Pheromone",
+                    "id": "phe",
+                    "min": 0,
+                    "max": 2,
+                    "step": 1
+                },
+                {
+                  "name": "Camera field of view",
+                  "id": "fov",
+                  "min": 0,
+                  "max": 1,
+                  "step": 1
+                }
               ]
           }
         ]
